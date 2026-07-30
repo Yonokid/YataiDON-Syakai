@@ -1,0 +1,2431 @@
+{
+  "name": "10 level dfc",
+  "level": 10,
+  "type": "dfc",
+  "data": {
+    "name": "10 level dfc",
+    "sections": [
+      {
+        "order": 0,
+        "name": "SS",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "336",
+            "difficulty": "oni",
+            "hash": "2b631b346ef864c60f681b15eb912763"
+          },
+          {
+            "order": 1,
+            "songNo": "993",
+            "difficulty": "ura",
+            "hash": "9a25d24981d1aee0b72b48098d12d8c5"
+          },
+          {
+            "order": 2,
+            "songNo": "1350",
+            "difficulty": "oni",
+            "hash": "6c9fdccbffba496cf151fd0f565f09dd"
+          },
+          {
+            "order": 3,
+            "songNo": "1072",
+            "difficulty": "ura",
+            "hash": "c1bcf48d51905ccda8da879b0755db9c"
+          },
+          {
+            "order": 4,
+            "songNo": "1129",
+            "difficulty": "ura",
+            "hash": "1422e35bb3d1e7664b422a7051b53548"
+          },
+          {
+            "order": 5,
+            "songNo": "1043",
+            "difficulty": "ura",
+            "hash": "c12fe266761543443cb7dcbcc40986b8"
+          },
+          {
+            "order": 6,
+            "songNo": "1369",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 7,
+            "songNo": "765",
+            "difficulty": "oni",
+            "hash": "357147043b57b153bf61615e89f1f019"
+          },
+          {
+            "order": 8,
+            "songNo": "765",
+            "difficulty": "ura",
+            "hash": "ba3c13bda5e262ef834ebd9f4749b4e5"
+          },
+          {
+            "order": 9,
+            "songNo": "721",
+            "difficulty": "ura",
+            "hash": "64f31ee5613963e33567d35e5d5166a9"
+          },
+          {
+            "order": 10,
+            "songNo": "1172",
+            "difficulty": "oni",
+            "hash": "c831448d379e75266dfcc960d4136fc7"
+          },
+          {
+            "order": 11,
+            "songNo": "120",
+            "difficulty": "oni",
+            "hash": "c3f54d46a2a120081c2e4cd5df1052ad"
+          },
+          {
+            "order": 12,
+            "songNo": "1227",
+            "difficulty": "ura",
+            "hash": "90a3c1168eef342fba2b9a7824d71c3f"
+          },
+          {
+            "order": 13,
+            "songNo": "960",
+            "difficulty": "ura",
+            "hash": "2e085cc5b49a747eae4466be7f49fb67"
+          },
+          {
+            "songNo": "1419",
+            "order": 14,
+            "difficulty": "ura",
+            "hash": "e714b25fa0ca58f72405c2af277d7c88"
+          },
+          {
+            "order": 15,
+            "songNo": "849",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 16,
+            "songNo": "463",
+            "difficulty": "oni",
+            "hash": "b6f79b5ac02724ab3eb4fca4a74b6c22"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 1,
+        "name": "iS+",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "518",
+            "difficulty": "oni",
+            "hash": "66eb106eb46c287fff95c37f255eb01a"
+          },
+          {
+            "order": 1,
+            "songNo": "1278",
+            "difficulty": "oni",
+            "hash": "2830171d6a0ea9fa6a25411141ed59cb"
+          },
+          {
+            "order": 2,
+            "songNo": "856",
+            "difficulty": "ura",
+            "hash": "d8af4cb7c739833fb159943dc35685cc"
+          },
+          {
+            "order": 3,
+            "songNo": "1080",
+            "difficulty": "ura",
+            "hash": "67e6f17409ddbb56ce6377e41a2b54a8"
+          },
+          {
+            "order": 4,
+            "songNo": "1249",
+            "difficulty": "ura",
+            "hash": "5f90a01f71663ffc5f91a9e76ddb996d"
+          },
+          {
+            "songNo": "1406",
+            "order": 5,
+            "difficulty": "oni",
+            "hash": "fa1aa0272aaab5f7287967eb54bd4348"
+          },
+          {
+            "order": 6,
+            "songNo": "834",
+            "difficulty": "ura",
+            "hash": "7e4cc555c4114a0c8e8993c737839f8b"
+          },
+          {
+            "order": 7,
+            "songNo": "954",
+            "difficulty": "ura",
+            "hash": "a61edb64382a7e0ad7a7196149bf6129"
+          },
+          {
+            "order": 8,
+            "songNo": "1040",
+            "difficulty": "oni",
+            "hash": "35d1bf273c0b61c3f9a01e9ed68a1f1f"
+          },
+          {
+            "order": 9,
+            "songNo": "1276",
+            "difficulty": "ura",
+            "hash": "841b945ca41cfce5f7a1279d674178ef"
+          },
+          {
+            "order": 10,
+            "songNo": "1367",
+            "difficulty": "oni",
+            "hash": "6cd1febc517467b6951d5c3f6bb35f42"
+          },
+          {
+            "order": 11,
+            "songNo": "1196",
+            "difficulty": "ura",
+            "hash": "8f4648fa84a3451ab0fe1fdade1d1407"
+          },
+          {
+            "songNo": "1392",
+            "order": 12,
+            "difficulty": "ura",
+            "hash": "1a3572c654015806cbda4cde4deeaca7"
+          }
+        ],
+        "color": "black",
+        "backgroundColor": "grey"
+      },
+      {
+        "order": 2,
+        "name": "pS+",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "1048",
+            "difficulty": "ura",
+            "hash": "92e6f5dd927b6f4e52fa3a1435ca7be2"
+          },
+          {
+            "order": 1,
+            "songNo": "1032",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 2,
+            "songNo": "1216",
+            "difficulty": "ura",
+            "hash": "ae3ec5947c56a35c8f6fa7e2258e81e6"
+          },
+          {
+            "order": 3,
+            "songNo": "1042",
+            "difficulty": "ura",
+            "hash": "6cda2a34587807b512d6ec783e680fc1"
+          },
+          {
+            "order": 5,
+            "songNo": "1236",
+            "difficulty": "oni",
+            "hash": "b5f7409bd81250d06b2e72904fa1efd3"
+          },
+          {
+            "order": 6,
+            "songNo": "627",
+            "difficulty": "oni",
+            "hash": "ff6110d4851a16262399e771d858bdc5"
+          },
+          {
+            "order": 7,
+            "songNo": "1012",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "songNo": "1012",
+            "order": 7,
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "songNo": "1012",
+            "order": 8,
+            "difficulty": "ura",
+            "hash": null
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 3,
+        "name": "iS",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "1319",
+            "difficulty": "ura",
+            "hash": "3e6137432ec43d54283cb3420e176b42"
+          },
+          {
+            "order": 1,
+            "songNo": "993",
+            "difficulty": "oni",
+            "hash": "e7bb714fa4395651b6efe8a139435d5b"
+          },
+          {
+            "order": 2,
+            "songNo": "1052",
+            "difficulty": "ura",
+            "hash": "e13f499ce3ffc7741804bb59136ec528"
+          },
+          {
+            "order": 3,
+            "songNo": "764",
+            "difficulty": "oni",
+            "hash": "5c3c16262a3a7b62f1f7ef8c029d116a"
+          },
+          {
+            "order": 4,
+            "songNo": "1329",
+            "difficulty": "ura",
+            "hash": "cba5409eea4f9c0a3cf1ac8afaa639ac"
+          },
+          {
+            "order": 5,
+            "songNo": "401",
+            "difficulty": "oni",
+            "hash": "debfbcdfa6a6fa970925bbd99231f5f5"
+          },
+          {
+            "order": 6,
+            "songNo": "896",
+            "difficulty": "oni",
+            "hash": "7e3d80bfe47c8c7c49bfed5e5d41d2b7"
+          },
+          {
+            "order": 7,
+            "songNo": "1120",
+            "difficulty": "ura",
+            "hash": "1c31db3aeffd78b2afba7129b653635a"
+          },
+          {
+            "order": 8,
+            "songNo": "700",
+            "difficulty": "ura",
+            "hash": "6c65657de4c374456fa3b65e68aaf745"
+          },
+          {
+            "order": 9,
+            "songNo": "1099",
+            "difficulty": "oni",
+            "hash": "87a4ffa3553f7158ce251ca80ebecd86"
+          },
+          {
+            "order": 10,
+            "songNo": "555",
+            "difficulty": "oni",
+            "hash": "86fa731143df6c29f82a4b9d5981a309"
+          },
+          {
+            "order": 11,
+            "songNo": "186",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 12,
+            "songNo": "283",
+            "difficulty": "ura",
+            "hash": "fd9fd658da06a598e8bacebcdafe5009"
+          },
+          {
+            "order": 13,
+            "songNo": "816",
+            "difficulty": "ura",
+            "hash": "9f00f24a64219184b6bb943ab88112b8"
+          },
+          {
+            "songNo": "1411",
+            "order": 14,
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 15,
+            "songNo": "1145",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 16,
+            "songNo": "778",
+            "difficulty": "oni",
+            "hash": "2797e793a7eca2c08a354dc8b47a685a"
+          },
+          {
+            "order": 17,
+            "songNo": "890",
+            "difficulty": "oni",
+            "hash": "0c90becd646aa26d95c5f62fca18c483"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 4,
+        "name": "pS",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "451",
+            "difficulty": "ura",
+            "hash": "4e4848556244fae49c3cefb41c983938"
+          },
+          {
+            "songNo": "1370",
+            "order": 1,
+            "difficulty": "ura",
+            "hash": "b0de17ed3257e0d708363b4ddc666ff8"
+          },
+          {
+            "order": 2,
+            "songNo": "1122",
+            "difficulty": "ura",
+            "hash": "bd5c4e029616ed06d54deb59e69535c1"
+          },
+          {
+            "order": 3,
+            "songNo": "866",
+            "difficulty": "ura",
+            "hash": "d9e24e56075ce62a92bda8aff715dac0"
+          },
+          {
+            "order": 4,
+            "songNo": "393",
+            "difficulty": "oni",
+            "hash": "aaf76ce455f0e377bf03db9acfe68f5d"
+          },
+          {
+            "order": 5,
+            "songNo": "1310",
+            "difficulty": "ura",
+            "hash": "0baa94a220c817d1e8a49b7847ea418a"
+          },
+          {
+            "order": 6,
+            "songNo": "1066",
+            "difficulty": "oni",
+            "hash": "1d0050eefb34f2fefbf37f77e3ae9a96"
+          },
+          {
+            "order": 7,
+            "songNo": "503",
+            "difficulty": "oni",
+            "hash": "e475793317b81831b6fc7194a2ab0f01"
+          },
+          {
+            "order": 8,
+            "songNo": "1215",
+            "difficulty": "ura",
+            "hash": "ce892d818d2542e4b73dae99cf930f0d"
+          },
+          {
+            "order": 9,
+            "songNo": "1317",
+            "difficulty": "oni",
+            "hash": "4be982371410cf9b42c8c4823fbdadf9"
+          },
+          {
+            "order": 10,
+            "songNo": "858",
+            "difficulty": "oni",
+            "hash": "e0c4151e9ba525824b5ef5cc134f0b6a"
+          },
+          {
+            "songNo": "1465",
+            "order": 11,
+            "difficulty": "ura",
+            "hash": "72167e13e44fd57ac6386e7168fc4438"
+          },
+          {
+            "order": 12,
+            "songNo": "868",
+            "difficulty": "ura",
+            "hash": "d3125f236a1e5370222dc5118cc7b9bb"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 5,
+        "name": "iA+",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "826",
+            "difficulty": "oni",
+            "hash": "96ac429bef544cf1d674238277418555"
+          },
+          {
+            "order": 1,
+            "songNo": "758",
+            "difficulty": "oni",
+            "hash": "96373b030e68066c328d76d2cfe0cea5"
+          },
+          {
+            "songNo": "1391",
+            "order": 2,
+            "difficulty": "ura",
+            "hash": "ce4ad23634b7050d4b20e3be3d3605fd"
+          },
+          {
+            "order": 3,
+            "songNo": "441",
+            "difficulty": "oni",
+            "hash": "81775ba11e094bb5452c9a884a0d65a9"
+          },
+          {
+            "order": 4,
+            "songNo": "777",
+            "difficulty": "oni",
+            "hash": "51b2148d6f94c1a184ac9f6a11797b1c"
+          },
+          {
+            "order": 5,
+            "songNo": "716",
+            "difficulty": "ura",
+            "hash": "83ee66e2a4d4cc92371909d445caaa2b"
+          },
+          {
+            "order": 6,
+            "songNo": "1309",
+            "difficulty": "ura",
+            "hash": "8c71dac13be7bbe4b691c147e42f1f32"
+          },
+          {
+            "order": 7,
+            "songNo": "850",
+            "difficulty": "oni",
+            "hash": "90aa0a8e84884fcf6fdf8ae68c8a1458"
+          },
+          {
+            "order": 8,
+            "songNo": "1214",
+            "difficulty": "ura",
+            "hash": "adf6bc57611fe4b1ab5ef9bf13586c7d"
+          },
+          {
+            "order": 9,
+            "songNo": "243",
+            "difficulty": "oni",
+            "hash": "9efa21e45c551b676cc50daec2cde5a7"
+          },
+          {
+            "order": 10,
+            "songNo": "760",
+            "difficulty": "oni",
+            "hash": "e8eebbdf3b5a8bfbf4601e33639e5568"
+          },
+          {
+            "order": 11,
+            "songNo": "999",
+            "difficulty": "oni",
+            "hash": "dd53df83ee7336f91a1076d46b34e86f"
+          },
+          {
+            "order": 12,
+            "songNo": "700",
+            "difficulty": "oni",
+            "hash": "c72eb4fe82a0e8cbb299583ddfacf7c8"
+          },
+          {
+            "order": 13,
+            "songNo": "110",
+            "difficulty": "oni",
+            "hash": "fa3c4af1c6959d37f90920e10ce96edf"
+          },
+          {
+            "order": 14,
+            "songNo": "845",
+            "difficulty": "ura",
+            "hash": "36f6c298392dba62addb1bb26739278b"
+          },
+          {
+            "order": 15,
+            "songNo": "818",
+            "difficulty": "oni",
+            "hash": "6d457eba5ca82d95628cd3d33c7f0853"
+          },
+          {
+            "order": 16,
+            "songNo": "685",
+            "difficulty": "oni",
+            "hash": "141f74316b6d1befbf8daaa79e4b4c83"
+          },
+          {
+            "order": 17,
+            "songNo": "892",
+            "difficulty": "oni",
+            "hash": "19bf112281114ce10118631621b84565"
+          },
+          {
+            "order": 18,
+            "songNo": "1041",
+            "difficulty": "oni",
+            "hash": "c41bef5ea7f822655e5ba7ba6d4aafe1"
+          },
+          {
+            "songNo": "1447",
+            "order": 19,
+            "difficulty": "oni",
+            "hash": "badf2696be31e9ff40cb61e408e2a49f"
+          },
+          {
+            "order": 20,
+            "songNo": "1031",
+            "difficulty": "ura",
+            "hash": "a348c888b12d1db34b496a222ef29282"
+          },
+          {
+            "order": 21,
+            "songNo": "775",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "songNo": "1413",
+            "order": 22,
+            "difficulty": "ura",
+            "hash": "7e8cd9b1888368b503a2ce541e8ff1c7"
+          },
+          {
+            "order": 23,
+            "songNo": "1320",
+            "difficulty": "ura",
+            "hash": "c051e2498a6d2f77778892af9a572644"
+          },
+          {
+            "songNo": "745",
+            "order": 24,
+            "difficulty": "oni",
+            "hash": "a7284beadb88193adebe9462a701914d"
+          },
+          {
+            "order": 25,
+            "songNo": "748",
+            "difficulty": "oni",
+            "hash": "80e3094698e9b6603fe45f99fe0d33ee"
+          },
+          {
+            "order": 26,
+            "songNo": "763",
+            "difficulty": "oni",
+            "hash": "3777c2cf81e87c52305fd05dd38719a9"
+          },
+          {
+            "order": 27,
+            "songNo": "1247",
+            "difficulty": "oni",
+            "hash": "851e07e113e89c321081acd43c31c21d"
+          },
+          {
+            "order": 28,
+            "songNo": "972",
+            "difficulty": "ura",
+            "hash": "b1b4835065c38500ec06021c2463c85a"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 6,
+        "name": "pA+",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "990",
+            "difficulty": "oni",
+            "hash": "60546f7f18bd388e3026aba42ad183c6"
+          },
+          {
+            "order": 1,
+            "songNo": "1311",
+            "difficulty": "ura",
+            "hash": "b71c8649ce535bd21a2fe2a26175edfd"
+          },
+          {
+            "order": 2,
+            "songNo": "1032",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 3,
+            "songNo": "1097",
+            "difficulty": "ura",
+            "hash": "c12eba1de5d76be280e09a1610101c24"
+          },
+          {
+            "order": 4,
+            "songNo": "84",
+            "difficulty": "ura",
+            "hash": "e93903cb2e23d8f53f063729ed5dbc5a"
+          },
+          {
+            "songNo": "43",
+            "order": 5,
+            "difficulty": "ura",
+            "hash": "30311a603b8e2595aaafd17cfb790f3c"
+          },
+          {
+            "songNo": "869",
+            "order": 6,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "songNo": "869",
+            "order": 7,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "songNo": "869",
+            "order": 8,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "songNo": "869",
+            "order": 9,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "songNo": "869",
+            "order": 10,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 11,
+            "songNo": "869",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 12,
+            "songNo": "900",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 13,
+            "songNo": "820",
+            "difficulty": "oni",
+            "hash": "2e00ec8a5e0e24e0ce4b15fdd48c80e0"
+          },
+          {
+            "order": 14,
+            "songNo": "1227",
+            "difficulty": "oni",
+            "hash": "5a3f7b37c8f92a999c3a4250793e8fc2"
+          },
+          {
+            "order": 15,
+            "songNo": "860",
+            "difficulty": "oni",
+            "hash": "6ddabbf5ddb6b1cf84d0f7d59ab1395f"
+          },
+          {
+            "order": 16,
+            "songNo": "222",
+            "difficulty": "ura",
+            "hash": "8241b588741831269e477472b5152152"
+          },
+          {
+            "order": 17,
+            "songNo": "181",
+            "difficulty": "ura",
+            "hash": "d33c52fba7a4e44a2e319bf65472f754"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 7,
+        "name": "iA",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "720",
+            "difficulty": "oni",
+            "hash": "d009318c143bfb7f159b90603fbae3bf"
+          },
+          {
+            "songNo": "1364",
+            "order": 1,
+            "difficulty": "ura",
+            "hash": "cc0c28fbc4242266ed34f3291fbee4de"
+          },
+          {
+            "order": 2,
+            "songNo": "814",
+            "difficulty": "oni",
+            "hash": "2b8f0682db4c8ad556bb91a8569142af"
+          },
+          {
+            "order": 3,
+            "songNo": "442",
+            "difficulty": "oni",
+            "hash": "d1972a13901f10a2a261e0040771439a"
+          },
+          {
+            "order": 4,
+            "songNo": "626",
+            "difficulty": "ura",
+            "hash": "abbc5c0fd672e9c3bd34bfbe875a5162"
+          },
+          {
+            "order": 5,
+            "songNo": "493",
+            "difficulty": "ura",
+            "hash": "4052f55d419d5ed9f2890d83f826711e"
+          },
+          {
+            "order": 6,
+            "songNo": "495",
+            "difficulty": "oni",
+            "hash": "efa4f43b89c020eab0db0d0e8da8a86b"
+          },
+          {
+            "order": 7,
+            "songNo": "1067",
+            "difficulty": "oni",
+            "hash": "8cba2b2f8461c1244b3c895bc778a038"
+          },
+          {
+            "order": 8,
+            "songNo": "756",
+            "difficulty": "oni",
+            "hash": "0334fa8bea7faf726e85877366258ad6"
+          },
+          {
+            "songNo": "1432",
+            "order": 9,
+            "difficulty": "oni",
+            "hash": "c8f40c127cd756b18fa44a9b6726c388"
+          },
+          {
+            "order": 10,
+            "songNo": "1394",
+            "difficulty": "oni",
+            "hash": "139225ce923608d7d7876c9e09e577da"
+          },
+          {
+            "order": 11,
+            "songNo": "1072",
+            "difficulty": "oni",
+            "hash": "824bf78372bd7f289bbd4a3e3cb48670"
+          },
+          {
+            "order": 12,
+            "songNo": "1297",
+            "difficulty": "oni",
+            "hash": "59093b69dd604e20b6c738d38efdcab0"
+          },
+          {
+            "order": 13,
+            "songNo": "265",
+            "difficulty": "oni",
+            "hash": "2d23eb371004b337f9af066c87c4e853"
+          },
+          {
+            "order": 14,
+            "songNo": "171",
+            "difficulty": "oni",
+            "hash": "0f0bb111122e59df49f31d04fe3c1a99"
+          },
+          {
+            "order": 15,
+            "songNo": "757",
+            "difficulty": "oni",
+            "hash": "6bab33f4c59f52d7bcc8973ab89b5c1f"
+          },
+          {
+            "order": 16,
+            "songNo": "1108",
+            "difficulty": "oni",
+            "hash": "b3c4967b5e163abc1ea3543009253aef"
+          },
+          {
+            "order": 17,
+            "songNo": "577",
+            "difficulty": "oni",
+            "hash": "7b6b2a6b9deb1754209ddaf74a57aa65"
+          },
+          {
+            "order": 18,
+            "songNo": "952",
+            "difficulty": "oni",
+            "hash": "01ba049a829451916fb4095ee9709000"
+          },
+          {
+            "order": 19,
+            "songNo": "859",
+            "difficulty": "oni",
+            "hash": "df1519c5885acc10e143ac8c6c304971"
+          },
+          {
+            "order": 20,
+            "songNo": "1256",
+            "difficulty": "ura",
+            "hash": "b2c4b90ec62ae0c014fcc44d97dd2016"
+          },
+          {
+            "order": 21,
+            "songNo": "762",
+            "difficulty": "oni",
+            "hash": "00791251a7bd5b02e0fdb726edd7cab5"
+          },
+          {
+            "order": 22,
+            "songNo": "309",
+            "difficulty": "ura",
+            "hash": "c5b2b1a30cded49c9cb3ead9565ba196"
+          },
+          {
+            "order": 23,
+            "songNo": "1037",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 24,
+            "songNo": "202",
+            "difficulty": "ura",
+            "hash": "829a883a7f00292018eaee94af7e5a98"
+          },
+          {
+            "order": 25,
+            "songNo": "928",
+            "difficulty": "oni",
+            "hash": "038f51a74fde97d8d0c4fa6d7f7e4994"
+          },
+          {
+            "order": 26,
+            "songNo": "775",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "songNo": "1419",
+            "order": 27,
+            "difficulty": "oni",
+            "hash": "82bad923cccbe168c14fe1641cc5ee89"
+          },
+          {
+            "order": 28,
+            "songNo": "1237",
+            "difficulty": "ura",
+            "hash": "15494b4f84aa535094dca6f7364707f2"
+          },
+          {
+            "order": 29,
+            "songNo": "843",
+            "difficulty": "oni",
+            "hash": "ca01b8646de2e4db71e4773d8661cf32"
+          },
+          {
+            "order": 30,
+            "songNo": "959",
+            "difficulty": "ura",
+            "hash": "832adecc85bd43fec80a770ce21c27de"
+          },
+          {
+            "order": 31,
+            "songNo": "992",
+            "difficulty": "oni",
+            "hash": "02835d584b821cf215ef83d87c79f9ed"
+          },
+          {
+            "order": 32,
+            "songNo": "1328",
+            "difficulty": "oni",
+            "hash": "d168003b9504e4539fa56ea5a54c3704"
+          },
+          {
+            "order": 33,
+            "songNo": "593",
+            "difficulty": "oni",
+            "hash": "79ff1fc5da05bffb2b0c9f453ce4339a"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 8,
+        "name": "pA",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "781",
+            "difficulty": "oni",
+            "hash": "d73072dc8d816f235bcc97abe4bb2242"
+          },
+          {
+            "order": 1,
+            "songNo": "1235",
+            "difficulty": "ura",
+            "hash": "5d43b785f0c29bab9901ecd52b7c42d3"
+          },
+          {
+            "order": 2,
+            "songNo": "1318",
+            "difficulty": "ura",
+            "hash": "805dd2d3c9893f849549be5f44d13622"
+          },
+          {
+            "order": 3,
+            "songNo": "761",
+            "difficulty": "oni",
+            "hash": "0d959bdd52b582cce12ab587d31827ea"
+          },
+          {
+            "order": 4,
+            "songNo": "702",
+            "difficulty": "oni",
+            "hash": "e553a7a90afdb57136be939bc6c8ffec"
+          },
+          {
+            "order": 5,
+            "songNo": "955",
+            "difficulty": "oni",
+            "hash": "77d277e4285288dec9c810da7ffd208c"
+          },
+          {
+            "order": 6,
+            "songNo": "878",
+            "difficulty": "oni",
+            "hash": "70bf855cb0380890c783ab1d00a3fee8"
+          },
+          {
+            "order": 7,
+            "songNo": "1308",
+            "difficulty": "ura",
+            "hash": "cbdf689ffa2c64ccc06939b52883ea44"
+          },
+          {
+            "order": 8,
+            "songNo": "1185",
+            "difficulty": "oni",
+            "hash": "d4ca5d2356535f3a00dc7b7c14cc3294"
+          },
+          {
+            "order": 9,
+            "songNo": "628",
+            "difficulty": "oni",
+            "hash": "1b667b5114f3d6f1990f3e21095d30e4"
+          },
+          {
+            "order": 10,
+            "songNo": "681",
+            "difficulty": "ura",
+            "hash": "3a167eaa15a38ec7a72d1f34fb6c7315"
+          },
+          {
+            "order": 11,
+            "songNo": "958",
+            "difficulty": "ura",
+            "hash": "6770b693dad22b7c3a4bf8eb4f292b1c"
+          },
+          {
+            "order": 12,
+            "songNo": "982",
+            "difficulty": "oni",
+            "hash": "6a034808e2f2cf9a9ef818746ac9728a"
+          },
+          {
+            "order": 13,
+            "songNo": "218",
+            "difficulty": "ura",
+            "hash": "412732f1aca23687c4ecb76a2b21ee19"
+          },
+          {
+            "order": 14,
+            "songNo": "553",
+            "difficulty": "ura",
+            "hash": "92120496b7fbd42044a145d7155ecc90"
+          },
+          {
+            "order": 15,
+            "songNo": "1086",
+            "difficulty": "oni",
+            "hash": "ae77b83ed418ee622b0a0e5468faea7f"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 9,
+        "name": "iB",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "934",
+            "difficulty": "oni",
+            "hash": "3d2334f64924c2b470c1b304f92e96b5"
+          },
+          {
+            "order": 1,
+            "songNo": "804",
+            "difficulty": "ura",
+            "hash": "1743ec50a17a4faf46ae02958bed90c0"
+          },
+          {
+            "order": 2,
+            "songNo": "1134",
+            "difficulty": "oni",
+            "hash": "689a2d7a72594d2b68557f29eba950bd"
+          },
+          {
+            "order": 3,
+            "songNo": "33",
+            "difficulty": "oni",
+            "hash": "7abe9a594b73ae0f92255295ba1e6e66"
+          },
+          {
+            "order": 4,
+            "songNo": "1324",
+            "difficulty": "oni",
+            "hash": "2a70f1d1fe6695b39144ca1b394844be"
+          },
+          {
+            "order": 5,
+            "songNo": "698",
+            "difficulty": "oni",
+            "hash": "38ee915bee01179bf728534bc93cb569"
+          },
+          {
+            "order": 6,
+            "songNo": "714",
+            "difficulty": "oni",
+            "hash": "128d2dabd73a65c3fc2c5acff3833c3a"
+          },
+          {
+            "order": 8,
+            "songNo": "156",
+            "difficulty": "ura",
+            "hash": "6b7c42c4b906ca6c66b4e81c82bf123f"
+          },
+          {
+            "order": 9,
+            "songNo": "1216",
+            "difficulty": "oni",
+            "hash": "1bb74baeb5f60497005f29e50f6ff073"
+          },
+          {
+            "order": 10,
+            "songNo": "697",
+            "difficulty": "oni",
+            "hash": "b986976b22a567a983026461e7c53b7d"
+          },
+          {
+            "songNo": "1371",
+            "order": 11,
+            "difficulty": "ura",
+            "hash": "6968403c15b8d33b904853b526a81101"
+          },
+          {
+            "order": 12,
+            "songNo": "943",
+            "difficulty": "oni",
+            "hash": "7385a1476647137c7a91f3d330e92f19"
+          },
+          {
+            "order": 13,
+            "songNo": "833",
+            "difficulty": "oni",
+            "hash": "e71b474aa50f36cf59e583673378b0ef"
+          },
+          {
+            "order": 14,
+            "songNo": "164",
+            "difficulty": "ura",
+            "hash": "15f6fc61ccf6ee08b4005dba292aaf7f"
+          },
+          {
+            "order": 15,
+            "songNo": "519",
+            "difficulty": "ura",
+            "hash": "97da574d8b2ede3278eee4f34a83ed31"
+          },
+          {
+            "order": 16,
+            "songNo": "834",
+            "difficulty": "oni",
+            "hash": "58fc06ef4b3082f36b64fb0ca457e766"
+          },
+          {
+            "order": 17,
+            "songNo": "571",
+            "difficulty": "oni",
+            "hash": "fa2b83e1f951494dee4cbbd10f79ca2d"
+          },
+          {
+            "order": 18,
+            "songNo": "1355",
+            "difficulty": "oni",
+            "hash": "f88ddf7055f0ec868a33a43915dfbbcd"
+          },
+          {
+            "order": 19,
+            "songNo": "1049",
+            "difficulty": "oni",
+            "hash": "90a80d9a960c3cbc6a957bea768e32d7"
+          },
+          {
+            "order": 20,
+            "songNo": "1121",
+            "difficulty": "ura",
+            "hash": "e523df4b76b701f0e5cc3ce10028c21f"
+          },
+          {
+            "order": 21,
+            "songNo": "961",
+            "difficulty": "oni",
+            "hash": "ebcf36c5716fa318157a1d3af3153ede"
+          },
+          {
+            "order": 22,
+            "songNo": "1405",
+            "difficulty": "oni",
+            "hash": "aee5ec4c23ffb69ebe0442dad0ab3259"
+          },
+          {
+            "order": 23,
+            "songNo": "1383",
+            "difficulty": "oni",
+            "hash": "2c7bd170f397de77a666d4dd13df2fe5"
+          },
+          {
+            "order": 24,
+            "songNo": "719",
+            "difficulty": "oni",
+            "hash": "73e4bdb5012f9f20bf77c7c2b33a4415"
+          },
+          {
+            "order": 25,
+            "songNo": "286",
+            "difficulty": "oni",
+            "hash": "10a1554a4c708069b2c264df98abf8b4"
+          },
+          {
+            "order": 26,
+            "songNo": "1255",
+            "difficulty": "oni",
+            "hash": "446a40199040b9d7df3fdc35eb107319"
+          },
+          {
+            "order": 27,
+            "songNo": "737",
+            "difficulty": "oni",
+            "hash": "af36da004cf3132597be666c1202d1aa"
+          },
+          {
+            "order": 28,
+            "songNo": "121",
+            "difficulty": "oni",
+            "hash": "5c381ed6edcc0a53241e84bbd1fdea37"
+          },
+          {
+            "songNo": "1379",
+            "order": 29,
+            "difficulty": "oni",
+            "hash": "1b36e1fe6d8891d0a5fd4074ca72afa1"
+          },
+          {
+            "order": 30,
+            "songNo": "1050",
+            "difficulty": "oni",
+            "hash": "99c3e3992f0bc8e40fdf8d782d2cb01b"
+          },
+          {
+            "order": 31,
+            "songNo": "736",
+            "difficulty": "ura",
+            "hash": "140c2c7043d5a46a7cfa01757aba8463"
+          },
+          {
+            "order": 32,
+            "songNo": "148",
+            "difficulty": "oni",
+            "hash": "7f9acaf00c10096bfde014446978188a"
+          },
+          {
+            "order": 33,
+            "songNo": "1338",
+            "difficulty": "oni",
+            "hash": "64bf9c4403b65085e96e51c2b7692738"
+          },
+          {
+            "order": 34,
+            "songNo": "355",
+            "difficulty": "oni",
+            "hash": "ba53c3f7c3a3a133f0b2318a99deeaa2"
+          },
+          {
+            "order": 35,
+            "songNo": "448",
+            "difficulty": "ura",
+            "hash": "f11c22d30c497fabf523739567951bd4"
+          },
+          {
+            "order": 36,
+            "songNo": "264",
+            "difficulty": "ura",
+            "hash": "d565a94ae984ded617d9dab7a3f3b399"
+          },
+          {
+            "order": 37,
+            "songNo": "1081",
+            "difficulty": "ura",
+            "hash": "24606212fb5e6778923ef603d65b3157"
+          },
+          {
+            "order": 38,
+            "songNo": "868",
+            "difficulty": "oni",
+            "hash": "1ba4eec66a0a144893a94069d60b601a"
+          },
+          {
+            "order": 39,
+            "songNo": "1197",
+            "difficulty": "ura",
+            "hash": "666db5b65c716857cbadb73394a67ef8"
+          },
+          {
+            "order": 40,
+            "songNo": "15",
+            "difficulty": "ura",
+            "hash": "9c3526a21a52c6c557445a338fafd5ff"
+          },
+          {
+            "order": 41,
+            "songNo": "80",
+            "difficulty": "ura",
+            "hash": "315d9569abe98e5b58ef8e3e3541a65c"
+          },
+          {
+            "order": 42,
+            "songNo": "402",
+            "difficulty": "ura",
+            "hash": "6f0e0a0deb2c2f01c89ebb19cef8cfb4"
+          },
+          {
+            "order": 43,
+            "songNo": "1144",
+            "difficulty": "ura",
+            "hash": "1681399865ef8645c3afeaaad0afe95e"
+          },
+          {
+            "order": 44,
+            "songNo": "835",
+            "difficulty": "oni",
+            "hash": "f33df096b194e7ddf0a3d4bf1da4689d"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 10,
+        "name": "pB",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "811",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 1,
+            "songNo": "1104",
+            "difficulty": "oni",
+            "hash": "536d6326f28c6576c5e790e3637629e0"
+          },
+          {
+            "songNo": "1412",
+            "order": 2,
+            "difficulty": "ura",
+            "hash": "d389065d160b5d2ac0b353b1064392de"
+          },
+          {
+            "order": 3,
+            "songNo": "154",
+            "difficulty": "ura",
+            "hash": "ce101d6b94cd632e650688f8006f6d95"
+          },
+          {
+            "order": 4,
+            "songNo": "819",
+            "difficulty": "ura",
+            "hash": "aa353ec791884ba4f56c7e48a766ba0e"
+          },
+          {
+            "order": 5,
+            "songNo": "68",
+            "difficulty": "oni",
+            "hash": "70e7ec56780f2a6adf04de6e2f1d28e5"
+          },
+          {
+            "order": 6,
+            "songNo": "851",
+            "difficulty": "oni",
+            "hash": "85fd11d29fdf997297789377d7572cd7"
+          },
+          {
+            "order": 7,
+            "songNo": "1100",
+            "difficulty": "ura",
+            "hash": "86dd511a8539fc0c08f7b6787874af67"
+          },
+          {
+            "order": 8,
+            "songNo": "831",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 9,
+            "songNo": "1042",
+            "difficulty": "oni",
+            "hash": "b9397aae95c4ca8feb20d704c2411c67"
+          },
+          {
+            "order": 10,
+            "songNo": "1129",
+            "difficulty": "oni",
+            "hash": "cfe19253068a9439dfd18a98b22b2c31"
+          },
+          {
+            "order": 11,
+            "songNo": "699",
+            "difficulty": "oni",
+            "hash": "838011d2e1707c0410dccc48fdd43bd7"
+          },
+          {
+            "order": 12,
+            "songNo": "971",
+            "difficulty": "oni",
+            "hash": "16083d2ac9a6bff1d62e4e4e43d9c171"
+          },
+          {
+            "order": 13,
+            "songNo": "1043",
+            "difficulty": "oni",
+            "hash": "beb0c8c8332948e9dc52d6061bcdf11b"
+          },
+          {
+            "order": 14,
+            "songNo": "1220",
+            "difficulty": "ura",
+            "hash": "6209d47d664a9be64b57d8a758051119"
+          },
+          {
+            "order": 15,
+            "songNo": "1201",
+            "difficulty": "ura",
+            "hash": "aee65678bd28d9100518be7ee04dc17b"
+          },
+          {
+            "order": 16,
+            "songNo": "179",
+            "difficulty": "oni",
+            "hash": "66e9129f21b54669ef6c25ffb5792a63"
+          },
+          {
+            "order": 17,
+            "songNo": "960",
+            "difficulty": "oni",
+            "hash": "87554f020e89397147486d344939f5ed"
+          },
+          {
+            "order": 18,
+            "songNo": "723",
+            "difficulty": "oni",
+            "hash": "51ab21ab8b0831dead8315a3c2c7177d"
+          },
+          {
+            "order": 19,
+            "songNo": "269",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 20,
+            "songNo": "905",
+            "difficulty": "oni",
+            "hash": "005bf99023f59524e506881d945e9ca5"
+          },
+          {
+            "songNo": "1434",
+            "order": 21,
+            "difficulty": "oni",
+            "hash": "6c5bcf398df848ada9f01feef5f91759"
+          },
+          {
+            "order": 22,
+            "songNo": "365",
+            "difficulty": "oni",
+            "hash": "131521820d6df32777d4a39236827e0a"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 11,
+        "name": "iC",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "722",
+            "difficulty": "oni",
+            "hash": "a813e9f0a4b2233789b546cd9020cca1"
+          },
+          {
+            "order": 1,
+            "songNo": "595",
+            "difficulty": "oni",
+            "hash": "e55b5072f54bd93cf4f310ecce90b439"
+          },
+          {
+            "order": 2,
+            "songNo": "504",
+            "difficulty": "ura",
+            "hash": "6e6c1ef09b360770c277f45e43431358"
+          },
+          {
+            "order": 3,
+            "songNo": "630",
+            "difficulty": "oni",
+            "hash": "7abc88b8a25a99f8984831d02665e687"
+          },
+          {
+            "order": 4,
+            "songNo": "194",
+            "difficulty": "oni",
+            "hash": "bdee88889dc69e30fbd980972ac9180c"
+          },
+          {
+            "order": 5,
+            "songNo": "1147",
+            "difficulty": "oni",
+            "hash": "4c233a7528902d00d9fb52551bbd8992"
+          },
+          {
+            "order": 6,
+            "songNo": "867",
+            "difficulty": "oni",
+            "hash": "d813567a75cfe3c618dacdec9643bb06"
+          },
+          {
+            "order": 7,
+            "songNo": "1071",
+            "difficulty": "oni",
+            "hash": "fc902fde3f8c57d86b6b0b7f1d0d62ec"
+          },
+          {
+            "order": 8,
+            "songNo": "136",
+            "difficulty": "oni",
+            "hash": "7b5f970aeb988a0a1ca58f9c3974a100"
+          },
+          {
+            "order": 9,
+            "songNo": "220",
+            "difficulty": "oni",
+            "hash": "fec055f40d71101029cf25d3e00438f6"
+          },
+          {
+            "order": 10,
+            "songNo": "537",
+            "difficulty": "ura",
+            "hash": "997b9d52012bf20ca24fb5de4a789382"
+          },
+          {
+            "order": 11,
+            "songNo": "1268",
+            "difficulty": "ura",
+            "hash": "2e64c32af0340023260bce5dc02b0a7d"
+          },
+          {
+            "order": 12,
+            "songNo": "1171",
+            "difficulty": "ura",
+            "hash": "c24dbd081fbb97a4f1f9dd3a28d3387e"
+          },
+          {
+            "songNo": "1449",
+            "order": 13,
+            "difficulty": "oni",
+            "hash": "8f4c95fb275302c0f122d670f07c73eb"
+          },
+          {
+            "order": 14,
+            "songNo": "1229",
+            "difficulty": "oni",
+            "hash": "50edc7b81aa09df49fcff70327691722"
+          },
+          {
+            "order": 15,
+            "songNo": "1085",
+            "difficulty": "oni",
+            "hash": "f1a14f02a27ae9e485e75fc0a9af92e1"
+          },
+          {
+            "order": 16,
+            "songNo": "570",
+            "difficulty": "oni",
+            "hash": "33b643ffbb5a304ec019f202ee2b86dd"
+          },
+          {
+            "order": 17,
+            "songNo": "920",
+            "difficulty": "ura",
+            "hash": "aa6a858604a542b8c283810ed0a3b3ee"
+          },
+          {
+            "order": 18,
+            "songNo": "427",
+            "difficulty": "oni",
+            "hash": "4f3e475627cbb35ed955557d3943547b"
+          },
+          {
+            "order": 19,
+            "songNo": "1039",
+            "difficulty": "oni",
+            "hash": "3dcc566717384cc243fddb22fbbff179"
+          },
+          {
+            "order": 20,
+            "songNo": "1395",
+            "difficulty": "oni",
+            "hash": "84318fa65d2325d757535a2c69d81d73"
+          },
+          {
+            "order": 21,
+            "songNo": "477",
+            "difficulty": "oni",
+            "hash": "d7f7c01e7e91c726a1338a1f8b5917ec"
+          },
+          {
+            "order": 22,
+            "songNo": "1351",
+            "difficulty": "oni",
+            "hash": "0d837b0f4b7b3087bda41f96ee540eed"
+          },
+          {
+            "order": 23,
+            "songNo": "635",
+            "difficulty": "oni",
+            "hash": "4a6f5c8f51741a036355b20c99203fd5"
+          },
+          {
+            "order": 24,
+            "songNo": "1068",
+            "difficulty": "oni",
+            "hash": "14a8f8155bb25ed7945ef3011839f244"
+          },
+          {
+            "songNo": "1356",
+            "order": 25,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 26,
+            "songNo": "128",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 27,
+            "songNo": "735",
+            "difficulty": "ura",
+            "hash": "3803929b4c8cd74d078e6ceb44f1fafa"
+          },
+          {
+            "order": 28,
+            "songNo": "1",
+            "difficulty": "oni",
+            "hash": "347412ee6ef636ab534ea2e6cf41c521"
+          },
+          {
+            "order": 29,
+            "songNo": "94",
+            "difficulty": "oni",
+            "hash": "0a19e05f4452740ad56d901ba5c34924"
+          },
+          {
+            "order": 30,
+            "songNo": "1276",
+            "difficulty": "oni",
+            "hash": "23a7e7a3d5d57eabaf83acb67726e3ca"
+          },
+          {
+            "order": 31,
+            "songNo": "927",
+            "difficulty": "oni",
+            "hash": "e8ecf56bdefd238c6524a3b1a420503d"
+          },
+          {
+            "order": 32,
+            "songNo": "1133",
+            "difficulty": "ura",
+            "hash": "7b66f80d795c57e24b3c9393f73a0199"
+          },
+          {
+            "order": 33,
+            "songNo": "95",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 34,
+            "songNo": "774",
+            "difficulty": "oni",
+            "hash": "e4f70846d57c6e292792e57be4fa4448"
+          },
+          {
+            "order": 35,
+            "songNo": "1053",
+            "difficulty": "ura",
+            "hash": "87935c8129fa04a4a58375e99afd1d97"
+          },
+          {
+            "order": 36,
+            "songNo": "1146",
+            "difficulty": "ura",
+            "hash": "bff6ebcc0a9e5ed0ad45759f646e9159"
+          },
+          {
+            "order": 37,
+            "songNo": "1264",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 38,
+            "songNo": "906",
+            "difficulty": "oni",
+            "hash": "7295bde9d8be16b6952ce3629514e9ee"
+          },
+          {
+            "order": 39,
+            "songNo": "935",
+            "difficulty": "oni",
+            "hash": "91343212f02a539c85c31e0cbbe6e453"
+          },
+          {
+            "order": 40,
+            "songNo": "272",
+            "difficulty": "ura",
+            "hash": "635c1bd715c04862e3e3392d84ec26ca"
+          },
+          {
+            "songNo": "1384",
+            "order": 41,
+            "difficulty": "oni",
+            "hash": "e9e4b5da61745ac9833473fad965cfc9"
+          },
+          {
+            "order": 42,
+            "songNo": "1154",
+            "difficulty": "oni",
+            "hash": "66db48f50521e4cedba1ce4608d74e7e"
+          },
+          {
+            "order": 43,
+            "songNo": "940",
+            "difficulty": "oni",
+            "hash": "53092f603a6543d18e9b647043e05d5a"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 12,
+        "name": "pC",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "1048",
+            "difficulty": "oni",
+            "hash": "bcf252db729327d4344ca2fdb1915a97"
+          },
+          {
+            "order": 1,
+            "songNo": "798",
+            "difficulty": "oni",
+            "hash": "7e69b7efc65806871f453243e05f0cc2"
+          },
+          {
+            "order": 2,
+            "songNo": "594",
+            "difficulty": "oni",
+            "hash": "b01f23ea57ce3741c565a3edfbb192d5"
+          },
+          {
+            "order": 3,
+            "songNo": "450",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 4,
+            "songNo": "1257",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 5,
+            "songNo": "575",
+            "difficulty": "oni",
+            "hash": "f9096caf083067b26328f12203557c8c"
+          },
+          {
+            "order": 6,
+            "songNo": "954",
+            "difficulty": "oni",
+            "hash": "ac7f39dead8d13c14717f16eef3dc2aa"
+          },
+          {
+            "order": 7,
+            "songNo": "1027",
+            "difficulty": "ura",
+            "hash": "951e120b721ca80ae53952d93cc09642"
+          },
+          {
+            "order": 8,
+            "songNo": "335",
+            "difficulty": "oni",
+            "hash": "df2dd06e14e72d7a696dd8d7104b8f4e"
+          },
+          {
+            "order": 9,
+            "songNo": "1404",
+            "difficulty": "oni",
+            "hash": "5b333ae4732fad95b6bc2447a99b2c80"
+          },
+          {
+            "order": 10,
+            "songNo": "881",
+            "difficulty": "ura",
+            "hash": "8613f996f61dc667273f39b0d2efe380"
+          },
+          {
+            "order": 11,
+            "songNo": "1012",
+            "difficulty": "oni",
+            "hash": "699dbb45f67282f9643302d5a9b8005b"
+          },
+          {
+            "songNo": "1411",
+            "order": 12,
+            "difficulty": "oni",
+            "hash": null
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 13,
+        "name": "iD",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "1173",
+            "difficulty": "oni",
+            "hash": "32ea8ac9d0dae9c26e4c595026e3683f"
+          },
+          {
+            "order": 1,
+            "songNo": "1033",
+            "difficulty": "ura",
+            "hash": "6fb41b26e57335e811b63bb62cdf99a6"
+          },
+          {
+            "order": 2,
+            "songNo": "784",
+            "difficulty": "oni",
+            "hash": "94ab706562550a11642862f726040131"
+          },
+          {
+            "songNo": "1390",
+            "order": 3,
+            "difficulty": "ura",
+            "hash": "d44aac16422dd60150498e5c05665e76"
+          },
+          {
+            "order": 4,
+            "songNo": "456",
+            "difficulty": "oni",
+            "hash": "69d81556b5376a765e49b933608dc094"
+          },
+          {
+            "order": 5,
+            "songNo": "1022",
+            "difficulty": "ura",
+            "hash": "7c1aa7ac7e42c199bd3630a3413175ca"
+          },
+          {
+            "order": 6,
+            "songNo": "929",
+            "difficulty": "oni",
+            "hash": "d794dda720cc6ba10f82ffbd38d20959"
+          },
+          {
+            "order": 7,
+            "songNo": "360",
+            "difficulty": "oni",
+            "hash": "4bc9d54fdbb3a217b2629959caaf3fbe"
+          },
+          {
+            "order": 8,
+            "songNo": "1168",
+            "difficulty": "ura",
+            "hash": "763c32bdfb4ca49eb7abdb9d906eb3c3"
+          },
+          {
+            "order": 9,
+            "songNo": "621",
+            "difficulty": "oni",
+            "hash": "76fe09b322ee7b163bed594654f74a7c"
+          },
+          {
+            "songNo": "1380",
+            "order": 10,
+            "difficulty": "ura",
+            "hash": "988fa6d5142197fd1c7938c23896136b"
+          },
+          {
+            "order": 11,
+            "songNo": "1308",
+            "difficulty": "oni",
+            "hash": "4a926234ad612b3487175c44e9d04b32"
+          },
+          {
+            "order": 12,
+            "songNo": "338",
+            "difficulty": "oni",
+            "hash": "8d55536a322c0713839399f16b988a0b"
+          },
+          {
+            "order": 13,
+            "songNo": "1279",
+            "difficulty": "oni",
+            "hash": "59260743ac5cd4b787b4f1cef04a3f9f"
+          },
+          {
+            "order": 14,
+            "songNo": "759",
+            "difficulty": "oni",
+            "hash": "440a12e642c6a28e177cbb563fdd5d09"
+          },
+          {
+            "order": 15,
+            "songNo": "520",
+            "difficulty": "ura",
+            "hash": "ca6da32f8ee8f663d07e09388b5c6d65"
+          },
+          {
+            "order": 16,
+            "songNo": "400",
+            "difficulty": "ura",
+            "hash": "5a45cc8ed9433d589c1faeac407fcaa9"
+          },
+          {
+            "order": 17,
+            "songNo": "938",
+            "difficulty": "ura",
+            "hash": "d8417ae8af373b346388bed7e3a43990"
+          },
+          {
+            "order": 18,
+            "songNo": "677",
+            "difficulty": "oni",
+            "hash": "40c1dcf6e6c353b7d4fcc13463093ce2"
+          },
+          {
+            "songNo": "1464",
+            "order": 19,
+            "difficulty": "oni",
+            "hash": "dc1b5721d8b3b1eb0c101f696168421d"
+          },
+          {
+            "order": 20,
+            "songNo": "392",
+            "difficulty": "oni",
+            "hash": "ab4b366d6fe837d26da1d996a0539bf1"
+          },
+          {
+            "order": 21,
+            "songNo": "977",
+            "difficulty": "oni",
+            "hash": "7fe8caadcd57e7ea6aa00da3ab3ae1f6"
+          },
+          {
+            "order": 22,
+            "songNo": "721",
+            "difficulty": "oni",
+            "hash": "7753fcd8ac47a10752e88742a26db211"
+          },
+          {
+            "order": 23,
+            "songNo": "786",
+            "difficulty": "oni",
+            "hash": "c56d43e98992f3acd7737d08abe14fed"
+          },
+          {
+            "order": 24,
+            "songNo": "266",
+            "difficulty": "ura",
+            "hash": "b2614c41b2fc3abae210823854f8eefb"
+          },
+          {
+            "order": 25,
+            "songNo": "673",
+            "difficulty": "oni",
+            "hash": "526bfc600165b90715a2bc62ea15b09c"
+          },
+          {
+            "order": 26,
+            "songNo": "499",
+            "difficulty": "oni",
+            "hash": "a75db4d9b16c9562dce62508e59518d8"
+          },
+          {
+            "order": 27,
+            "songNo": "641",
+            "difficulty": "oni",
+            "hash": "2d0c819e934b9929f7ae3be26473b7b1"
+          },
+          {
+            "order": 28,
+            "songNo": "399",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 29,
+            "songNo": "980",
+            "difficulty": "oni",
+            "hash": "9420dcf2170223063968e838d7756270"
+          },
+          {
+            "order": 30,
+            "songNo": "803",
+            "difficulty": "oni",
+            "hash": "8d3332d48599e34c68243574bc7dca4a"
+          },
+          {
+            "order": 31,
+            "songNo": "361",
+            "difficulty": "ura",
+            "hash": "8e1fc6b0bbaa07397ffbfc955c5c1c67"
+          },
+          {
+            "order": 32,
+            "songNo": "816",
+            "difficulty": "oni",
+            "hash": "5aac129d279ff829a1590b9b7279d393"
+          },
+          {
+            "order": 33,
+            "songNo": "181",
+            "difficulty": "oni",
+            "hash": "c1d259ebd98c25e08b6efca46daf6eea"
+          },
+          {
+            "order": 34,
+            "songNo": "983",
+            "difficulty": "oni",
+            "hash": "437d26ed2229c5a1e329b161860d30b3"
+          },
+          {
+            "order": 35,
+            "songNo": "60",
+            "difficulty": "ura",
+            "hash": "4ba8e4cf6fb5c5dcb3a49ac3691a26d3"
+          },
+          {
+            "order": 36,
+            "songNo": "815",
+            "difficulty": "oni",
+            "hash": "2da1aa094c13dd50c444de13056fc898"
+          },
+          {
+            "order": 37,
+            "songNo": "1106",
+            "difficulty": "oni",
+            "hash": "0ca130d613b1131b69419b637118cf74"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 14,
+        "name": "pD",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "1158",
+            "difficulty": "oni",
+            "hash": "7d2978c214608fcd36a15e83199dacd5"
+          },
+          {
+            "songNo": "1450",
+            "order": 1,
+            "difficulty": "ura",
+            "hash": "8a17bdb190a359df9dc943b89f0c8b24"
+          },
+          {
+            "songNo": "1370",
+            "order": 2,
+            "difficulty": "oni",
+            "hash": "8ad0842d557e3df8aa67f2b500aaebd5"
+          },
+          {
+            "order": 3,
+            "songNo": "1032",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 4,
+            "songNo": "1221",
+            "difficulty": "ura",
+            "hash": "064341d264b039f471370efbf328598b"
+          },
+          {
+            "order": 5,
+            "songNo": "689",
+            "difficulty": "ura",
+            "hash": "71cdf8f935ada97175acd14ecb380583"
+          },
+          {
+            "order": 6,
+            "songNo": "538",
+            "difficulty": "oni",
+            "hash": "d766355d8f25dc39b1aa822e2141d90b"
+          },
+          {
+            "order": 7,
+            "songNo": "425",
+            "difficulty": "ura",
+            "hash": "302c4784fdeff499b79685cc9bd9e9dc"
+          },
+          {
+            "order": 8,
+            "songNo": "1020",
+            "difficulty": "ura",
+            "hash": "3129c897b1b45b1c7ca08d3d43530b92"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 15,
+        "name": "iE",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "686",
+            "difficulty": "oni",
+            "hash": "fc3b7b364952694138a75e9ea078efb1"
+          },
+          {
+            "order": 1,
+            "songNo": "45",
+            "difficulty": "ura",
+            "hash": "6488953b6a1da01852f9140af5136ae1"
+          },
+          {
+            "order": 2,
+            "songNo": "513",
+            "difficulty": "oni",
+            "hash": "f2c769a7346ce365dfcdfb82895f1583"
+          },
+          {
+            "order": 3,
+            "songNo": "131",
+            "difficulty": "oni",
+            "hash": "9e850e7bd2b34a32109a505034db656f"
+          },
+          {
+            "songNo": "1393",
+            "order": 4,
+            "difficulty": "ura",
+            "hash": "c5fd8d9b530edb406108f5beeb02f641"
+          },
+          {
+            "order": 5,
+            "songNo": "363",
+            "difficulty": "oni",
+            "hash": "c84e09f56e18f9d6f1064d37ff1c981a"
+          },
+          {
+            "order": 6,
+            "songNo": "856",
+            "difficulty": "oni",
+            "hash": "53144540af4d1b28ecc2fff116c47e79"
+          },
+          {
+            "order": 7,
+            "songNo": "846",
+            "difficulty": "oni",
+            "hash": "35e70bfe11819d21e1e4011dcb36f29a"
+          },
+          {
+            "order": 8,
+            "songNo": "1238",
+            "difficulty": "ura",
+            "hash": "bbe738dd406c699024506ad245a682d7"
+          },
+          {
+            "order": 9,
+            "songNo": "118",
+            "difficulty": "ura",
+            "hash": "3ccc81b56784477346cab233f77af5b8"
+          },
+          {
+            "order": 10,
+            "songNo": "734",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 11,
+            "songNo": "1121",
+            "difficulty": "oni",
+            "hash": "8901f53c6693b387a7f5041b18e19a86"
+          },
+          {
+            "order": 12,
+            "songNo": "574",
+            "difficulty": "oni",
+            "hash": "d6cd10186f601d58783a868dae469301"
+          },
+          {
+            "songNo": "1356",
+            "order": 13,
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 14,
+            "songNo": "879",
+            "difficulty": "oni",
+            "hash": "1c4b250513c35564dfcc635ce8bd063e"
+          },
+          {
+            "order": 15,
+            "songNo": "404",
+            "difficulty": "oni",
+            "hash": "18ae0f1ecf0ef20c015070c517e04108"
+          },
+          {
+            "order": 16,
+            "songNo": "958",
+            "difficulty": "oni",
+            "hash": "cd814d718a1eb0579b1515a58d4b54f1"
+          },
+          {
+            "order": 17,
+            "songNo": "1037",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 18,
+            "songNo": "730",
+            "difficulty": "ura",
+            "hash": "20099dfdb0df08c26bbef0c75f175879"
+          },
+          {
+            "order": 19,
+            "songNo": "715",
+            "difficulty": "oni",
+            "hash": "2dbc5e43f3a4bcf96d8d22fce3808b0e"
+          },
+          {
+            "order": 20,
+            "songNo": "724",
+            "difficulty": "oni",
+            "hash": "dd19089eb89166fe543b8d660613d4b0"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 16,
+        "name": "pE",
+        "songs": [
+          {
+            "songNo": "1452",
+            "order": 0,
+            "difficulty": "oni",
+            "hash": "978c148468afb0d7d463ad374dd87503"
+          },
+          {
+            "songNo": "1452",
+            "order": 1,
+            "difficulty": "ura",
+            "hash": "fdd0a2ab469e2c897c93c2f15b414ceb"
+          },
+          {
+            "order": 2,
+            "songNo": "388",
+            "difficulty": "oni",
+            "hash": "e4a59a112a553f909e4cff4fef9c3943"
+          },
+          {
+            "order": 3,
+            "songNo": "1357",
+            "difficulty": "oni",
+            "hash": "ac04555ffea76b52180315bea9e0c1aa"
+          },
+          {
+            "order": 4,
+            "songNo": "1357",
+            "difficulty": "ura",
+            "hash": "48958cddf313a89ef611d28f21e738f9"
+          },
+          {
+            "order": 5,
+            "songNo": "775",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 6,
+            "songNo": "775",
+            "difficulty": "ura",
+            "hash": null
+          },
+          {
+            "order": 7,
+            "songNo": "73",
+            "difficulty": "oni",
+            "hash": "6fc97bc07bc992825e994e0ffc97dd61"
+          },
+          {
+            "order": 8,
+            "songNo": "73",
+            "difficulty": "ura",
+            "hash": "181fd98b4beabb1b7ed2307e3e67179f"
+          },
+          {
+            "order": 9,
+            "songNo": "1035",
+            "difficulty": "ura",
+            "hash": "b287bd91f94b56067c2c2d9524f1bc3b"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      },
+      {
+        "order": 17,
+        "name": "iF",
+        "songs": [
+          {
+            "order": 0,
+            "songNo": "452",
+            "difficulty": "oni",
+            "hash": "b096700425607b9646afd12e7e96ebb3"
+          },
+          {
+            "order": 1,
+            "songNo": "1223",
+            "difficulty": "ura",
+            "hash": "6ce855afa3a87bd02f164c957c5b2f92"
+          },
+          {
+            "order": 2,
+            "songNo": "779",
+            "difficulty": "oni",
+            "hash": "0b8f33c5078d01b84d924b86f035b87b"
+          },
+          {
+            "order": 3,
+            "songNo": "371",
+            "difficulty": "oni",
+            "hash": "749456b7883ef26ffb2c13d18cd4d068"
+          },
+          {
+            "order": 4,
+            "songNo": "371",
+            "difficulty": "ura",
+            "hash": "e015b067b010dfd26c881e572216d71c"
+          },
+          {
+            "order": 5,
+            "songNo": "414",
+            "difficulty": "ura",
+            "hash": "ddfc6c5defec35d7c319fc19cb6269f8"
+          },
+          {
+            "order": 6,
+            "songNo": "421",
+            "difficulty": "oni",
+            "hash": "5e45304c69ec6567164f14ff79d100a6"
+          },
+          {
+            "order": 7,
+            "songNo": "695",
+            "difficulty": "oni",
+            "hash": "3d9f4f9fc2f8d31f173744db01eea024"
+          },
+          {
+            "order": 8,
+            "songNo": "1037",
+            "difficulty": "oni",
+            "hash": null
+          },
+          {
+            "order": 9,
+            "songNo": "288",
+            "difficulty": "oni",
+            "hash": "8d240dd3ff068aee42590f1d6639dba1"
+          }
+        ],
+        "color": "#000000",
+        "backgroundColor": "#000000"
+      }
+    ],
+    "color": "#000000",
+    "backgroundColor": "#000000"
+  },
+  "comment": "<div>\nOriginal by <a href=\"https://x.com/_fuyoshi\">@_fuyoshi</a>\n최근 수정일 : 2026.03.27.\n</div>"
+}

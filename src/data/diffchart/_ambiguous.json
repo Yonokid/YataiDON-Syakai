@@ -1,0 +1,355 @@
+[
+  {
+    "file": "clear_10.json",
+    "songNo": "1411",
+    "title": "Lightning Boys",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "103480f6bd611bb34357aa9c5ffa1396",
+      "fc696809f31838e8780ea11c283b5237"
+    ]
+  },
+  {
+    "file": "clear_10.json",
+    "songNo": "186",
+    "title": "Hurtling Boys",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "636f202adf4a28a28f2dc30a1f5719ad",
+      "60816154602d124f46e3b3122bd87b36"
+    ]
+  },
+  {
+    "file": "clear_10.json",
+    "songNo": "1411",
+    "title": "Lightning Boys",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "6293e768858ba9548b08b2f1238d5c2a",
+      "faaa21e810c45d5582150d3d1c0d777b"
+    ]
+  },
+  {
+    "file": "clear_10.json",
+    "songNo": "450",
+    "title": "濃紅",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "aee6c771231523e5be0acfc5743f43f5",
+      "9754a4011ed2a466bcb38740d06ff541"
+    ]
+  },
+  {
+    "file": "clear_6.json",
+    "songNo": "198",
+    "title": "READY!!",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "09da9f0c9843c7d0ebfcdc9c17029b3f",
+      "2f79918134fcbda1a8574a60358f1304"
+    ]
+  },
+  {
+    "file": "clear_6.json",
+    "songNo": "303",
+    "title": "夏祭り",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "f885d069d8f10d3d11402be4ece2bac8",
+      "b872522221e87fbfb54190359a17f1cf"
+    ]
+  },
+  {
+    "file": "clear_6.json",
+    "songNo": "956",
+    "title": "だから僕は音楽を辞めた",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "f2e5f611c340adb17b5ce39757ce1996",
+      "2e90bb3b48e9fa78c2a7eeddf357e612"
+    ]
+  },
+  {
+    "file": "clear_6.json",
+    "songNo": "241",
+    "title": "きゅんっ！ヴァンパイアガール",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "1e5bf6b41b6af523ade764572b0451db",
+      "8f48f4119e85764600ca82c40deae2c8"
+    ]
+  },
+  {
+    "file": "clear_6.json",
+    "songNo": "1022",
+    "title": "ウィーアー！",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "01de7c62810b1be9d4d17ce762f3649b",
+      "51468d6fc9d88e5e32bdb54f728bfb20"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "264",
+    "title": "メカデス。",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "586f9a89ba6eb83a0b78314efbcdf7c6",
+      "16f111fd8adc589fccce97063d63e019"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "203",
+    "title": "自分REST@RT",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "9570d2bd784213cfb5bffcd86af905cd",
+      "aeb5e5f84a914d552a23b9a385d95566"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "281",
+    "title": "GO MY WAY!!",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "3dc7db9d823a41db91f65d732c56a023",
+      "844256e80b3c30da5a77e876cb8f54ee",
+      "d49c1de1473fe09e74e47d7e75423912"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "1116",
+    "title": "ミックスナッツ",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "114498589c15435bdc054c414e95f4b4",
+      "52b975bfb675ddd33a9ff843dd7684e6"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "1194",
+    "title": "私は最強",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "6cb2b328999e6ea9ca1830d461b0bd96",
+      "1627b7fb8af7657788c2b455513b7455"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "1209",
+    "title": "アイドル",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "10f3970f6576c8342918ff880212d3d1",
+      "2675a722ade3c80caef1b5bc4ee79e56"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "1466",
+    "title": "どんちゃんえかき歌",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "46595969b29abbf7bf96141eef54a00f",
+      "162f7fcb5cb9bae26e6558f216a9ea6b"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "1131",
+    "title": "ラブリーX",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "0c0e305a6b669d5f46e7631164e1ade0",
+      "58b014304a500fc4416e0b5f53f4b986",
+      "d5de46737fbc54b559c7273a6ddaa459"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "14",
+    "title": "七彩ボタン",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "183ef76526e37863681609718e31e476",
+      "de11f12eac56516ae91cf80a98fc331a"
+    ]
+  },
+  {
+    "file": "clear_7.json",
+    "songNo": "480",
+    "title": "魔法をかけて！",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "f6735f6e34ab9a99753f97222ca2b9ad",
+      "7971e0b08c94a38e412d928a2c5b078e"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "956",
+    "title": "だから僕は音楽を辞めた",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "8c852c43e03e1ca61c406a0ccff143b7",
+      "d0ba27a5e2a479809094409c8f9ca62c"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "433",
+    "title": "エンジェル ドリーム",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "58910148c5b32b3216ca9b21df9a3da3",
+      "0990f0556d092d9c82ec3ccceb950c6d"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "506",
+    "title": "チェインクロニクル 通常バトルメドレー",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "d6d501622c88f9b33c273187c75c07c1",
+      "11762b7da6a7d2029e16ba9acaec50ec"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "481",
+    "title": "shiny smile",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "26a71eb77b895ab57c643f08663bf04b",
+      "1e824de71096a38df4a9b7a1bd7a79c9"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "385",
+    "title": "さくらんぼ",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "09d88c1681642c93ac6b65d45ad86c6d",
+      "c09ff5bed89ad0bad2b5856fc9ae4a1b"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "478",
+    "title": "THE IDOLM@STER",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "4945b6c128abe8c78b37a921e0ea1af5",
+      "f58c0cc80fb9c08c07dfc9dff9481b69",
+      "55e813b42120578cdfd7788857f72a04"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "387",
+    "title": "SMOKY THRILL",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "2d320b300a47ad271392ec463caadecc",
+      "8df6c7bb5fb078f8a3bf08e09fbd3f65"
+    ]
+  },
+  {
+    "file": "clear_8.json",
+    "songNo": "1179",
+    "title": "ハルジオン",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "65838539fdf9cd3db5e5ca27cd91f089",
+      "7c52a17886b3dd692b4fffb68a1d85ad"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "1058",
+    "title": "大好きな太鼓の音",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "802ab660717398c99c2b7f89058d6c2c",
+      "892a7eaffacbd6e6645a2e570f1d5792"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "203",
+    "title": "自分REST@RT",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "6a8e88c6f7ea519d4c4f18c2dc090487",
+      "6f508e628bca019c95bca6fe57947906"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "1116",
+    "title": "ミックスナッツ",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "2a93492cd35e8c09fe98973ef1fcbd5e",
+      "080e487ad3e1e2326e2cd4ff9212adbf"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "202",
+    "title": "Honey Heartbeat ～10 Stars Mix～",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "60d249d79a2a00c29b9df34af6d8ff13",
+      "8f76a715821ab13173926e6c7b360012"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "506",
+    "title": "チェインクロニクル 通常バトルメドレー",
+    "difficulty": "ura",
+    "candidateHashes": [
+      "7e7c73dffc3cd4d52103591a652ae993",
+      "b5e8593b7383e7642e25b924c1a1a93f"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "226",
+    "title": "キラメキラリ",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "0aaf8fe4c422261f9e6fef80a6e88e0a",
+      "76d4747516e55986b90bcc08bd051425"
+    ]
+  },
+  {
+    "file": "clear_9.json",
+    "songNo": "372",
+    "title": "旋風ノ舞【地】",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "c62829dae6af276b8fd8219549dcbcfa",
+      "86cbf835d1bec34be85cee3f4e361e0e"
+    ]
+  },
+  {
+    "file": "dfc_10.json",
+    "songNo": "900",
+    "title": "【双打】 双竜ノ乱",
+    "difficulty": "oni",
+    "candidateHashes": [
+      "3b4b985302a9b38b3bc50ef83065d410",
+      "896d3fc3efe3a8e599d6010278d3591e"
+    ]
+  }
+]
