@@ -16,5 +16,6 @@ export interface Score {
 
 export interface UserData {
   username: string
+  import_requested: boolean
   scores: Score[]
 }

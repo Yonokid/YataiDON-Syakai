@@ -6,7 +6,11 @@ const DEFAULT_USERNAME = 'Don-chan'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
-const emit = defineEmits<{ logout: []; 'username-updated': [username: string] }>()
+const emit = defineEmits<{
+  logout: []
+  'username-updated': [username: string]
+  'import-requested': []
+}>()
 
 const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
 
@@ -22,6 +26,33 @@ const promptDismissed = ref(false)
 const newUsername = ref('')
 const isSaving = ref(false)
 const saveError = ref('')
+
+const isRequestingImport = ref(false)
+const importError = ref('')
+
+async function requestScoreImport() {
+  if (
+    !confirm(
+      'Import your pre-existing scores? This will overwrite matching scores on this account the next time YataiDON is launched.',
+    )
+  )
+    return
+
+  isRequestingImport.value = true
+  importError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_score_import?access_code=${encodeURIComponent(props.accessCode)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('import-requested')
+  } catch {
+    importError.value = 'Could not request import. Please try again.'
+  } finally {
+    isRequestingImport.value = false
+  }
+}
 
 async function saveUsername() {
   const username = newUsername.value.trim()
@@ -65,6 +96,21 @@ async function saveUsername() {
     </div>
 
     <h1>{{ user.username }}</h1>
+
+    <div class="import-section">
+      <p v-if="user.import_requested" class="import-pending">
+        Import requested — scores will be imported next time YataiDON is launched.
+      </p>
+      <button
+        v-else
+        type="button"
+        :disabled="isRequestingImport"
+        @click="requestScoreImport"
+      >
+        Import pre-existing scores
+      </button>
+      <p v-if="importError" class="username-prompt-error">{{ importError }}</p>
+    </div>
 
     <p v-if="user.scores.length === 0" class="empty">No scores yet.</p>
     <div v-else class="scores-table-wrap">
@@ -147,6 +193,24 @@ async function saveUsername() {
 .username-prompt-error {
   color: #c0392b;
   font-size: 0.85rem;
+}
+
+.import-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.import-section button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.import-pending {
+  color: #888;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .scores-table-wrap {

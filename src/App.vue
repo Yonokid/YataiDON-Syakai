@@ -42,6 +42,7 @@ function logout() {
         :access-code="accessCode"
         @logout="logout"
         @username-updated="currentUser.username = $event"
+        @import-requested="currentUser.import_requested = true"
       />
     </template>
     <AccessCodeInput v-else @verified="handleVerified" />
