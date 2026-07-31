@@ -98,7 +98,8 @@ async function saveUsername() {
     <h1>{{ user.username }}</h1>
 
     <div class="import-section">
-      <p v-if="user.import_requested" class="import-pending">
+      <p v-if="user.import_completed" class="import-pending">Pre-existing scores imported.</p>
+      <p v-else-if="user.import_requested" class="import-pending">
         Import requested — scores will be imported next time YataiDON is launched.
       </p>
       <button
