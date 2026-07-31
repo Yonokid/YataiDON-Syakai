@@ -33,7 +33,7 @@ const importError = ref('')
 async function requestScoreImport() {
   if (
     !confirm(
-      'Import your pre-existing scores? This will overwrite matching scores on this account the next time YataiDON is launched.',
+      'Import your pre-existing scores? You can only do this once.',
     )
   )
     return
