@@ -18,6 +18,7 @@ function logout() {
   accessCode.value = null
   currentUser.value = null
   view.value = 'scores'
+  localStorage.removeItem('yataidon_access_code')
 }
 </script>
 
