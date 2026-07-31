@@ -215,7 +215,7 @@
             "order": 1,
             "songNo": "1032",
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578"
           },
           {
             "order": 2,
@@ -245,19 +245,19 @@
             "order": 7,
             "songNo": "1012",
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0"
           },
           {
             "songNo": "1012",
             "order": 7,
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0"
           },
           {
             "songNo": "1012",
             "order": 8,
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0"
           }
         ],
         "color": "#000000",
@@ -599,7 +599,7 @@
             "order": 21,
             "songNo": "775",
             "difficulty": "ura",
-            "hash": null
+            "hash": "f92132c8985dc98d2808c22c6a662026"
           },
           {
             "songNo": "1413",
@@ -667,7 +667,7 @@
             "order": 2,
             "songNo": "1032",
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578"
           },
           {
             "order": 3,
@@ -691,43 +691,43 @@
             "songNo": "869",
             "order": 6,
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "songNo": "869",
             "order": 7,
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "songNo": "869",
             "order": 8,
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "songNo": "869",
             "order": 9,
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "songNo": "869",
             "order": 10,
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "order": 11,
             "songNo": "869",
             "difficulty": "oni",
-            "hash": null
+            "hash": "4dbe224b86d92727ccd5cb9491153ddd"
           },
           {
             "order": 12,
             "songNo": "900",
             "difficulty": "oni",
-            "hash": null
+            "hash": "896d3fc3efe3a8e599d6010278d3591e"
           },
           {
             "order": 13,
@@ -927,7 +927,7 @@
             "order": 26,
             "songNo": "775",
             "difficulty": "oni",
-            "hash": null
+            "hash": "e496b388f1c24708bbd877ccedd26cba"
           },
           {
             "songNo": "1419",
@@ -1655,13 +1655,13 @@
             "songNo": "1356",
             "order": 25,
             "difficulty": "oni",
-            "hash": null
+            "hash": "239bda89501e3148defe09b951ea79f6"
           },
           {
             "order": 26,
             "songNo": "128",
             "difficulty": "oni",
-            "hash": null
+            "hash": "8ebde67222f3460f28f5996d6bb38e3f"
           },
           {
             "order": 27,
@@ -1801,7 +1801,7 @@
             "order": 4,
             "songNo": "1257",
             "difficulty": "oni",
-            "hash": null
+            "hash": "aee6c771231523e5be0acfc5743f43f5"
           },
           {
             "order": 5,
@@ -2117,7 +2117,7 @@
             "order": 3,
             "songNo": "1032",
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578"
           },
           {
             "order": 4,
@@ -2239,7 +2239,7 @@
             "songNo": "1356",
             "order": 13,
             "difficulty": "oni",
-            "hash": null
+            "hash": "239bda89501e3148defe09b951ea79f6"
           },
           {
             "order": 14,
@@ -2325,13 +2325,13 @@
             "order": 5,
             "songNo": "775",
             "difficulty": "oni",
-            "hash": null
+            "hash": "e496b388f1c24708bbd877ccedd26cba"
           },
           {
             "order": 6,
             "songNo": "775",
             "difficulty": "ura",
-            "hash": null
+            "hash": "f92132c8985dc98d2808c22c6a662026"
           },
           {
             "order": 7,
