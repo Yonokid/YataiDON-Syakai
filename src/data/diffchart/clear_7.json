@@ -10,94 +10,149 @@
         "order": 0,
         "songs": [
           {
-            "songNo": "342",
             "order": 0,
             "difficulty": "oni",
-            "hash": "43e8264c60930158af8c93c82f94bb16"
+            "hash": "43e8264c60930158af8c93c82f94bb16",
+            "title": {
+              "en": "Omoi o Te ni Negai o Komete",
+              "ja": "想いを手に願いを込めて",
+              "ko": "OMOI WO TENI NEGAI WO KOMETE",
+              "zh": "OMOI WO TENI NEGAI WO KOMETE"
+            }
           },
           {
-            "songNo": "354",
             "order": 1,
             "difficulty": "oni",
-            "hash": "b30e686909ffce1d7499bcf47217d35e"
+            "hash": "b30e686909ffce1d7499bcf47217d35e",
+            "title": {
+              "en": "Saitama 2000",
+              "ja": "さいたま2000",
+              "ko": "사이타마 2000",
+              "zh": "埼玉2000"
+            }
           },
           {
-            "songNo": "1467",
             "order": 2,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "139",
             "order": 3,
             "difficulty": "oni",
-            "hash": "da0ca3f3037e20df64c06184f579ef20"
+            "hash": "da0ca3f3037e20df64c06184f579ef20",
+            "title": {
+              "en": "dance storm",
+              "ja": "dance storm",
+              "zh": "dance storm"
+            }
           },
           {
-            "songNo": "1416",
             "order": 4,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "264",
             "order": 5,
             "difficulty": "oni",
-            "hash": "586f9a89ba6eb83a0b78314efbcdf7c6"
+            "hash": "586f9a89ba6eb83a0b78314efbcdf7c6",
+            "title": {
+              "en": "Mekadesu. -New Chart-",
+              "ja": "メカデス。",
+              "ko": "Mecha DESU.",
+              "zh": "Mecha DESU."
+            }
           },
           {
-            "songNo": "149",
             "order": 6,
             "difficulty": "oni",
-            "hash": "1d59e566bb59b85d25b48ba185b9a2ae"
+            "hash": "1d59e566bb59b85d25b48ba185b9a2ae",
+            "title": {
+              "en": "Saturday Taiko Fever",
+              "ja": "サタデー太鼓フィーバー",
+              "ko": "Saturday taiko fever",
+              "zh": "Saturday Taiko Fever"
+            }
           },
           {
-            "songNo": "545",
             "order": 7,
             "difficulty": "oni",
-            "hash": "1a18fc1b72fef64e636d8087089ab466"
+            "hash": "1a18fc1b72fef64e636d8087089ab466",
+            "title": {
+              "en": "TO MAKE THE END OF BATTLE",
+              "ja": "TO MAKE THE END OF BATTLE"
+            }
           },
           {
-            "songNo": "1092",
             "order": 8,
             "difficulty": "oni",
-            "hash": "d3f9de2aafe9219eba173b9609742da3"
+            "hash": "d3f9de2aafe9219eba173b9609742da3",
+            "title": {
+              "en": "Animal",
+              "ja": "アニマル",
+              "ko": "Animal",
+              "zh": "Animal"
+            }
           },
           {
-            "songNo": "553",
             "order": 9,
             "difficulty": "oni",
-            "hash": "6473c061c37f24b9fb3da50ed2c65c2b"
+            "hash": "6473c061c37f24b9fb3da50ed2c65c2b",
+            "title": {
+              "en": "BLAZING VORTEX",
+              "ja": "BLAZING VORTEX",
+              "zh": "BLAZING VORTEX"
+            }
           },
           {
-            "songNo": "61",
             "order": 10,
             "difficulty": "oni",
-            "hash": "430c17042b28be40de11a1789ccc6efa"
+            "hash": "430c17042b28be40de11a1789ccc6efa",
+            "title": {
+              "en": "Off♨Rock",
+              "ja": "オフ♨ロック",
+              "ko": "Off Rock",
+              "zh": "Off ♨ Rock"
+            }
           },
           {
-            "songNo": "141",
             "order": 11,
             "difficulty": "oni",
-            "hash": "f2803e4429eea6b583aa4d13799c8dd9"
+            "hash": "f2803e4429eea6b583aa4d13799c8dd9",
+            "title": {
+              "en": "Fly away",
+              "ja": "Fly away",
+              "zh": "Fly away"
+            }
           },
           {
-            "songNo": "1258",
             "order": 12,
             "difficulty": "oni",
-            "hash": "f2803e4429eea6b583aa4d13799c8dd9"
+            "hash": "f2803e4429eea6b583aa4d13799c8dd9",
+            "title": {
+              "en": "Fly away",
+              "ja": "Fly away",
+              "zh": "Fly away"
+            }
           },
           {
-            "songNo": "941",
             "order": 13,
             "difficulty": "oni",
-            "hash": "333a1e487c2f9262891fb01e7a9c6dd3"
+            "hash": "333a1e487c2f9262891fb01e7a9c6dd3",
+            "title": {
+              "en": "Fly again!",
+              "ja": "Fly again!",
+              "zh": "Fly again!"
+            }
           },
           {
             "order": 14,
-            "songNo": "1304",
             "difficulty": "oni",
-            "hash": "9df87cc21cdab284a51c9874571f56aa"
+            "hash": "9df87cc21cdab284a51c9874571f56aa",
+            "title": {
+              "en": "who are you? who are you?",
+              "ja": "who are you? who are you?",
+              "zh": "who are you? who are you?"
+            }
           }
         ],
         "color": "#000000",
@@ -108,172 +163,272 @@
         "order": 1,
         "songs": [
           {
-            "songNo": "1455",
             "order": 0,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "109",
             "order": 1,
             "difficulty": "oni",
-            "hash": "ac73f3e202e74919c212a78c964d0680"
+            "hash": "ac73f3e202e74919c212a78c964d0680",
+            "title": {
+              "en": "Many wow bang!",
+              "ja": "Many wow bang!",
+              "zh": "Many wow bang!"
+            }
           },
           {
-            "songNo": "984",
             "order": 2,
             "difficulty": "oni",
-            "hash": "49b5dffbfd483caef1ee5937eabb5756"
+            "hash": "49b5dffbfd483caef1ee5937eabb5756",
+            "title": {
+              "en": "Ka! Ka! Ka! Kamizmode!",
+              "ja": "カ！カ！カ！カミズモード！",
+              "ko": "KA! KA! KA! KAMIZMODE!",
+              "zh": "KA! KA! KA! KAMIZMODE!"
+            }
           },
           {
-            "songNo": "151",
             "order": 3,
             "difficulty": "oni",
-            "hash": "7419554a1a686a6243a6178db1a5299c"
+            "hash": "7419554a1a686a6243a6178db1a5299c",
+            "title": {
+              "en": "Fantasy Zone OPA-OPA! -GMT Remix-",
+              "ja": "ファンタジーゾーン OPA-OPA! -GMT remix-",
+              "zh": "ファンタジーゾーン OPA-OPA！ ‐ GMT remix ‐"
+            }
           },
           {
-            "songNo": "542",
             "order": 5,
             "difficulty": "oni",
-            "hash": "85dc5ea499bec4be7a37fc302e8346bf"
+            "hash": "85dc5ea499bec4be7a37fc302e8346bf",
+            "title": {
+              "en": "Dragon Ball Heroes God Mission Series Theme Song",
+              "ja": "ドラゴンボールヒーローズ ゴッドミッションシリーズ テーマソング"
+            }
           },
           {
-            "songNo": "319",
             "order": 6,
             "difficulty": "oni",
-            "hash": "0b8397dd69d7d85218ada94e3ce3b9c3"
+            "hash": "0b8397dd69d7d85218ada94e3ce3b9c3",
+            "title": {
+              "en": "Orion o Nazoru",
+              "ja": "オリオンをなぞる"
+            }
           },
           {
-            "songNo": "1053",
             "order": 7,
             "difficulty": "oni",
-            "hash": "37b37339924f39987483093b6c6d4e5a"
+            "hash": "37b37339924f39987483093b6c6d4e5a",
+            "title": {
+              "en": "Byoudouin Houou-Don ℣ Chojugi-Katsu",
+              "ja": "平等院鳳凰ドン vs 鳥獣戯カッ",
+              "ko": "뵤도인호오 동 vs 쵸쥬기 딱",
+              "zh": "平等院凤凰咚 vs 鸟兽戏咔"
+            }
           },
           {
-            "songNo": "1010",
             "order": 8,
             "difficulty": "oni",
-            "hash": "229521e2303323d87308b765904a336f"
+            "hash": "229521e2303323d87308b765904a336f",
+            "title": {
+              "en": "Don-chan Ondo",
+              "ja": "どんちゃん音頭",
+              "ko": "동이 ONDO",
+              "zh": "小咚音头"
+            }
           },
           {
-            "songNo": "644",
             "order": 9,
             "difficulty": "oni",
-            "hash": "ad91dd53b9024c920ea121a57816f9f1"
+            "hash": "ad91dd53b9024c920ea121a57816f9f1",
+            "title": {
+              "en": "Anzu no Uta",
+              "ja": "あんずのうた",
+              "ko": "안즈노 우타",
+              "zh": "あんずのうた"
+            }
           },
           {
-            "songNo": "380",
             "order": 10,
             "difficulty": "oni",
-            "hash": "1be900d07d0c1f475436c8301b1d1cf5"
+            "hash": "1be900d07d0c1f475436c8301b1d1cf5",
+            "title": {
+              "en": "Rain",
+              "ja": "レイン",
+              "zh": "Rain"
+            }
           },
           {
-            "songNo": "1111",
             "order": 11,
             "difficulty": "oni",
-            "hash": "44f629af21a2c7393e6d38a8bc59e0b0"
+            "hash": "44f629af21a2c7393e6d38a8bc59e0b0",
+            "title": {
+              "en": "Kaibutsu",
+              "ja": "怪物",
+              "ko": "Monster",
+              "zh": "怪物"
+            }
           },
           {
-            "songNo": "146",
             "order": 12,
             "difficulty": "oni",
-            "hash": "9447c09876488a32aa1866fa6900ef0f"
+            "hash": "9447c09876488a32aa1866fa6900ef0f",
+            "title": {
+              "en": "Calamari Inkantation",
+              "ja": "シオカラ節"
+            }
           },
           {
-            "songNo": "1138",
             "order": 13,
             "difficulty": "oni",
-            "hash": "e0f039aca37fcdbc8c103368f828b731"
+            "hash": "e0f039aca37fcdbc8c103368f828b731",
+            "title": {
+              "en": "Chiki Chiki Bam Bam",
+              "ja": "チキチキバンバン",
+              "ko": "Ciki Ciki Bam Bam",
+              "zh": "Ciki Ciki Bam Bam"
+            }
           },
           {
             "order": 14,
-            "songNo": "1237",
             "difficulty": "oni",
-            "hash": "40eb1f8be0e2be35b5146d6758290a60"
+            "hash": "40eb1f8be0e2be35b5146d6758290a60",
+            "title": {
+              "en": "Mood Swing",
+              "ja": "Mood Swing",
+              "zh": "Mood Swing"
+            }
           },
           {
-            "songNo": "693",
             "order": 16,
             "difficulty": "oni",
-            "hash": "ae5cfa82d1bc47a4cc7a04fedd752924"
+            "hash": "ae5cfa82d1bc47a4cc7a04fedd752924",
+            "title": {
+              "en": "Yuuwaku",
+              "ja": "誘惑"
+            }
           },
           {
-            "songNo": "107",
             "order": 17,
             "difficulty": "oni",
-            "hash": "4fbeea3fa6a498dcb851e31690e517db"
+            "hash": "4fbeea3fa6a498dcb851e31690e517db",
+            "title": {
+              "en": "Dadakko Monster",
+              "ja": "駄々っ子モンスター",
+              "ko": "DADAKKO MONSTER",
+              "zh": "DADAKKO MONSTER"
+            }
           },
           {
-            "songNo": "1152",
             "order": 18,
             "difficulty": "oni",
-            "hash": "4f580e0f6fb097887ac0d0c990bbe144"
+            "hash": "4f580e0f6fb097887ac0d0c990bbe144",
+            "title": {
+              "en": "Smile & Go!!",
+              "ja": "Smile & Go!!",
+              "zh": "Smile & Go!!"
+            }
           },
           {
-            "songNo": "889",
             "order": 19,
             "difficulty": "oni",
-            "hash": "63dfd6475a0031f14b6fb8772d96517a"
+            "hash": "63dfd6475a0031f14b6fb8772d96517a",
+            "title": {
+              "en": "via lactea",
+              "ja": "via lactea"
+            }
           },
           {
-            "songNo": "203",
             "order": 20,
             "difficulty": "oni",
-            "hash": "aeb5e5f84a914d552a23b9a385d95566"
+            "hash": "aeb5e5f84a914d552a23b9a385d95566",
+            "title": {
+              "en": "Jibun REST@RT -Game Version-",
+              "ja": "自分REST@RT",
+              "zh": "Jibun REST@RT"
+            }
           },
           {
-            "songNo": "274",
             "order": 21,
             "difficulty": "oni",
-            "hash": "15f947c75900414a3529f2062c75aa1d"
+            "hash": "15f947c75900414a3529f2062c75aa1d",
+            "title": {
+              "en": "Chikuzei ～GEAR UP～",
+              "ja": "蓄勢",
+              "ko": "치쿠제이",
+              "zh": "蓄势"
+            }
           },
           {
-            "songNo": "1334",
             "order": 22,
             "difficulty": "oni",
-            "hash": "ca67ce33237e3696716d7e2cbcb4c213"
+            "hash": "ca67ce33237e3696716d7e2cbcb4c213",
+            "title": {
+              "en": "PEACEKEEPER",
+              "ja": "PEACEKEEPER",
+              "zh": "PEACEKEEPER"
+            }
           },
           {
-            "songNo": "1396",
             "order": 23,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "281",
             "order": 24,
             "difficulty": "oni",
-            "hash": "844256e80b3c30da5a77e876cb8f54ee"
+            "hash": "844256e80b3c30da5a77e876cb8f54ee",
+            "title": {
+              "en": "GO MY WAY‼ -New Audio/AC16 Chart-",
+              "ja": "GO MY WAY!!",
+              "zh": "GO MY WAY!!"
+            }
           },
           {
-            "songNo": "323",
             "order": 25,
             "difficulty": "oni",
-            "hash": "3f5a493766c9927f4a754431d66b8634"
+            "hash": "3f5a493766c9927f4a754431d66b8634",
+            "title": {
+              "en": "Phoenix",
+              "ja": "Phoenix",
+              "zh": "Phoenix"
+            }
           },
           {
-            "songNo": "1262",
             "order": 26,
             "difficulty": "oni",
-            "hash": "3f5a493766c9927f4a754431d66b8634"
+            "hash": "3f5a493766c9927f4a754431d66b8634",
+            "title": {
+              "en": "Phoenix",
+              "ja": "Phoenix",
+              "zh": "Phoenix"
+            }
           },
           {
-            "songNo": "1443",
             "order": 27,
             "difficulty": "oni",
             "hash": null
           },
           {
             "order": 28,
-            "songNo": "1116",
             "difficulty": "oni",
-            "hash": "114498589c15435bdc054c414e95f4b4"
+            "hash": "114498589c15435bdc054c414e95f4b4",
+            "title": {
+              "en": "Mixed Nuts -Cover Audio-",
+              "ja": "ミックスナッツ",
+              "zh": "Mixed nuts"
+            }
           },
           {
-            "songNo": "1363",
             "order": 29,
             "difficulty": "oni",
-            "hash": "76fa8e6d44ca5bda353099a7d07e882f"
+            "hash": "76fa8e6d44ca5bda353099a7d07e882f",
+            "title": {
+              "en": "GAME CHANGER",
+              "ja": "GAME CHANGER",
+              "zh": "GAME CHANGER"
+            }
           }
         ],
         "color": "#000000",
@@ -284,214 +439,369 @@
         "order": 2,
         "songs": [
           {
-            "songNo": "1103",
             "order": 0,
             "difficulty": "oni",
-            "hash": "7ad5b73f7f7a80fcf3be2b40293d6aee"
+            "hash": "7ad5b73f7f7a80fcf3be2b40293d6aee",
+            "title": {
+              "en": "God-ish",
+              "ja": "神っぽいな",
+              "ko": "신 같네",
+              "zh": "像神一样啊"
+            }
           },
           {
-            "songNo": "500",
             "order": 1,
             "difficulty": "oni",
-            "hash": "f4da5161b3117e8c9b0243e4a703a28e"
+            "hash": "f4da5161b3117e8c9b0243e4a703a28e",
+            "title": {
+              "en": "Kibou e no Melody",
+              "ja": "希望へのメロディー",
+              "ko": "키보우에노 Melody",
+              "zh": "迈向希望的旋律"
+            }
           },
           {
-            "songNo": "1274",
             "order": 2,
             "difficulty": "oni",
-            "hash": "14d5b66b10cbd0b0238edc266ca841ad"
+            "hash": "14d5b66b10cbd0b0238edc266ca841ad",
+            "title": {
+              "en": "Fuuma Module 6768",
+              "ja": "風魔モジュール6768",
+              "ko": "FUMA Module 6768",
+              "zh": "风魔Module 6768"
+            }
           },
           {
-            "songNo": "390",
             "order": 3,
             "difficulty": "oni",
-            "hash": "de314dca4d5d5f035e1e745b2c70ad8c"
+            "hash": "de314dca4d5d5f035e1e745b2c70ad8c",
+            "title": {
+              "en": "SORA-II Gliese 581",
+              "ja": "SORA-II グリーゼ581",
+              "ko": "SORA-Ⅱ 글리제581",
+              "zh": "SORA-II 格利泽581"
+            }
           },
           {
-            "songNo": "193",
             "order": 4,
             "difficulty": "oni",
-            "hash": "69a1d844859a263a82864a8d434e4a99"
+            "hash": "69a1d844859a263a82864a8d434e4a99",
+            "title": {
+              "en": "Scroll Mika",
+              "ja": "スクロール･ミカ",
+              "ko": "Scroll MIKA",
+              "zh": "Scroll MIKA"
+            }
           },
           {
-            "songNo": "1228",
             "order": 5,
             "difficulty": "oni",
-            "hash": "f9d3946e102d28af30523f0b255180b1"
+            "hash": "f9d3946e102d28af30523f0b255180b1",
+            "title": {
+              "en": "Kyoufuu All Back",
+              "ja": "強風オールバック(feat.歌愛ユキ)",
+              "ko": "Kyoufuu Ooru Bakku (feat. Kaai Yuki)",
+              "zh": "Kyoufuu Ooru Bakku ( feat. Kaai Yuki )"
+            }
           },
           {
-            "songNo": "74",
             "order": 6,
             "difficulty": "oni",
-            "hash": "6b05754c2550265a2cb503fe5e4ea2a2"
+            "hash": "6b05754c2550265a2cb503fe5e4ea2a2",
+            "title": {
+              "en": "Shiro Neko Caramel Mugen no Wata-ame",
+              "ja": "白猫きゃらめる夢幻のわたあめ",
+              "ko": "SHIRONEKO CARAMEL MUGEN NO WATAAME",
+              "zh": "SHIRONEKO CARAMEL MUGEN NO WATAAME"
+            }
           },
           {
-            "songNo": "49",
             "order": 7,
             "difficulty": "oni",
-            "hash": "6996b13cd8b1a3e8c6ce5504123693c9"
+            "hash": "6996b13cd8b1a3e8c6ce5504123693c9",
+            "title": {
+              "en": "Samba Alegria",
+              "ja": "サンバ アレグリーア",
+              "ko": "Samba Alegria",
+              "zh": "Samba Alegria"
+            }
           },
           {
-            "songNo": "111",
             "order": 8,
             "difficulty": "oni",
-            "hash": "3f82efea93847d713ff6ab98ac93bc08"
+            "hash": "3f82efea93847d713ff6ab98ac93bc08",
+            "title": {
+              "en": "Densetsu no Matsuri",
+              "ja": "伝説の祭り",
+              "ko": "DENSETSU NO MATSURI",
+              "zh": "DENSETSU NO MATSURI"
+            }
           },
           {
-            "songNo": "1194",
             "order": 9,
             "difficulty": "oni",
-            "hash": "6cb2b328999e6ea9ca1830d461b0bd96"
+            "hash": "6cb2b328999e6ea9ca1830d461b0bd96",
+            "title": {
+              "en": "Watashi wa Saikyou -Cover Audio-",
+              "ja": "私は最強",
+              "zh": "我最强"
+            }
           },
           {
-            "songNo": "1408",
             "order": 10,
             "difficulty": "oni",
-            "hash": "1b4183ca9769b0dbe171aa0867002e92"
+            "hash": "1b4183ca9769b0dbe171aa0867002e92",
+            "title": {
+              "en": "Bai Bai FIGHT!",
+              "ja": "倍倍FIGHT!",
+              "zh": "倍倍FIGHT!"
+            }
           },
           {
-            "songNo": "81",
             "order": 11,
             "difficulty": "oni",
-            "hash": "2d123d7474009c46cad86e71fee4f369"
+            "hash": "2d123d7474009c46cad86e71fee4f369",
+            "title": {
+              "en": "Excerpt from Symphony No. 7",
+              "ja": "交響曲第7番から",
+              "ko": "베토벤 교향곡 7번",
+              "zh": "第七号交响曲节选"
+            }
           },
           {
-            "songNo": "1176",
             "order": 12,
             "difficulty": "oni",
-            "hash": "139c8c41f6b847f032a16e858d159617"
+            "hash": "139c8c41f6b847f032a16e858d159617",
+            "title": {
+              "en": "Crush (Prod. SHOW)",
+              "ja": "Crush (Prod. SHOW)",
+              "zh": "Crush (Prod. SHOW)"
+            }
           },
           {
             "order": 13,
-            "songNo": "1275",
             "difficulty": "oni",
-            "hash": "5ba7b974fe2f430ab9592acd1176eb2c"
+            "hash": "5ba7b974fe2f430ab9592acd1176eb2c",
+            "title": {
+              "en": "Seiza Wardo",
+              "ja": "星座わーど",
+              "ko": "SAY THE WORD",
+              "zh": "SAY THE WORD"
+            }
           },
           {
-            "songNo": "1175",
             "order": 14,
             "difficulty": "oni",
-            "hash": "1ab617f5f8af37126db2a8be80c89a8b"
+            "hash": "1ab617f5f8af37126db2a8be80c89a8b",
+            "title": {
+              "en": "IAM (feat. Shogo, Tsubasa)",
+              "ja": "IAM (feat. Shogo, Tsubasa)",
+              "zh": "IAM (feat. Shogo, Tsubasa)"
+            }
           },
           {
-            "songNo": "1026",
             "order": 15,
             "difficulty": "oni",
-            "hash": "106cbdf165fcf0c91f21723a98ce67c1"
+            "hash": "106cbdf165fcf0c91f21723a98ce67c1",
+            "title": {
+              "en": "Suirenka",
+              "ja": "睡蓮花",
+              "ko": "SUIRENKA",
+              "zh": "睡莲花"
+            }
           },
           {
-            "songNo": "1193",
             "order": 16,
             "difficulty": "oni",
-            "hash": "501cfdad4abb05b840fb576f4b441d91"
+            "hash": "501cfdad4abb05b840fb576f4b441d91",
+            "title": {
+              "en": "Otonablue",
+              "ja": "オトナブルー",
+              "ko": "OTONABLUE",
+              "zh": "OTONABLUE"
+            }
           },
           {
             "order": 17,
-            "songNo": "1251",
             "difficulty": "oni",
-            "hash": "ab61e5bf1d17745721df7fb6f15d8c7c"
+            "hash": "ab61e5bf1d17745721df7fb6f15d8c7c",
+            "title": {
+              "en": "Licht",
+              "ja": "リヒト",
+              "ko": "Licht",
+              "zh": "Licht"
+            }
           },
           {
-            "songNo": "307",
             "order": 18,
             "difficulty": "oni",
-            "hash": "a28a44951ab037d9732819f03dcf2a83"
+            "hash": "a28a44951ab037d9732819f03dcf2a83",
+            "title": {
+              "en": "Ninja wa Saikou",
+              "ja": "忍者は最高",
+              "ko": "NINJA WA SAIKOU",
+              "zh": "NINJA WA SAIKOU"
+            }
           },
           {
-            "songNo": "828",
             "order": 19,
             "difficulty": "oni",
-            "hash": "c19460ba4617f84d20e3ab837dc88498"
+            "hash": "c19460ba4617f84d20e3ab837dc88498",
+            "title": {
+              "en": "Roki",
+              "ja": "ロキ",
+              "ko": "ROKI",
+              "zh": "ROKI"
+            }
           },
           {
-            "songNo": "222",
             "order": 20,
             "difficulty": "oni",
-            "hash": "88262af7507f3589b846f84ad29baf68"
+            "hash": "88262af7507f3589b846f84ad29baf68",
+            "title": {
+              "en": "Revenge of Meta Knight Medley",
+              "ja": "メタナイトの逆襲メドレー",
+              "zh": "メタナイトの逆襲メドレー"
+            }
           },
           {
-            "songNo": "1233",
             "order": 21,
             "difficulty": "oni",
-            "hash": "d91663616047abff2d1bf9c22920fc7d"
+            "hash": "d91663616047abff2d1bf9c22920fc7d",
+            "title": {
+              "en": "Daizerokan",
+              "ja": "第ゼロ感",
+              "ko": "제ZERO감",
+              "zh": "第零感"
+            }
           },
           {
-            "songNo": "1197",
             "order": 22,
             "difficulty": "oni",
-            "hash": "88de8ad84324017c48ee7c741b484aea"
+            "hash": "88de8ad84324017c48ee7c741b484aea",
+            "title": {
+              "en": "Re：End of a Dream",
+              "ja": "Re：End of a Dream",
+              "zh": "Re ： End of a Dream"
+            }
           },
           {
-            "songNo": "1335",
             "order": 23,
             "difficulty": "oni",
-            "hash": "804dbd36255e79c815f81c222180afdd"
+            "hash": "804dbd36255e79c815f81c222180afdd",
+            "title": {
+              "en": "Storyteller",
+              "ja": "Storyteller",
+              "zh": "Storyteller"
+            }
           },
           {
             "order": 24,
-            "songNo": "1344",
             "difficulty": "oni",
-            "hash": "c85ac71bd047ffde491e7636c844a732"
+            "hash": "c85ac71bd047ffde491e7636c844a732",
+            "title": {
+              "en": "Mesmerizer",
+              "ja": "メズマライザー",
+              "ko": "메스머라이저",
+              "zh": "Mesmerizer"
+            }
           },
           {
-            "songNo": "1461",
             "order": 25,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "1440",
             "order": 26,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "135",
             "order": 27,
             "difficulty": "oni",
-            "hash": "315bdc41dd06113a31d699835895bcd9"
+            "hash": "315bdc41dd06113a31d699835895bcd9",
+            "title": {
+              "en": "A Cruel Angel's Thesis -New Audio-",
+              "ja": "残酷な天使のテーゼ -新曲-",
+              "ko": "잔코쿠나텐시노테제",
+              "zh": "残酷天使的行动纲领"
+            }
           },
           {
             "order": 28,
-            "songNo": "1292",
             "difficulty": "oni",
-            "hash": "45537baf2d04f10abc1711002d1dfa04"
+            "hash": "45537baf2d04f10abc1711002d1dfa04",
+            "title": {
+              "en": "Dance Hall",
+              "ja": "ダンスホール",
+              "ko": "Dance Hall",
+              "zh": "Dance Hall"
+            }
           },
           {
-            "songNo": "443",
             "order": 29,
             "difficulty": "oni",
-            "hash": "7eeb120edf5bc651b85b2968f211db7e"
+            "hash": "7eeb120edf5bc651b85b2968f211db7e",
+            "title": {
+              "en": "Yuugao no Kimi",
+              "ja": "ユウガオノキミ",
+              "ko": "유우가오노키미",
+              "zh": "如夕颜般的你"
+            }
           },
           {
-            "songNo": "654",
             "order": 30,
             "difficulty": "oni",
-            "hash": "d411a38aaacbcdf2bb15c00f4410fec0"
+            "hash": "d411a38aaacbcdf2bb15c00f4410fec0",
+            "title": {
+              "en": "GERMINATION",
+              "ja": "GERMINATION",
+              "zh": "GERMINATION"
+            }
           },
           {
-            "songNo": "444",
             "order": 31,
             "difficulty": "oni",
-            "hash": "dc332d0cb601c7331758174318519d49"
+            "hash": "dc332d0cb601c7331758174318519d49",
+            "title": {
+              "en": "Theremin Rhapsody",
+              "ja": "テルミン狂想曲",
+              "ko": "테루민 쿄우소우쿄쿠",
+              "zh": "特雷门狂想曲"
+            }
           },
           {
-            "songNo": "126",
             "order": 32,
             "difficulty": "oni",
-            "hash": "abd42aa062d7c085414098c5da6ee9a9"
+            "hash": "abd42aa062d7c085414098c5da6ee9a9",
+            "title": {
+              "en": "Symphonic Druaga",
+              "ja": "シンフォニック　ドルアーガ",
+              "ko": "SYMPONIC DRUAGA",
+              "zh": "SYMPHONIC DRUAGA"
+            }
           },
           {
-            "songNo": "345",
             "order": 33,
             "difficulty": "oni",
-            "hash": "4f0cae887eb243b93593a320b8d0b415"
+            "hash": "4f0cae887eb243b93593a320b8d0b415",
+            "title": {
+              "en": "Ramen de Yo-Men‼",
+              "ja": "ラーメン de Yo-Men!!",
+              "ko": "라멘 de Yo-Men!!",
+              "zh": "拉面 德 呦-面!!"
+            }
           },
           {
-            "songNo": "1090",
             "order": 34,
             "difficulty": "oni",
-            "hash": "f4f7b2cfcee533add0c65bf14e969b10"
+            "hash": "f4f7b2cfcee533add0c65bf14e969b10",
+            "title": {
+              "en": "Dried Flower",
+              "ja": "ドライフラワー",
+              "ko": "Dried Flower",
+              "zh": "Dried Flower"
+            }
           }
         ],
         "color": "#000000",
@@ -502,328 +812,566 @@
         "order": 3,
         "songs": [
           {
-            "songNo": "997",
             "order": 0,
             "difficulty": "oni",
-            "hash": "8ac12fc77dd6e045511f164ded727a9f"
+            "hash": "8ac12fc77dd6e045511f164ded727a9f",
+            "title": {
+              "en": "twinkle night (feat. somunia)",
+              "ja": "twinkle night (feat. somunia)",
+              "zh": "twinkle night (feat. somunia)"
+            }
           },
           {
-            "songNo": "773",
             "order": 1,
             "difficulty": "oni",
-            "hash": "26f6f7208da41c799268935c31b23d25"
+            "hash": "26f6f7208da41c799268935c31b23d25",
+            "title": {
+              "en": "Inochi Mijikashi Koiseyo Otome",
+              "ja": "命短し恋せよ乙女",
+              "zh": "命短し恋せよ乙女"
+            }
           },
           {
-            "songNo": "1150",
             "order": 2,
             "difficulty": "oni",
-            "hash": "fa5370183ea6890882389c61a3e1559a"
+            "hash": "fa5370183ea6890882389c61a3e1559a",
+            "title": {
+              "en": "Zankyou Sanka",
+              "ja": "残響散歌",
+              "ko": "Zankyosanka",
+              "zh": "残响散歌"
+            }
           },
           {
-            "songNo": "861",
             "order": 3,
             "difficulty": "oni",
-            "hash": "62f1f2c883aadd14d9a3d02376d6f385"
+            "hash": "62f1f2c883aadd14d9a3d02376d6f385",
+            "title": {
+              "en": "Nonsense Bungaku",
+              "ja": "ナンセンス文学",
+              "ko": "Literary Nonsense",
+              "zh": "Literary Nonsense"
+            }
           },
           {
-            "songNo": "1209",
             "order": 4,
             "difficulty": "oni",
-            "hash": "10f3970f6576c8342918ff880212d3d1"
+            "hash": "10f3970f6576c8342918ff880212d3d1",
+            "title": {
+              "en": "Idol -Cover Audio/Chart-",
+              "ja": "アイドル",
+              "zh": "IDOL"
+            }
           },
           {
-            "songNo": "1061",
             "order": 5,
             "difficulty": "oni",
-            "hash": "e780c652e2561bb1ddbb5917f4524c35"
+            "hash": "e780c652e2561bb1ddbb5917f4524c35",
+            "title": {
+              "en": "S’il vous President",
+              "ja": "シル・ヴ・プレジデント",
+              "ko": "S'il Vous President",
+              "zh": "如果我成为大统领"
+            }
           },
           {
-            "songNo": "1126",
             "order": 6,
             "difficulty": "oni",
-            "hash": "072ba6ba8adaf95c77cfd4ab6bba3645"
+            "hash": "072ba6ba8adaf95c77cfd4ab6bba3645",
+            "title": {
+              "en": "Kuraberarekko",
+              "ja": "くらべられっ子",
+              "ko": "비교당하는 아이",
+              "zh": "被比较的孩子"
+            }
           },
           {
-            "songNo": "973",
             "order": 7,
             "difficulty": "oni",
-            "hash": "7da8b2c431ae5d7b97167d14883d6608"
+            "hash": "7da8b2c431ae5d7b97167d14883d6608",
+            "title": {
+              "en": "PONPOKO RHYTHM",
+              "ja": "PONPOKO RHYTHM",
+              "zh": "PONPOKO RHYTHM"
+            }
           },
           {
-            "songNo": "951",
             "order": 8,
             "difficulty": "oni",
-            "hash": "57beb5bcaf043007977c69c730ad44b1"
+            "hash": "57beb5bcaf043007977c69c730ad44b1",
+            "title": {
+              "en": "Idol Berserker (feat.Takafumi Sato)",
+              "ja": "アイドル狂戦士(feat.佐藤貴文)",
+              "ko": "Idol Berserker (feat.Takafumi Sato)",
+              "zh": "Idol狂战士(feat.佐藤贵文)"
+            }
           },
           {
-            "songNo": "300",
             "order": 9,
             "difficulty": "oni",
-            "hash": "c69760c3d1715fc8d7cae5053d15f6c4"
+            "hash": "c69760c3d1715fc8d7cae5053d15f6c4",
+            "title": {
+              "en": "Mulberry",
+              "ja": "Mulberry",
+              "zh": "Mulberry"
+            }
           },
           {
-            "songNo": "1466",
             "order": 10,
             "difficulty": "oni",
-            "hash": "162f7fcb5cb9bae26e6558f216a9ea6b"
+            "hash": "162f7fcb5cb9bae26e6558f216a9ea6b",
+            "title": {
+              "en": "Don-chan Ekaki Uta -New Chart-",
+              "ja": "どんちゃんえかき歌",
+              "ko": "동이 그림그리기 노래"
+            }
           },
           {
-            "songNo": "1504",
             "order": 11,
             "difficulty": "oni",
-            "hash": "d9886bf64f363901755ac682da6d8a30"
+            "hash": "d9886bf64f363901755ac682da6d8a30",
+            "title": {
+              "en": "Renacer Serenade",
+              "ja": "レナセールセレナーデ"
+            }
           },
           {
-            "songNo": "1188",
             "order": 12,
             "difficulty": "oni",
-            "hash": "039961311b63b9a8314cb8d55d9e9e99"
+            "hash": "039961311b63b9a8314cb8d55d9e9e99",
+            "title": {
+              "en": "Ni Zhan",
+              "ja": "逆戦 NI ZHAN",
+              "ko": "역전 NI ZHAN",
+              "zh": "逆战"
+            }
           },
           {
-            "songNo": "792",
             "order": 13,
             "difficulty": "oni",
-            "hash": "6a02a5489c26170d0f9ef3d49976aafc"
+            "hash": "6a02a5489c26170d0f9ef3d49976aafc",
+            "title": {
+              "en": "only my railgun",
+              "ja": "only my railgun",
+              "zh": "only my railgun"
+            }
           },
           {
-            "songNo": "293",
             "order": 14,
             "difficulty": "oni",
-            "hash": "45f7d4a8a2ce6cbc387d7b9022e7c796"
+            "hash": "45f7d4a8a2ce6cbc387d7b9022e7c796",
+            "title": {
+              "en": "Hey, Mister Professor",
+              "ja": "ヘイ，ミスタープロフェッサー",
+              "ko": "Hey, Mr. Professor",
+              "zh": "Hey, Mr. Professor"
+            }
           },
           {
-            "songNo": "1453",
             "order": 15,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "535",
             "order": 16,
             "difficulty": "oni",
-            "hash": "cfe74a784d56966aa0121dd4d3f94444"
+            "hash": "cfe74a784d56966aa0121dd4d3f94444",
+            "title": {
+              "en": "GEED no Akashi",
+              "ja": "GEEDの証",
+              "zh": "GEEDの証"
+            }
           },
           {
-            "songNo": "1100",
             "order": 17,
             "difficulty": "oni",
-            "hash": "a110046c6289a0dcbe6f21aa2058a2d8"
+            "hash": "a110046c6289a0dcbe6f21aa2058a2d8",
+            "title": {
+              "en": "Kill My Fortune",
+              "ja": "Kill My Fortune",
+              "zh": "Kill My Fortune"
+            }
           },
           {
             "order": 18,
-            "songNo": "1240",
             "difficulty": "oni",
-            "hash": "3dcba6cf8b655b4828c9bcde6a5a00cf"
+            "hash": "3dcba6cf8b655b4828c9bcde6a5a00cf",
+            "title": {
+              "en": "Yuusha",
+              "ja": "勇者",
+              "ko": "용사",
+              "zh": "勇者"
+            }
           },
           {
-            "songNo": "689",
             "order": 19,
             "difficulty": "oni",
-            "hash": "ad2a940b96e089dce91b06a441fe387b"
+            "hash": "ad2a940b96e089dce91b06a441fe387b",
+            "title": {
+              "en": "Go Go Kitchen -New Audio/Chart-",
+              "ja": "ゴーゴー・キッチン",
+              "ko": "Go Go - Kitchen",
+              "zh": "Go Go - Kitchen"
+            }
           },
           {
-            "songNo": "1168",
             "order": 20,
             "difficulty": "oni",
-            "hash": "af57973740e2d72d6844b9029e937880"
+            "hash": "af57973740e2d72d6844b9029e937880",
+            "title": {
+              "en": "Overd",
+              "ja": "オーバード",
+              "ko": "Overd"
+            }
           },
           {
-            "songNo": "1162",
             "order": 21,
             "difficulty": "oni",
-            "hash": "bb52155a3a85587bb734705022123ad9"
+            "hash": "bb52155a3a85587bb734705022123ad9",
+            "title": {
+              "en": "Nenenenenenenene! Daibakusou",
+              "ja": "ねねねねねねねね!大爆走",
+              "ko": "NENENENENENENENE!DAIBAKUSOU",
+              "zh": "NENENENENENENENE!DAIBAKUSOU"
+            }
           },
           {
-            "songNo": "1027",
             "order": 22,
             "difficulty": "oni",
-            "hash": "feb8766f8d21a42b2c1bd7b6819a1240"
+            "hash": "feb8766f8d21a42b2c1bd7b6819a1240",
+            "title": {
+              "en": "Natsumatsuri / Jitterin' Jinn",
+              "ja": "夏祭り / ジッタリン・ジン",
+              "ko": "Natsumatsuri / Jitterin' Jinn",
+              "zh": "Natsumatsuri / Jitterin' Jinn"
+            }
           },
           {
-            "songNo": "285",
             "order": 23,
             "difficulty": "oni",
-            "hash": "43aecf49ede8bb441c14fc09b42e362a"
+            "hash": "43aecf49ede8bb441c14fc09b42e362a",
+            "title": {
+              "en": "Senbonzakura",
+              "ja": "千本桜",
+              "ko": "센봉자쿠라",
+              "zh": "千本樱"
+            }
           },
           {
-            "songNo": "1054",
             "order": 24,
             "difficulty": "oni",
-            "hash": "cd78189a2d72b6b82d289b7391d5f44e"
+            "hash": "cd78189a2d72b6b82d289b7391d5f44e",
+            "title": {
+              "en": "Dairokkan",
+              "ja": "第六感",
+              "ko": "THE SIXTH SENSE",
+              "zh": "第六感"
+            }
           },
           {
-            "songNo": "1032",
             "order": 25,
             "difficulty": "oni",
-            "hash": "b9433825806f2dd664d7138451e5db63"
+            "hash": "b9433825806f2dd664d7138451e5db63",
+            "title": {
+              "en": "Emma",
+              "ja": "Emma",
+              "zh": "Emma"
+            }
           },
           {
-            "songNo": "278",
             "order": 26,
             "difficulty": "oni",
-            "hash": "19a0972e83617b1e28a0b692d8c45fc5"
+            "hash": "19a0972e83617b1e28a0b692d8c45fc5",
+            "title": {
+              "en": "Kayou ～Flourishing Blossoms～",
+              "ja": "花漾",
+              "ko": "카요우",
+              "zh": "花漾"
+            }
           },
           {
-            "songNo": "276",
             "order": 27,
             "difficulty": "oni",
-            "hash": "abb89184cd8c21a6ba7c9c4c7b8ddba4"
+            "hash": "abb89184cd8c21a6ba7c9c4c7b8ddba4",
+            "title": {
+              "en": "Shunyuu ～happy excursion～",
+              "ja": "春遊",
+              "ko": "SHUNYUU",
+              "zh": "春游"
+            }
           },
           {
-            "songNo": "348",
             "order": 28,
             "difficulty": "oni",
-            "hash": "c659b6cdfcd0e5fdba08cbae155be11f"
+            "hash": "c659b6cdfcd0e5fdba08cbae155be11f",
+            "title": {
+              "en": "Lightning Passion",
+              "ja": "らいとにんぐ ぱっしょん",
+              "ko": "Lightning Passion",
+              "zh": "Lightning Passion"
+            }
           },
           {
-            "songNo": "132",
             "order": 29,
             "difficulty": "oni",
-            "hash": "6a01c6efcf66c8e12580822d81fb0b1f"
+            "hash": "6a01c6efcf66c8e12580822d81fb0b1f",
+            "title": {
+              "en": "Chiheisen no Aeolia",
+              "ja": "地平線のエオリア",
+              "ko": "치헤이센노 에오리아",
+              "zh": "地平线上的疾风"
+            }
           },
           {
-            "songNo": "1230",
             "order": 30,
             "difficulty": "oni",
-            "hash": "74f9800cef34f9d61a7342979eca6b41"
+            "hash": "74f9800cef34f9d61a7342979eca6b41",
+            "title": {
+              "en": "Tsubasa Gravity",
+              "ja": "ツバサグラビティ",
+              "ko": "Tsubasa Gravity",
+              "zh": "Tsubasa Gravity"
+            }
           },
           {
-            "songNo": "534",
             "order": 31,
             "difficulty": "oni",
-            "hash": "e85f17508cff7161cb45882fada8c8ea"
+            "hash": "e85f17508cff7161cb45882fada8c8ea",
+            "title": {
+              "en": "Angelic Angel",
+              "ja": "Angelic Angel",
+              "zh": "Angelic Angel"
+            }
           },
           {
-            "songNo": "378",
             "order": 32,
             "difficulty": "oni",
-            "hash": "3a45801646d8e8d6d3ce61b236b4d733"
+            "hash": "3a45801646d8e8d6d3ce61b236b4d733",
+            "title": {
+              "en": "Ponytail to Shushu",
+              "ja": "ポニーテールとシュシュ",
+              "ko": "Ponytail To Shu Shu",
+              "zh": "马尾和发圈"
+            }
           },
           {
-            "songNo": "169",
             "order": 33,
             "difficulty": "oni",
-            "hash": "7bb66371d7d9e52d36d1cfc8c5785d76"
+            "hash": "7bb66371d7d9e52d36d1cfc8c5785d76",
+            "title": {
+              "en": "Dokidoki Koi no Yokan⁉",
+              "ja": "ドキドキ恋の予感！？",
+              "zh": "心跳不已的恋爱预感！？"
+            }
           },
           {
-            "songNo": "487",
             "order": 34,
             "difficulty": "oni",
-            "hash": "fdb8d04f03e21c6d90763331e2a85055"
+            "hash": "fdb8d04f03e21c6d90763331e2a85055",
+            "title": {
+              "en": "Lassen Gorelai",
+              "ja": "ラッスンゴレライ"
+            }
           },
           {
-            "songNo": "1423",
             "order": 35,
             "difficulty": "oni",
-            "hash": "606a146ef268101b726bdd30c8e98587"
+            "hash": "606a146ef268101b726bdd30c8e98587",
+            "title": {
+              "en": "★Rakuen☆CASINO GALAXY!",
+              "ja": "★楽園☆CASINO GALAXY！"
+            }
           },
           {
-            "songNo": "434",
             "order": 36,
             "difficulty": "oni",
-            "hash": "7ac95c920546e3aba669f04d49de4cc2"
+            "hash": "7ac95c920546e3aba669f04d49de4cc2",
+            "title": {
+              "en": "Russian Folk Medley",
+              "ja": "ロシア民謡メドレー",
+              "ko": "Russian fork songs medley",
+              "zh": "俄罗斯民谣组曲"
+            }
           },
           {
-            "songNo": "551",
             "order": 37,
             "difficulty": "oni",
-            "hash": "ee834906f28251c6109fc78b9827ea12"
+            "hash": "ee834906f28251c6109fc78b9827ea12",
+            "title": {
+              "en": "Chouren ～Obsession～",
+              "ja": "蝶戀",
+              "ko": "CHOUREN",
+              "zh": "蝶恋"
+            }
           },
           {
-            "songNo": "652",
             "order": 38,
             "difficulty": "oni",
-            "hash": "c193dfb904632712a2e006314a346708"
+            "hash": "c193dfb904632712a2e006314a346708",
+            "title": {
+              "en": "Shokou ～Dawn～",
+              "ja": "曙光",
+              "ko": "SHOKOU",
+              "zh": "曙光"
+            }
           },
           {
-            "songNo": "447",
             "order": 39,
             "difficulty": "oni",
-            "hash": "eb1dfe77dc4b78df4168b182053e64b4"
+            "hash": "eb1dfe77dc4b78df4168b182053e64b4",
+            "title": {
+              "en": "White Rose Insanity",
+              "ja": "White Rose Insanity",
+              "zh": "White Rose Insanity"
+            }
           },
           {
-            "songNo": "725",
             "order": 40,
             "difficulty": "oni",
-            "hash": "cc46eb10150c3760cc60e73bcd3c7bb1"
+            "hash": "cc46eb10150c3760cc60e73bcd3c7bb1",
+            "title": {
+              "en": "Rei -ZERO-",
+              "ja": "零 -ZERO-",
+              "zh": "零 ‐ZERO‐"
+            }
           },
           {
-            "songNo": "84",
             "order": 41,
             "difficulty": "oni",
-            "hash": "ebeb3d3217d7716278a4a0ce79dba928"
+            "hash": "ebeb3d3217d7716278a4a0ce79dba928",
+            "title": {
+              "en": "Carmen Prelude",
+              "ja": "カルメン 組曲一番終曲",
+              "ko": "카르멘 조곡 1번 종곡",
+              "zh": "卡门第一组曲 斗牛士之歌"
+            }
           },
           {
             "order": 42,
-            "songNo": "1293",
             "difficulty": "oni",
-            "hash": "fd0b7fe2df382a04219feba46a92eb20"
+            "hash": "fd0b7fe2df382a04219feba46a92eb20",
+            "title": {
+              "en": "Saikou Toutatsuten",
+              "ja": "最高到達点",
+              "ko": "최고도달점",
+              "zh": "最高到达点"
+            }
           },
           {
-            "songNo": "377",
             "order": 43,
             "difficulty": "oni",
-            "hash": "2d598150b25ac17f44d26e40ce106eda"
+            "hash": "2d598150b25ac17f44d26e40ce106eda",
+            "title": {
+              "en": "Koi no Shohousen",
+              "ja": "恋の処方箋",
+              "ko": "KOI NO SHOHOUSEN",
+              "zh": "KOI NO SHOHOUSEN"
+            }
           },
           {
-            "songNo": "547",
             "order": 44,
             "difficulty": "oni",
-            "hash": "29ccaf0242f16697f9e597e63ce153f9"
+            "hash": "29ccaf0242f16697f9e597e63ce153f9",
+            "title": {
+              "en": "Wonder Momoi",
+              "ja": "ワンダーモモーイ",
+              "zh": "ワンダーモモーイ"
+            }
           },
           {
-            "songNo": "1219",
             "order": 45,
             "difficulty": "oni",
-            "hash": "18581371134e4b77d31336d5b4524223"
+            "hash": "18581371134e4b77d31336d5b4524223",
+            "title": {
+              "en": "Umapyoi Densetsu",
+              "ja": "うまぴょい伝説"
+            }
           },
           {
-            "songNo": "1387",
             "order": 46,
             "difficulty": "oni",
-            "hash": "2316aab990421030b0ecf67cec8ab645"
+            "hash": "2316aab990421030b0ecf67cec8ab645",
+            "title": {
+              "en": "Bubbly Kakumei ~Bang Bang Bubble~",
+              "ja": "バブリー革命 ～ばんばんバブル～",
+              "ko": "Bubbly Revolution -Bang Bang Bubble-",
+              "zh": "Bubbly Revolution -Bang Bang Bubble-"
+            }
           },
           {
-            "songNo": "1149",
             "order": 47,
             "difficulty": "oni",
-            "hash": "f43ac8fd8af22d6b77cf4150e4786e53"
+            "hash": "f43ac8fd8af22d6b77cf4150e4786e53",
+            "title": {
+              "en": "phony",
+              "ja": "フォニイ",
+              "ko": "phony",
+              "zh": "phony"
+            }
           },
           {
-            "songNo": "44",
             "order": 48,
             "difficulty": "oni",
-            "hash": "132f823d9d1f25c5a0ef1efc21d9feca"
+            "hash": "132f823d9d1f25c5a0ef1efc21d9feca",
+            "title": {
+              "en": "YouTube Theme Song",
+              "ja": "YouTubeテーマソング",
+              "ko": "Youtube Theme Song",
+              "zh": "YouTube主题曲"
+            }
           },
           {
-            "songNo": "981",
             "order": 49,
             "difficulty": "oni",
-            "hash": "e14c23d34e294d57fb5ba7a7089d5315"
+            "hash": "e14c23d34e294d57fb5ba7a7089d5315",
+            "title": {
+              "en": "1・2・Sanshi no de Dondokakka!",
+              "ja": "1・2・さんしのでドンドカッカッ！",
+              "ko": "One Two SanShino de Dondo Kakka!",
+              "zh": "One Two SanShino de Dondo Kakka!"
+            }
           },
           {
-            "songNo": "469",
             "order": 50,
             "difficulty": "oni",
-            "hash": "f0dc5468b40d23a46b6d96132a9609e8"
+            "hash": "f0dc5468b40d23a46b6d96132a9609e8",
+            "title": {
+              "en": "Mirai e no Kagi",
+              "ja": "未来への鍵",
+              "ko": "MIRAI ENO KAGI",
+              "zh": "MIRAI ENO KAGI"
+            }
           },
           {
-            "songNo": "1326",
             "order": 51,
             "difficulty": "oni",
-            "hash": "49d214dc29be392bbca80d6afdcbe5bb"
+            "hash": "49d214dc29be392bbca80d6afdcbe5bb",
+            "title": {
+              "en": "SHEESH",
+              "ja": "SHEESH",
+              "zh": "SHEESH"
+            }
           },
           {
-            "songNo": "1115",
             "order": 52,
             "difficulty": "oni",
-            "hash": "54d7614cadc3b676b538491d98cb592e"
+            "hash": "54d7614cadc3b676b538491d98cb592e",
+            "title": {
+              "en": "New Genesis",
+              "ja": "新時代",
+              "ko": "New Genesis",
+              "zh": "新时代"
+            }
           },
           {
-            "songNo": "408",
             "order": 53,
             "difficulty": "oni",
-            "hash": "db892aed7fc61139894727351032c0fc"
+            "hash": "db892aed7fc61139894727351032c0fc",
+            "title": {
+              "en": "Highschool love!",
+              "ja": "Highschool love!",
+              "zh": "Highschool love!"
+            }
           }
         ],
         "color": "#000000",
@@ -834,274 +1382,460 @@
         "order": 4,
         "songs": [
           {
-            "songNo": "663",
             "order": 0,
             "difficulty": "oni",
-            "hash": "d79525c8176bc0393251008ffd8bb5e3"
+            "hash": "d79525c8176bc0393251008ffd8bb5e3",
+            "title": {
+              "en": "Fuun! Bachio Sensei -New Audio/Chart-",
+              "ja": "風雲！バチお先生",
+              "ko": "후우운! 바치오 센세",
+              "zh": "风云！鼓棒老师"
+            }
           },
           {
-            "songNo": "481",
             "order": 1,
             "difficulty": "ura",
-            "hash": "4f18f7f92933586563f2515575f27478"
+            "hash": "4f18f7f92933586563f2515575f27478",
+            "title": {
+              "en": "shiny smile -Ganaha Hibiki Version-",
+              "ja": "shiny smile",
+              "zh": "shiny smile"
+            }
           },
           {
-            "songNo": "512",
             "order": 2,
             "difficulty": "oni",
-            "hash": "3b38ea751647a9e634d1383329ad6e0f"
+            "hash": "3b38ea751647a9e634d1383329ad6e0f",
+            "title": {
+              "en": "DRIVE A LIVE",
+              "ja": "DRIVE A LIVE",
+              "zh": "DRIVE A LIVE"
+            }
           },
           {
-            "songNo": "1033",
             "order": 3,
             "difficulty": "oni",
-            "hash": "236e906df50eba2f4bbd5071585d0dbc"
+            "hash": "236e906df50eba2f4bbd5071585d0dbc",
+            "title": {
+              "en": "Aloft in the wind",
+              "ja": "Aloft in the wind",
+              "zh": "Aloft in the wind"
+            }
           },
           {
-            "songNo": "207",
             "order": 4,
             "difficulty": "oni",
-            "hash": "8788c5b07bccff02318a7b42211a8a3a"
+            "hash": "8788c5b07bccff02318a7b42211a8a3a",
+            "title": {
+              "en": "All Night de Indenai",
+              "ja": "オールナイトdeインデナイ",
+              "ko": "All Night de INDENAI",
+              "zh": "All Night de INDENAI"
+            }
           },
           {
-            "songNo": "1397",
             "order": 5,
             "difficulty": "oni",
             "hash": null
           },
           {
-            "songNo": "26",
             "order": 6,
             "difficulty": "oni",
-            "hash": "01f9d8ea0723d758207d2ebee337ed14"
+            "hash": "01f9d8ea0723d758207d2ebee337ed14",
+            "title": {
+              "en": "Koi Suru Fortune Cookie",
+              "ja": "恋するフォーチュンクッキー",
+              "ko": "Koisuru Fortune Cookie"
+            }
           },
           {
-            "songNo": "1031",
             "order": 7,
             "difficulty": "oni",
-            "hash": "8717ae37d703f45607b1ffd080f2951c"
+            "hash": "8717ae37d703f45607b1ffd080f2951c",
+            "title": {
+              "en": "Hello, Worldooon‼",
+              "ja": "Hello, Worldooon!!",
+              "zh": "Hello, Worldooon!!"
+            }
           },
           {
-            "songNo": "687",
             "order": 8,
             "difficulty": "oni",
-            "hash": "758b2062e43ed352a3c79d06fbaea8ac"
+            "hash": "758b2062e43ed352a3c79d06fbaea8ac",
+            "title": {
+              "en": "Kokushin Chronicle",
+              "ja": "黒神クロニクル",
+              "ko": "KOKUSHIN CHRONICLE",
+              "zh": "KOKUSHIN CHRONICLE"
+            }
           },
           {
-            "songNo": "515",
             "order": 9,
             "difficulty": "oni",
-            "hash": "c80b0b664137e6dbe86f12c8e66b8549"
+            "hash": "c80b0b664137e6dbe86f12c8e66b8549",
+            "title": {
+              "en": "DREAMERS’ PARADISE",
+              "ja": "DREAMERS' PARADISE"
+            }
           },
           {
-            "songNo": "208",
             "order": 10,
             "difficulty": "oni",
-            "hash": "af7e4299a83ff168bf2b3e32298dd9d1"
+            "hash": "af7e4299a83ff168bf2b3e32298dd9d1",
+            "title": {
+              "en": "Inu no Omawari-san",
+              "ja": "いぬのおまわりさん"
+            }
           },
           {
-            "songNo": "706",
             "order": 11,
             "difficulty": "oni",
-            "hash": "480cdef5d771099d45fc7d708c4536af"
+            "hash": "480cdef5d771099d45fc7d708c4536af",
+            "title": {
+              "en": "Koi wa Mizuiro",
+              "ja": "恋はみずいろ",
+              "ko": "사랑은 하늘색"
+            }
           },
           {
-            "songNo": "59",
             "order": 12,
             "difficulty": "oni",
-            "hash": "e1dbc95d0b593319148f3bcdb7a0752c"
+            "hash": "e1dbc95d0b593319148f3bcdb7a0752c",
+            "title": {
+              "en": "Bokura no Sekai ni Dance o",
+              "ja": "僕らの世界にダンスを",
+              "zh": "僕らの世界にダンスを"
+            }
           },
           {
-            "songNo": "648",
             "order": 13,
             "difficulty": "oni",
-            "hash": "7b0bf472f16a71e6e33cc281903d083a"
+            "hash": "7b0bf472f16a71e6e33cc281903d083a",
+            "title": {
+              "en": "Chain Chronicle Total War Medley",
+              "ja": "チェインクロニクル 総力戦メドレー",
+              "zh": "チェインクロニクル 総力戦メドレー"
+            }
           },
           {
-            "songNo": "668",
             "order": 14,
             "difficulty": "oni",
-            "hash": "b16adc7a1996d5d9b00c63a756f8aa61"
+            "hash": "b16adc7a1996d5d9b00c63a756f8aa61",
+            "title": {
+              "en": "Pen-Pineapple-Apple-Pen",
+              "ja": "ペンパイナッポーアッポーペン(PPAP)",
+              "ko": "펜 파이나포 아포 펜(PPAP)"
+            }
           },
           {
-            "songNo": "91",
             "order": 15,
             "difficulty": "oni",
-            "hash": "cd22af546dfcbe2537d7907dbe8295ae"
+            "hash": "cd22af546dfcbe2537d7907dbe8295ae",
+            "title": {
+              "en": "Mars",
+              "ja": "火星",
+              "ko": "화성",
+              "zh": "火星"
+            }
           },
           {
-            "songNo": "809",
             "order": 16,
             "difficulty": "oni",
-            "hash": "832bddca120c0374d1b4e4b15b935b52"
+            "hash": "832bddca120c0374d1b4e4b15b935b52",
+            "title": {
+              "en": "Alkali Rettousei",
+              "ja": "アルカリレットウセイ",
+              "ko": "Alkali Rettousei",
+              "zh": "Alkali Rettousei"
+            }
           },
           {
             "order": 17,
-            "songNo": "1269",
             "difficulty": "oni",
-            "hash": "5fdb4cbe1bc1952f5c36af8484e2f816"
+            "hash": "5fdb4cbe1bc1952f5c36af8484e2f816",
+            "title": {
+              "en": "Halo",
+              "ja": "ハロ",
+              "ko": "halo",
+              "zh": "halo"
+            }
           },
           {
-            "songNo": "315",
             "order": 18,
             "difficulty": "oni",
-            "hash": "76d97ac75006dceba6a04879cf97d23c"
+            "hash": "76d97ac75006dceba6a04879cf97d23c",
+            "title": {
+              "en": "3Q-4U-AC00",
+              "ja": "3Q-4U-AC00",
+              "zh": "3Q-4U-AC00"
+            }
           },
           {
-            "songNo": "69",
             "order": 19,
             "difficulty": "oni",
-            "hash": "d757e4753ba4a7bfc82e1d850f9269a8"
+            "hash": "d757e4753ba4a7bfc82e1d850f9269a8",
+            "title": {
+              "en": "Brave Sword, Braver Soul",
+              "ja": "Brave Sword, Braver Soul",
+              "ko": "Brave sword, Braver soul",
+              "zh": "Brave Sword, Braver Soul"
+            }
           },
           {
-            "songNo": "1178",
             "order": 20,
             "difficulty": "oni",
-            "hash": "1fd8d09ae63570faa0f4455b65fd0394"
+            "hash": "1fd8d09ae63570faa0f4455b65fd0394",
+            "title": {
+              "en": "Watashi no Ichiban Kawaii Tokoro",
+              "ja": "わたしの一番かわいいところ",
+              "ko": "Watashino Ichiban Kawaii Tokoro",
+              "zh": "Watashino Ichiban Kawaii Tokoro"
+            }
           },
           {
-            "songNo": "1358",
             "order": 21,
             "difficulty": "oni",
-            "hash": "fd5dec1a0198ea086fd53311a83a065a"
+            "hash": "fd5dec1a0198ea086fd53311a83a065a",
+            "title": {
+              "en": "Bansanka",
+              "ja": "晩餐歌",
+              "zh": "晚餐歌"
+            }
           },
           {
-            "songNo": "466",
             "order": 22,
             "difficulty": "oni",
-            "hash": "16a552437fb0d86a30692c4f675ab3e7"
+            "hash": "16a552437fb0d86a30692c4f675ab3e7",
+            "title": {
+              "en": "Dun Dun Doobie Zubah!",
+              "ja": "ダン・ダン ドゥビ・ズバー！"
+            }
           },
           {
-            "songNo": "341",
             "order": 23,
             "difficulty": "oni",
-            "hash": "10b8277bfd4fc0d0cb81fbfb047606a1"
+            "hash": "10b8277bfd4fc0d0cb81fbfb047606a1",
+            "title": {
+              "en": "Walking Through the Towers",
+              "ja": "Walking Through The Towers",
+              "zh": "Walking Through The Towers"
+            }
           },
           {
-            "songNo": "586",
             "order": 24,
             "difficulty": "oni",
-            "hash": "aaeb31d8d1bf8939766922b04c81ee0f"
+            "hash": "aaeb31d8d1bf8939766922b04c81ee0f",
+            "title": {
+              "en": "Holding Hands",
+              "ja": "Holding Hands",
+              "zh": "Holding Hands"
+            }
           },
           {
-            "songNo": "1131",
             "order": 25,
             "difficulty": "oni",
-            "hash": "d5de46737fbc54b559c7273a6ddaa459"
+            "hash": "d5de46737fbc54b559c7273a6ddaa459",
+            "title": {
+              "en": "Lovely-X -AC16 Chart-",
+              "ja": "ラブリーX",
+              "ko": "LOVELY X",
+              "zh": "LOVELY X"
+            }
           },
           {
-            "songNo": "299",
             "order": 26,
             "difficulty": "oni",
-            "hash": "c5df18973199f4adc22947e683eb303f"
+            "hash": "c5df18973199f4adc22947e683eb303f",
+            "title": {
+              "en": "Mujihi na Ou",
+              "ja": "無慈悲な王",
+              "zh": "無慈悲な王"
+            }
           },
           {
-            "songNo": "125",
             "order": 27,
             "difficulty": "oni",
-            "hash": "6fbcb619004a2106f9078f24acf25ed9"
+            "hash": "6fbcb619004a2106f9078f24acf25ed9",
+            "title": {
+              "en": "Dragon Spirit Medley",
+              "ja": "ドラゴンスピリットメドレー",
+              "ko": "DRAGON SPIRIT 메들리",
+              "zh": "DRAGON SPIRIT Medley"
+            }
           },
           {
-            "songNo": "140",
             "order": 28,
             "difficulty": "oni",
-            "hash": "6518ea579cb072b496c445b1cb9849b8"
+            "hash": "6518ea579cb072b496c445b1cb9849b8",
+            "title": {
+              "en": "+♂ -Plus Danshi-",
+              "ja": "＋♂ (プラス男子)",
+              "zh": "+♂(プラス男子)"
+            }
           },
           {
-            "songNo": "1077",
             "order": 29,
             "difficulty": "oni",
-            "hash": "b32cef5eef45d67e43967d504ecb5fdd"
+            "hash": "b32cef5eef45d67e43967d504ecb5fdd",
+            "title": {
+              "en": "Cinderella",
+              "ja": "シンデレラ",
+              "ko": "Cinderella",
+              "zh": "Cinderella"
+            }
           },
           {
-            "songNo": "1161",
             "order": 30,
             "difficulty": "oni",
-            "hash": "de570a2dd7a176c95b789ff6ee2bb1d3"
+            "hash": "de570a2dd7a176c95b789ff6ee2bb1d3",
+            "title": {
+              "en": "Ahoy!! Warera Houshou Kaizokudan☆",
+              "ja": "Ahoy!! 我ら宝鐘海賊団☆",
+              "ko": "Ahoy!! We are Houshou Pirates",
+              "zh": "Ahoy!! We are Houshou Pirates"
+            }
           },
           {
-            "songNo": "1169",
             "order": 31,
             "difficulty": "oni",
-            "hash": "b73909234ce8cb414acf80b253f030d4"
+            "hash": "b73909234ce8cb414acf80b253f030d4",
+            "title": {
+              "en": "Iroha Step!",
+              "ja": "いろはすてっぷ！",
+              "ko": "IrohaStep!",
+              "zh": "IrohaStep!"
+            }
           },
           {
-            "songNo": "76",
             "order": 32,
             "difficulty": "oni",
-            "hash": "05906c2e6ecabc76c6a6af5451ba0b3d"
+            "hash": "05906c2e6ecabc76c6a6af5451ba0b3d",
+            "title": {
+              "en": "Sword Battlers",
+              "ja": "ソードバトラーズ",
+              "ko": "SOODO BATORAAZU"
+            }
           },
           {
-            "songNo": "1417",
             "order": 33,
             "difficulty": "oni",
-            "hash": "90a0c6abb417d86972bc50aded04c14e"
+            "hash": "90a0c6abb417d86972bc50aded04c14e",
+            "title": {
+              "en": "Hajime",
+              "ja": "初"
+            }
           },
           {
             "order": 34,
-            "songNo": "1314",
             "difficulty": "oni",
-            "hash": "c094c4f5f08ac5a89c6e4a7e3923c769"
+            "hash": "c094c4f5f08ac5a89c6e4a7e3923c769",
+            "title": {
+              "en": "Orange",
+              "ja": "オレンジ",
+              "zh": "Orange"
+            }
           },
           {
-            "songNo": "516",
             "order": 35,
             "difficulty": "oni",
-            "hash": "04a7f75195925b5cb884ec2cbfa4c508"
+            "hash": "04a7f75195925b5cb884ec2cbfa4c508",
+            "title": {
+              "en": "Sore wa Bokutachi no Kiseki",
+              "ja": "それは僕たちの奇跡",
+              "zh": "それは僕たちの奇跡"
+            }
           },
           {
-            "songNo": "284",
             "order": 36,
             "difficulty": "oni",
-            "hash": "70166e3291b34c788af9ddac770c79b2"
+            "hash": "70166e3291b34c788af9ddac770c79b2",
+            "title": {
+              "en": "Kagerou Daze",
+              "ja": "カゲロウデイズ",
+              "ko": "카게로 데이즈",
+              "zh": "Kagerou Days"
+            }
           },
           {
-            "songNo": "436",
             "order": 37,
             "difficulty": "oni",
-            "hash": "c60609be6667c0d5507a06568f9756a3"
+            "hash": "c60609be6667c0d5507a06568f9756a3",
+            "title": {
+              "en": "Usagi no Shippo",
+              "ja": "うさぎのしっぽ",
+              "ko": "우사기노 싯포",
+              "zh": "兔子的尾巴"
+            }
           },
           {
-            "songNo": "608",
             "order": 38,
             "difficulty": "oni",
-            "hash": "fd92db86ec729a8c3c894f93942346d6"
+            "hash": "fd92db86ec729a8c3c894f93942346d6",
+            "title": {
+              "en": "Osakana Mainichi! Sakana-kun",
+              "ja": "おさかな毎日！さかなクン",
+              "zh": "おさかな毎日！さかなクン"
+            }
           },
           {
-            "songNo": "946",
             "order": 39,
             "difficulty": "oni",
-            "hash": "f81c7073b749279e389a268cc5cc83f7"
+            "hash": "f81c7073b749279e389a268cc5cc83f7",
+            "title": {
+              "en": "Mute Sureba Iijan.",
+              "ja": "ミュートすればいいじゃん。",
+              "zh": "ミュートすればいいじゃん。"
+            }
           },
           {
-            "songNo": "1001",
             "order": 40,
             "difficulty": "oni",
-            "hash": "a11a4c779997a8d3f9d1bf12c227144e"
+            "hash": "a11a4c779997a8d3f9d1bf12c227144e",
+            "title": {
+              "en": "Nandodemo Waraou",
+              "ja": "なんどでも笑おう",
+              "zh": "Nandodemo Waraou"
+            }
           },
           {
-            "songNo": "1112",
             "order": 41,
             "difficulty": "oni",
-            "hash": "577f66a01dcc5ffcf51e5628386b37a4"
+            "hash": "577f66a01dcc5ffcf51e5628386b37a4",
+            "title": {
+              "en": "CITRUS",
+              "ja": "CITRUS",
+              "zh": "CITRUS"
+            }
           },
           {
-            "songNo": "736",
             "order": 42,
             "difficulty": "oni",
-            "hash": "771d7927036fbdb1746a3da37b1817fd"
+            "hash": "771d7927036fbdb1746a3da37b1817fd",
+            "title": {
+              "en": "Hito no Okane de Yakiniku o Shokushitai!",
+              "ja": "人のお金で焼肉を食したい！",
+              "zh": "好想用别人的钱吃烤肉！"
+            }
           },
           {
-            "songNo": "493",
             "order": 43,
             "difficulty": "oni",
-            "hash": "d5b6936c10ecb9a80758cce171c6735d"
+            "hash": "d5b6936c10ecb9a80758cce171c6735d",
+            "title": {
+              "en": "Ultraman X",
+              "ja": "ウルトラマンX",
+              "zh": "ウルトラマンX"
+            }
           },
           {
             "order": 44,
-            "songNo": "1177",
             "difficulty": "oni",
-            "hash": "1313ab0d8b1128c63f73606959d3e04e"
+            "hash": "1313ab0d8b1128c63f73606959d3e04e",
+            "title": {
+              "en": "good night baby (feat. Moe Shop)",
+              "ja": "good night baby (feat. Moe Shop)",
+              "zh": "good night baby (feat. Moe Shop)"
+            }
           }
         ],
         "color": "#000000",
@@ -1112,184 +1846,315 @@
         "order": 5,
         "songs": [
           {
-            "songNo": "14",
             "order": 0,
             "difficulty": "oni",
-            "hash": "183ef76526e37863681609718e31e476"
+            "hash": "183ef76526e37863681609718e31e476",
+            "title": {
+              "en": "Nanairo Button -AC16 Chart-",
+              "ja": "七彩ボタン",
+              "zh": "七彩ボタン"
+            }
           },
           {
-            "songNo": "611",
             "order": 1,
             "difficulty": "oni",
-            "hash": "766153a2826986f983b31538fca23d37"
+            "hash": "766153a2826986f983b31538fca23d37",
+            "title": {
+              "en": "Sekai wa Itsudemo Mystery",
+              "ja": "世界はいつでもミステリー",
+              "ko": "세카이와 이츠데모 미스테리",
+              "zh": "世界总是个谜团"
+            }
           },
           {
-            "songNo": "1287",
             "order": 2,
             "difficulty": "oni",
-            "hash": "758540de57547a4bcdcde9cdb0f9a86a"
+            "hash": "758540de57547a4bcdcde9cdb0f9a86a",
+            "title": {
+              "en": "WOW",
+              "ja": "WOW",
+              "zh": "WOW"
+            }
           },
           {
-            "songNo": "1024",
             "order": 3,
             "difficulty": "oni",
-            "hash": "0e6b8ffb3dac10456591d0fab6abf065"
+            "hash": "0e6b8ffb3dac10456591d0fab6abf065",
+            "title": {
+              "en": "bad guy",
+              "ja": "bad guy",
+              "zh": "bad guy"
+            }
           },
           {
-            "songNo": "277",
             "order": 4,
             "difficulty": "oni",
-            "hash": "ceaa21961033dbaa313064295349333f"
+            "hash": "ceaa21961033dbaa313064295349333f",
+            "title": {
+              "en": "Tanhou ～Blooming～",
+              "ja": "綻放",
+              "ko": "TANHOU",
+              "zh": "绽放"
+            }
           },
           {
-            "songNo": "1148",
             "order": 5,
             "difficulty": "oni",
-            "hash": "111d36b0169b63dad9eabe1ecb4f8289"
+            "hash": "111d36b0169b63dad9eabe1ecb4f8289",
+            "title": {
+              "en": "Habit",
+              "ja": "Habit",
+              "zh": "Habit"
+            }
           },
           {
             "order": 6,
-            "songNo": "1271",
             "difficulty": "oni",
-            "hash": "49361bf3d9bd93faa4feac24dcb52e63"
+            "hash": "49361bf3d9bd93faa4feac24dcb52e63",
+            "title": {
+              "en": "La Campanella",
+              "ja": "ラ・カンパネラ",
+              "zh": "钟"
+            }
           },
           {
-            "songNo": "460",
             "order": 7,
             "difficulty": "oni",
-            "hash": "92df6131339d10c5d48ed4593169506a"
+            "hash": "92df6131339d10c5d48ed4593169506a",
+            "title": {
+              "en": "Yo-kai Taisou Dai Ichi",
+              "ja": "ようかい体操第一"
+            }
           },
           {
-            "songNo": "1199",
             "order": 8,
             "difficulty": "oni",
-            "hash": "338cfcdff54017d71d99900c8f786bc5"
+            "hash": "338cfcdff54017d71d99900c8f786bc5",
+            "title": {
+              "en": "Subtitle",
+              "ja": "Subtitle",
+              "zh": "Subtitle"
+            }
           },
           {
-            "songNo": "305",
             "order": 9,
             "difficulty": "oni",
-            "hash": "5c87acc2a37d4070691195dcd52b4792"
+            "hash": "5c87acc2a37d4070691195dcd52b4792",
+            "title": {
+              "en": "Ne～e Oshiete",
+              "ja": "ねぇ教えて",
+              "ko": "NEE OSHIETE",
+              "zh": "NEE OSHIETE"
+            }
           },
           {
-            "songNo": "1220",
             "order": 10,
             "difficulty": "oni",
-            "hash": "81cbacf7ddcc9f813a829c950c0c9532"
+            "hash": "81cbacf7ddcc9f813a829c950c0c9532",
+            "title": {
+              "en": "Destr0yer",
+              "ja": "Destr0yer",
+              "zh": "Destr0yer"
+            }
           },
           {
-            "songNo": "580",
             "order": 11,
             "difficulty": "oni",
-            "hash": "5c9ee69b76d3acebf14a1cefc799f170"
+            "hash": "5c9ee69b76d3acebf14a1cefc799f170",
+            "title": {
+              "en": "Sports Digestdon ～Fill in the Sky～",
+              "ja": "スポーツダイジェスドン ~Fill In The Sky~",
+              "ko": "Sports DigesDON",
+              "zh": "Sports DigesDON"
+            }
           },
           {
-            "songNo": "631",
             "order": 12,
             "difficulty": "oni",
-            "hash": "b103b5c0c9437c251679580f579dd648"
+            "hash": "b103b5c0c9437c251679580f579dd648",
+            "title": {
+              "en": "Shining 65",
+              "ja": "シャイニング65",
+              "ko": "Shining 65",
+              "zh": "Shining 65"
+            }
           },
           {
-            "songNo": "1415",
             "order": 13,
             "difficulty": "oni",
-            "hash": "239d6b7961a6f94cc415d23322237cc2"
+            "hash": "239d6b7961a6f94cc415d23322237cc2",
+            "title": {
+              "en": "Kaijuu",
+              "ja": "怪獣",
+              "zh": "怪兽"
+            }
           },
           {
-            "songNo": "1303",
             "order": 14,
             "difficulty": "oni",
-            "hash": "d4fc1edc98dbb20b5d0f39f1f2d3d645"
+            "hash": "d4fc1edc98dbb20b5d0f39f1f2d3d645",
+            "title": {
+              "en": "Happy Synthesizer",
+              "ja": "ハッピーシンセサイザ",
+              "ko": "HAPPY SYNTHESIZER",
+              "zh": "HAPPY SYNTHESIZER"
+            }
           },
           {
-            "songNo": "1280",
             "order": 15,
             "difficulty": "oni",
-            "hash": "0917072dac9cbea025df6605d0421856"
+            "hash": "0917072dac9cbea025df6605d0421856",
+            "title": {
+              "en": "Just Dance",
+              "ja": "Just Dance",
+              "zh": "现在不跳舞要干嘛"
+            }
           },
           {
-            "songNo": "1070",
             "order": 16,
             "difficulty": "oni",
-            "hash": "3de921ceb52af48dd90eea7986f924b7"
+            "hash": "3de921ceb52af48dd90eea7986f924b7",
+            "title": {
+              "en": "Don-chan Sekai Ryokou",
+              "ja": "どんちゃん世界旅行",
+              "ko": "동이 세계 여행",
+              "zh": "小咚 世界旅行"
+            }
           },
           {
-            "songNo": "1366",
             "order": 17,
             "difficulty": "oni",
-            "hash": "654faa26cc5d0d4a0e340098102dfabb"
+            "hash": "654faa26cc5d0d4a0e340098102dfabb",
+            "title": {
+              "en": "Takara no Oka",
+              "ja": "宝の丘",
+              "ko": "타카라노 오카",
+              "zh": "宝物之丘"
+            }
           },
           {
-            "songNo": "157",
             "order": 18,
             "difficulty": "oni",
-            "hash": "e6651b410c763680b5d7354e58ec4d15"
+            "hash": "e6651b410c763680b5d7354e58ec4d15",
+            "title": {
+              "en": "Geragerapo no Uta",
+              "ja": "ゲラゲラポーのうた",
+              "ko": "게라게라포의 노래"
+            }
           },
           {
             "order": 19,
-            "songNo": "480",
             "difficulty": "oni",
-            "hash": "f6735f6e34ab9a99753f97222ca2b9ad"
+            "hash": "f6735f6e34ab9a99753f97222ca2b9ad",
+            "title": {
+              "en": "Mahou o Kakete! -Akizuki Ritsuko Version-",
+              "ja": "魔法をかけて！",
+              "zh": "魔法をかけて！"
+            }
           },
           {
-            "songNo": "417",
             "order": 20,
             "difficulty": "oni",
-            "hash": "7df90bb5a7f69645a7c043faa598d726"
+            "hash": "7df90bb5a7f69645a7c043faa598d726",
+            "title": {
+              "en": "Grip & Break Down‼ -Tatsujin Edit-",
+              "ja": "Grip & Break down !! -達人Edit.-",
+              "ko": "Grip & Break down !! -달인 Edit.-",
+              "zh": "Grip & Break down !! -达人Edit.-"
+            }
           },
           {
-            "songNo": "99",
             "order": 21,
             "difficulty": "oni",
-            "hash": "06968bd234754f6c31b8ca0d57a2cc2a"
+            "hash": "06968bd234754f6c31b8ca0d57a2cc2a",
+            "title": {
+              "en": "William Tell Overture",
+              "ja": "ウィリアム･テル序曲",
+              "ko": "윌리엄 텔 서곡",
+              "zh": "威廉泰尔序曲"
+            }
           },
           {
-            "songNo": "733",
             "order": 22,
             "difficulty": "oni",
-            "hash": "f27057afe23f3ea45d1fd4e8edd1923b"
+            "hash": "f27057afe23f3ea45d1fd4e8edd1923b",
+            "title": {
+              "en": "JOIN US",
+              "ja": "JOIN US",
+              "zh": "JOIN US"
+            }
           },
           {
-            "songNo": "3",
             "order": 23,
             "difficulty": "oni",
-            "hash": "8aab5181fb2ec6bee17fbe90a530e645"
+            "hash": "8aab5181fb2ec6bee17fbe90a530e645",
+            "title": {
+              "en": "Negai wa Esperanto",
+              "ja": "願いはエスペラント",
+              "ko": "네가이와 에스페란토",
+              "zh": "愿望便是希望者"
+            }
           },
           {
-            "songNo": "1282",
             "order": 24,
             "difficulty": "oni",
-            "hash": "27f9422a907eb7ce1b1ef9cb9910a828"
+            "hash": "27f9422a907eb7ce1b1ef9cb9910a828",
+            "title": {
+              "en": "Uninhabited Island",
+              "ja": "無人の島",
+              "zh": "无人之岛"
+            }
           },
           {
-            "songNo": "898",
             "order": 25,
             "difficulty": "oni",
-            "hash": "39cb979f2ca6f71fb9ebb17de7805b8e"
+            "hash": "39cb979f2ca6f71fb9ebb17de7805b8e",
+            "title": {
+              "en": "God knows...",
+              "ja": "God knows...",
+              "zh": "God knows..."
+            }
           },
           {
             "order": 26,
-            "songNo": "1337",
             "difficulty": "oni",
-            "hash": "6d3973344592eeb90b44bb5a3cf3c489"
+            "hash": "6d3973344592eeb90b44bb5a3cf3c489",
+            "title": {
+              "en": "Zenryoku Dive",
+              "ja": "全力Dive",
+              "zh": "全力Dive"
+            }
           },
           {
             "order": 27,
-            "songNo": "1327",
             "difficulty": "oni",
-            "hash": "ea64887566d0512c76fa58c815ccb32e"
+            "hash": "ea64887566d0512c76fa58c815ccb32e",
+            "title": {
+              "en": "Hai Yorokonde",
+              "ja": "はいよろこんで",
+              "zh": "Hai Yorokonde"
+            }
           },
           {
-            "songNo": "1385",
             "order": 28,
             "difficulty": "oni",
-            "hash": "8b86332cb6c2425b27be7306882c737f"
+            "hash": "8b86332cb6c2425b27be7306882c737f",
+            "title": {
+              "en": "Que Sera Sera",
+              "ja": "ケセラセラ",
+              "ko": "Que Sera Sera",
+              "zh": "Que Sera Sera"
+            }
           },
           {
-            "songNo": "1420",
             "order": 29,
             "difficulty": "oni",
-            "hash": "c858f8d6b0113c4eee03bc822fbfcc8a"
+            "hash": "c858f8d6b0113c4eee03bc822fbfcc8a",
+            "title": {
+              "en": "Konya wa Hold Me",
+              "ja": "今夜はホーミー",
+              "zh": "KONYA WA Hold Me"
+            }
           }
         ],
         "color": "#000000",
@@ -1300,154 +2165,259 @@
         "order": 6,
         "songs": [
           {
-            "songNo": "1450",
             "order": 0,
             "difficulty": "oni",
-            "hash": "cd99675bc59afc5797b9bd09c5cdfae5"
+            "hash": "cd99675bc59afc5797b9bd09c5cdfae5",
+            "title": {
+              "en": "UMA no Force Train2000ing [150 BPM ver.]",
+              "ja": "UMAのフォーストレーニ千グ 【BPM150編】",
+              "ko": "UMA의 FORCE TRAINnisenING【BPM150편】"
+            }
           },
           {
-            "songNo": "468",
             "order": 1,
             "difficulty": "oni",
-            "hash": "58827528d077f4861767d9db5848fdb7"
+            "hash": "58827528d077f4861767d9db5848fdb7",
+            "title": {
+              "en": "Matsuribayashi de Geragerapo",
+              "ja": "祭り囃子でゲラゲラポー"
+            }
           },
           {
-            "songNo": "601",
             "order": 2,
             "difficulty": "oni",
-            "hash": "58c7835188b9ebd082fb3388683d8b70"
+            "hash": "58c7835188b9ebd082fb3388683d8b70",
+            "title": {
+              "en": "Splatoon 2 Medley",
+              "ja": "スプラトゥーン2 メドレー",
+              "ko": "Splatoon 2 Medley"
+            }
           },
           {
-            "songNo": "771",
             "order": 3,
             "difficulty": "oni",
-            "hash": "4be314e18fabf8db423673caf72405aa"
+            "hash": "4be314e18fabf8db423673caf72405aa",
+            "title": {
+              "en": "Cantabile × Passione",
+              "ja": "カンタービレ×パッシオーネ",
+              "ko": "Cantabile×Passione",
+              "zh": "Cantabile×Passione"
+            }
           },
           {
-            "songNo": "1208",
             "order": 4,
             "difficulty": "oni",
-            "hash": "c92c23470d178987cdb3245e71d2864d"
+            "hash": "c92c23470d178987cdb3245e71d2864d",
+            "title": {
+              "en": "Nagoya-bayashi",
+              "ja": "名古屋ばやし",
+              "ko": "NAGOYABAYASHI",
+              "zh": "NAGOYABAYASHI"
+            }
           },
           {
-            "songNo": "632",
             "order": 5,
             "difficulty": "oni",
-            "hash": "659a5ce9934df9df2d682cb16b02028f"
+            "hash": "659a5ce9934df9df2d682cb16b02028f",
+            "title": {
+              "en": "Taiko March",
+              "ja": "太鼓のマーチ",
+              "ko": "타이코노마치",
+              "zh": "太鼓进行曲"
+            }
           },
           {
-            "songNo": "467",
             "order": 6,
             "difficulty": "oni",
-            "hash": "4f445295d0e1622b466b480a273143db"
+            "hash": "4f445295d0e1622b466b480a273143db",
+            "title": {
+              "en": "Hatsukoitouge de Geragerapo",
+              "ja": "初恋峠でゲラゲラポー"
+            }
           },
           {
-            "songNo": "926",
             "order": 7,
             "difficulty": "oni",
-            "hash": "3562220d2f1a57d4122d99ebd8283ecc"
+            "hash": "3562220d2f1a57d4122d99ebd8283ecc",
+            "title": {
+              "en": "Inochi ni Kirawarete iru.",
+              "ja": "命に嫌われている。",
+              "ko": "Hated by life.",
+              "zh": "Hated by Life"
+            }
           },
           {
-            "songNo": "1155",
             "order": 8,
             "difficulty": "oni",
-            "hash": "bd74beb91735df116087c917449dec85"
+            "hash": "bd74beb91735df116087c917449dec85",
+            "title": {
+              "en": "American Patrol",
+              "ja": "アメリカンパトロール",
+              "ko": "아메리칸 패트롤",
+              "zh": "美国巡逻兵"
+            }
           },
           {
-            "songNo": "1023",
             "order": 9,
             "difficulty": "oni",
-            "hash": "b242cf84d99efa0c575170e3039481ed"
+            "hash": "b242cf84d99efa0c575170e3039481ed",
+            "title": {
+              "en": "DDU-DU DDU-DU",
+              "ja": "DDU-DU DDU-DU",
+              "ko": "뚜두뚜두(DDU-DU DDU-DU)",
+              "zh": "DDU-DU DDU-DU"
+            }
           },
           {
-            "songNo": "741",
             "order": 10,
             "difficulty": "oni",
-            "hash": "09047a1fd397813dae143589f158c861"
+            "hash": "09047a1fd397813dae143589f158c861",
+            "title": {
+              "en": "Furi-furi♪ Nori-nori♪",
+              "ja": "フリフリ♪ノリノリ♪",
+              "ko": "후리후리♪노리노리♪",
+              "zh": "摇摇♪晃晃♪"
+            }
           },
           {
-            "songNo": "142",
             "order": 11,
             "difficulty": "oni",
-            "hash": "62d0554dc981dda2893d79a8ba95270c"
+            "hash": "62d0554dc981dda2893d79a8ba95270c",
+            "title": {
+              "en": "Fashion Monster",
+              "ja": "ファッションモンスター"
+            }
           },
           {
-            "songNo": "267",
             "order": 12,
             "difficulty": "oni",
-            "hash": "e282b301bbabae8a97799ce2c96d336b"
+            "hash": "e282b301bbabae8a97799ce2c96d336b",
+            "title": {
+              "en": "STAY TUNE",
+              "ja": "STAY TUNE"
+            }
           },
           {
-            "songNo": "1382",
             "order": 13,
             "difficulty": "oni",
-            "hash": "ab8226a91d001761b2ee091a4bb8ca62"
+            "hash": "ab8226a91d001761b2ee091a4bb8ca62",
+            "title": {
+              "en": "Taiko Session",
+              "ja": "Taiko Session",
+              "zh": "Taiko Session"
+            }
           },
           {
-            "songNo": "1226",
             "order": 14,
             "difficulty": "oni",
-            "hash": "09897fe1b8e640c8b68bf651939e4763"
+            "hash": "09897fe1b8e640c8b68bf651939e4763",
+            "title": {
+              "en": "Haikei, Gakkou ni te...",
+              "ja": "拝啓、学校にて…",
+              "ko": "HAIKEI, GAKKO NITE...",
+              "zh": "敬启，我在学校..."
+            }
           },
           {
-            "songNo": "118",
             "order": 15,
             "difficulty": "oni",
-            "hash": "c9a9fa9bed47f633b26dc1bfe62e70c6"
+            "hash": "c9a9fa9bed47f633b26dc1bfe62e70c6",
+            "title": {
+              "en": "Sachi Sachi ni Shite Ageru♪",
+              "ja": "さちさちにしてあげる♪",
+              "zh": "さちさちにしてあげる♪"
+            }
           },
           {
-            "songNo": "273",
             "order": 16,
             "difficulty": "oni",
-            "hash": "178397f4442b8c8c47ffce6f0650fd06"
+            "hash": "178397f4442b8c8c47ffce6f0650fd06",
+            "title": {
+              "en": "Kikyoku ～Seasons of Asia～",
+              "ja": "季曲",
+              "ko": "KIKYOKU",
+              "zh": "季曲"
+            }
           },
           {
-            "songNo": "275",
             "order": 17,
             "difficulty": "oni",
-            "hash": "c8d8ea5262682014e2d983dbbfb9cf58"
+            "hash": "c8d8ea5262682014e2d983dbbfb9cf58",
+            "title": {
+              "en": "Zeihen ～transformation～",
+              "ja": "蛻変",
+              "ko": "ZEIHEN",
+              "zh": "蜕变"
+            }
           },
           {
-            "songNo": "161",
             "order": 18,
             "difficulty": "oni",
-            "hash": "372f2b8e483a2565cfe2e935233c1e82"
+            "hash": "372f2b8e483a2565cfe2e935233c1e82",
+            "title": {
+              "en": "Gomennasai no Kissing You",
+              "ja": "ごめんなさいのKissing You"
+            }
           },
           {
-            "songNo": "199",
             "order": 19,
             "difficulty": "oni",
-            "hash": "681eff0a4198a64822583d368fc04ec3"
+            "hash": "681eff0a4198a64822583d368fc04ec3",
+            "title": {
+              "en": "Onegai! Cinderella",
+              "ja": "お願い！シンデレラ",
+              "ko": "오네가이!신데레라",
+              "zh": "お願い！シンデレラ"
+            }
           },
           {
             "order": 20,
-            "songNo": "1345",
             "difficulty": "oni",
-            "hash": "934ba3eca163c67cd7d7b4e637845293"
+            "hash": "934ba3eca163c67cd7d7b4e637845293",
+            "title": {
+              "en": "Turkish March",
+              "ja": "トルコ行進曲",
+              "zh": "土耳其进行曲"
+            }
           },
           {
-            "songNo": "35",
             "order": 21,
             "difficulty": "oni",
-            "hash": "22d8fd4198a5a19faffb005e3a189f91"
+            "hash": "22d8fd4198a5a19faffb005e3a189f91",
+            "title": {
+              "en": "GLORIOUS RO@D",
+              "ja": "GLORIOUS RO@D",
+              "zh": "GLORIOUS RO＠D"
+            }
           },
           {
-            "songNo": "921",
             "order": 22,
             "difficulty": "oni",
-            "hash": "5c506a395ddb8023a3b9c7f9e1acffea"
+            "hash": "5c506a395ddb8023a3b9c7f9e1acffea",
+            "title": {
+              "en": "Hachigatsu no Saka",
+              "ja": "8月の坂",
+              "zh": "8月の坂"
+            }
           },
           {
-            "songNo": "583",
             "order": 23,
             "difficulty": "oni",
-            "hash": "9f6709f27a7ba5eb1dc701d95bdc2ebe"
+            "hash": "9f6709f27a7ba5eb1dc701d95bdc2ebe",
+            "title": {
+              "en": "Sora no Michishirube",
+              "ja": "ソラのミチシルベ"
+            }
           },
           {
-            "songNo": "1125",
             "order": 24,
             "difficulty": "oni",
-            "hash": "4ede018b3709fcd201ee91412a1edad8"
+            "hash": "4ede018b3709fcd201ee91412a1edad8",
+            "title": {
+              "en": "DANCE MONKEY",
+              "ja": "DANCE MONKEY",
+              "zh": "DANCE MONKEY"
+            }
           }
         ],
         "color": "#000000",

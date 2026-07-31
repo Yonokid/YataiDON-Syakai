@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Score } from '../types'
 
 interface ChartSong {
-  songNo: string
   order: number
   difficulty: string
-  hash: string
+  hash: string | null
+  title?: Record<string, string>
 }
 
 interface ChartSection {
@@ -23,7 +23,6 @@ interface ChartFile {
 }
 
 const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const props = defineProps<{ scores: Score[] }>()
 
@@ -48,32 +47,14 @@ const crownByHash = computed(() => {
   return map
 })
 
-const titleByHash = ref(new Map<string, string>())
-
-onMounted(async () => {
-  const allHashes = new Set(
-    charts.flatMap((chart) => chart.data.sections.flatMap((s) => s.songs.map((song) => song.hash))),
-  )
-  const params = new URLSearchParams()
-  for (const hash of allHashes) params.append('hashes', hash)
-
-  const response = await fetch(`${API_BASE_URL}/songs?${params}`)
-  if (!response.ok) return
-  const songs: { hash: string; title: Record<string, string> }[] = await response.json()
-
-  const map = new Map<string, string>()
-  for (const song of songs) {
-    map.set(song.hash, song.title.en ?? Object.values(song.title)[0] ?? '')
-  }
-  titleByHash.value = map
-})
-
-function crownClass(hash: string) {
-  return CROWN_CLASSES[crownByHash.value.get(hash) ?? 0]
+function crownClass(hash: string | null) {
+  const crown = (hash ? crownByHash.value.get(hash) : undefined) ?? 0
+  return CROWN_CLASSES[crown]
 }
 
 function songTitle(song: ChartSong) {
-  return titleByHash.value.get(song.hash) || song.songNo
+  if (!song.title) return '(unknown song)'
+  return song.title.en ?? Object.values(song.title)[0] ?? '(unknown song)'
 }
 </script>
 
@@ -103,7 +84,7 @@ function songTitle(song: ChartSong) {
         <tbody>
           <tr
             v-for="song in [...section.songs].sort((a, b) => a.order - b.order)"
-            :key="song.hash"
+            :key="song.hash ?? song.order"
             :class="crownClass(song.hash)"
           >
             <td>{{ songTitle(song) }}</td>
