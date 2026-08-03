@@ -9,6 +9,7 @@ const props = defineProps<{ user: UserData; accessCode: string }>()
 const emit = defineEmits<{
   logout: []
   'username-updated': [username: string]
+  'chara-colors-updated': [colors: { chara_color_1: string; chara_color_2: string; chara_color_3: string }]
   'import-requested': []
 }>()
 
@@ -29,6 +30,40 @@ const saveError = ref('')
 
 const isRequestingImport = ref(false)
 const importError = ref('')
+
+const charaColor1 = ref(props.user.chara_color_1)
+const charaColor2 = ref(props.user.chara_color_2)
+const charaColor3 = ref(props.user.chara_color_3)
+const isSavingColors = ref(false)
+const colorSaveError = ref('')
+
+async function saveCharaColors() {
+  isSavingColors.value = true
+  colorSaveError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_chara_colors?access_code=${encodeURIComponent(props.accessCode)}`,
+      {
+        method: 'POST',
+        body: new URLSearchParams({
+          chara_color_1: charaColor1.value,
+          chara_color_2: charaColor2.value,
+          chara_color_3: charaColor3.value,
+        }),
+      },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('chara-colors-updated', {
+      chara_color_1: charaColor1.value,
+      chara_color_2: charaColor2.value,
+      chara_color_3: charaColor3.value,
+    })
+  } catch {
+    colorSaveError.value = 'Could not save colors. Please try again.'
+  } finally {
+    isSavingColors.value = false
+  }
+}
 
 async function requestScoreImport() {
   if (
@@ -111,6 +146,26 @@ async function saveUsername() {
         Import pre-existing scores
       </button>
       <p v-if="importError" class="username-prompt-error">{{ importError }}</p>
+    </div>
+
+    <div class="chara-colors-section">
+      <span class="chara-colors-label">Don Colors</span>
+      <div class="chara-colors-swatches">
+        <label class="chara-color-swatch">
+          <input v-model="charaColor1" type="color" />
+          Body
+        </label>
+        <label class="chara-color-swatch">
+          <input v-model="charaColor2" type="color" />
+          Face
+        </label>
+        <label class="chara-color-swatch">
+          <input v-model="charaColor3" type="color" />
+          Accent
+        </label>
+      </div>
+      <button type="button" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
+      <p v-if="colorSaveError" class="username-prompt-error">{{ colorSaveError }}</p>
     </div>
 
     <p v-if="user.scores.length === 0" class="empty">No scores yet.</p>
@@ -212,6 +267,45 @@ async function saveUsername() {
   color: #888;
   font-size: 0.9rem;
   text-align: center;
+}
+
+.chara-colors-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chara-colors-label {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.chara-colors-swatches {
+  display: flex;
+  gap: 1rem;
+}
+
+.chara-color-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.chara-color-swatch input {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.chara-colors-section button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
 }
 
 .scores-table-wrap {

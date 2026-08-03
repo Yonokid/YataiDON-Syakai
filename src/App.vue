@@ -43,6 +43,7 @@ function logout() {
         :access-code="accessCode"
         @logout="logout"
         @username-updated="currentUser.username = $event"
+        @chara-colors-updated="Object.assign(currentUser, $event)"
         @import-requested="currentUser.import_requested = true"
       />
     </template>
