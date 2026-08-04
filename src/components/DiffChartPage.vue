@@ -23,8 +23,29 @@ interface ChartFile {
 }
 
 const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-const props = defineProps<{ scores: Score[] }>()
+const props = defineProps<{ scores: Score[]; accessCode: string }>()
+
+const jumpingHash = ref<string | null>(null)
+const jumpError = ref('')
+
+async function sendToGame(hash: string | null) {
+  if (!hash) return
+  jumpingHash.value = hash
+  jumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_song_jump?access_code=${encodeURIComponent(props.accessCode)}&hash=${encodeURIComponent(hash)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    jumpError.value = 'Could not send song to game. Please try again.'
+  } finally {
+    jumpingHash.value = null
+  }
+}
 
 const modules = import.meta.glob('../data/diffchart/*.json', { eager: true }) as Record<
   string,
@@ -79,6 +100,7 @@ function songTitle(song: ChartSong) {
           <tr>
             <th>Song</th>
             <th>Difficulty</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -89,10 +111,22 @@ function songTitle(song: ChartSong) {
           >
             <td>{{ songTitle(song) }}</td>
             <td>{{ song.difficulty }}</td>
+            <td>
+              <button
+                v-if="song.hash"
+                type="button"
+                :disabled="jumpingHash === song.hash"
+                @click="sendToGame(song.hash)"
+              >
+                {{ jumpingHash === song.hash ? 'Sending…' : 'Send to Game' }}
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <p v-if="jumpError" class="jump-error">{{ jumpError }}</p>
   </div>
 </template>
 
@@ -131,6 +165,17 @@ function songTitle(song: ChartSong) {
   padding: 0.4rem 0.6rem;
   text-align: left;
   border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.songs-table button {
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.jump-error {
+  color: #c0392b;
+  font-size: 0.85rem;
 }
 
 .crown-clear {

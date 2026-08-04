@@ -36,7 +36,11 @@ function logout() {
 
   <main>
     <template v-if="currentUser && accessCode">
-      <DiffChartPage v-if="view === 'charts'" :scores="currentUser.scores" />
+      <DiffChartPage
+        v-if="view === 'charts'"
+        :scores="currentUser.scores"
+        :access-code="accessCode"
+      />
       <UserPage
         v-else
         :user="currentUser"
