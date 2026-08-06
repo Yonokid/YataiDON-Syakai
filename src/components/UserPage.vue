@@ -9,6 +9,7 @@ const props = defineProps<{ user: UserData; accessCode: string }>()
 const emit = defineEmits<{
   logout: []
   'username-updated': [username: string]
+  'chara-colors-updated': [colors: { chara_color_1: string; chara_color_2: string; chara_color_3: string }]
   'import-requested': []
 }>()
 
@@ -30,10 +31,63 @@ const saveError = ref('')
 const isRequestingImport = ref(false)
 const importError = ref('')
 
+const jumpingHash = ref<string | null>(null)
+const jumpError = ref('')
+
+async function sendToGame(hash: string) {
+  jumpingHash.value = hash
+  jumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_song_jump?access_code=${encodeURIComponent(props.accessCode)}&hash=${encodeURIComponent(hash)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    jumpError.value = 'Could not send song to game. Please try again.'
+  } finally {
+    jumpingHash.value = null
+  }
+}
+
+const charaColor1 = ref(props.user.chara_color_1)
+const charaColor2 = ref(props.user.chara_color_2)
+const charaColor3 = ref(props.user.chara_color_3)
+const isSavingColors = ref(false)
+const colorSaveError = ref('')
+
+async function saveCharaColors() {
+  isSavingColors.value = true
+  colorSaveError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_chara_colors?access_code=${encodeURIComponent(props.accessCode)}`,
+      {
+        method: 'POST',
+        body: new URLSearchParams({
+          chara_color_1: charaColor1.value,
+          chara_color_2: charaColor2.value,
+          chara_color_3: charaColor3.value,
+        }),
+      },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('chara-colors-updated', {
+      chara_color_1: charaColor1.value,
+      chara_color_2: charaColor2.value,
+      chara_color_3: charaColor3.value,
+    })
+  } catch {
+    colorSaveError.value = 'Could not save colors. Please try again.'
+  } finally {
+    isSavingColors.value = false
+  }
+}
+
 async function requestScoreImport() {
   if (
     !confirm(
-      'Import your pre-existing scores? This will overwrite matching scores on this account the next time YataiDON is launched.',
+      'Import your pre-existing scores? You can only do this once.',
     )
   )
     return
@@ -113,6 +167,26 @@ async function saveUsername() {
       <p v-if="importError" class="username-prompt-error">{{ importError }}</p>
     </div>
 
+    <div class="chara-colors-section">
+      <span class="chara-colors-label">Don Colors</span>
+      <div class="chara-colors-swatches">
+        <label class="chara-color-swatch">
+          <input v-model="charaColor1" type="color" />
+          Body
+        </label>
+        <label class="chara-color-swatch">
+          <input v-model="charaColor2" type="color" />
+          Face
+        </label>
+        <label class="chara-color-swatch">
+          <input v-model="charaColor3" type="color" />
+          Accent
+        </label>
+      </div>
+      <button type="button" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
+      <p v-if="colorSaveError" class="username-prompt-error">{{ colorSaveError }}</p>
+    </div>
+
     <p v-if="user.scores.length === 0" class="empty">No scores yet.</p>
     <div v-else class="scores-table-wrap">
       <table class="scores-table">
@@ -125,6 +199,7 @@ async function saveUsername() {
             <th>Crown</th>
             <th>Rank</th>
             <th>Max Combo</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -136,10 +211,20 @@ async function saveUsername() {
             <td>{{ entry.crown }}</td>
             <td>{{ entry.rank }}</td>
             <td>{{ entry.max_combo }}</td>
+            <td>
+              <button
+                type="button"
+                :disabled="jumpingHash === entry.hash"
+                @click="sendToGame(entry.hash)"
+              >
+                {{ jumpingHash === entry.hash ? 'Sending…' : 'Send to Game' }}
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <p v-if="jumpError" class="username-prompt-error">{{ jumpError }}</p>
 
     <button type="button" class="logout" @click="$emit('logout')">Log out</button>
   </div>
@@ -214,6 +299,45 @@ async function saveUsername() {
   text-align: center;
 }
 
+.chara-colors-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chara-colors-label {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.chara-colors-swatches {
+  display: flex;
+  gap: 1rem;
+}
+
+.chara-color-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.chara-color-swatch input {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.chara-colors-section button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
 .scores-table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -230,6 +354,11 @@ async function saveUsername() {
   text-align: left;
   border-bottom: 1px solid rgba(128, 128, 128, 0.3);
   white-space: nowrap;
+}
+
+.scores-table button {
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
 }
 
 .logout {

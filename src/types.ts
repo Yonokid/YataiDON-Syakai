@@ -18,5 +18,8 @@ export interface UserData {
   username: string
   import_requested: boolean
   import_completed: boolean
+  chara_color_1: string
+  chara_color_2: string
+  chara_color_3: string
   scores: Score[]
 }

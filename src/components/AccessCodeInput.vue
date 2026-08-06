@@ -4,12 +4,14 @@ import type { UserData } from '../types'
 
 const ACCESS_CODE_LENGTH = 24
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const STORAGE_KEY = 'yataidon_access_code'
 
 const emit = defineEmits<{
   verified: [code: string, user: UserData]
 }>()
 
-const accessCode = ref('')
+const accessCode = ref(localStorage.getItem(STORAGE_KEY) ?? '')
+const rememberMe = ref(accessCode.value !== '')
 const verifyStatus = ref<'idle' | 'checking' | 'valid' | 'invalid' | 'error'>('idle')
 
 function handleInput(event: Event) {
@@ -42,10 +44,21 @@ watch(accessCode, async (code) => {
 
     const user: UserData = await response.json()
     verifyStatus.value = 'valid'
+    if (rememberMe.value) {
+      localStorage.setItem(STORAGE_KEY, requestedCode)
+    }
     emit('verified', requestedCode, user)
   } catch {
     if (accessCode.value !== requestedCode) return
     verifyStatus.value = 'error'
+  }
+}, { immediate: true })
+
+watch(rememberMe, (remember) => {
+  if (!remember) {
+    localStorage.removeItem(STORAGE_KEY)
+  } else if (isComplete.value && verifyStatus.value === 'valid') {
+    localStorage.setItem(STORAGE_KEY, accessCode.value)
   }
 })
 </script>
@@ -68,6 +81,10 @@ watch(accessCode, async (code) => {
     <span class="access-code-count" :class="{ complete: isComplete }">
       {{ accessCode.length }} / {{ ACCESS_CODE_LENGTH }}
     </span>
+    <label class="remember-me">
+      <input type="checkbox" v-model="rememberMe" />
+      Remember me
+    </label>
     <span v-if="verifyStatus !== 'idle'" class="access-code-status" :class="verifyStatus">
       <template v-if="verifyStatus === 'checking'">Checking…</template>
       <template v-else-if="verifyStatus === 'valid'">Access code verified</template>
@@ -102,6 +119,14 @@ watch(accessCode, async (code) => {
 
 .access-code-count.complete {
   color: #2e8b57;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .access-code-status {
