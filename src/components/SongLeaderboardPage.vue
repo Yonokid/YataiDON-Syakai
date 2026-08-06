@@ -9,6 +9,11 @@ interface Song {
   level: number
 }
 
+interface SongGroup {
+  title: Record<string, string>
+  variants: Song[]
+}
+
 interface ScoreEntry {
   username: string
   score: number
@@ -24,7 +29,8 @@ const songs = ref<Song[]>([])
 const songsStatus = ref<'loading' | 'loaded' | 'error'>('loading')
 const search = ref('')
 
-const selected = ref<Song | null>(null)
+const selectedGroup = ref<SongGroup | null>(null)
+const selectedVariant = ref<Song | null>(null)
 const entries = ref<ScoreEntry[]>([])
 const entriesStatus = ref<'loading' | 'loaded' | 'error'>('loaded')
 
@@ -36,14 +42,31 @@ function difficultyLabel(difficulty: number) {
   return DIFFICULTY_LABELS[difficulty] ?? `Difficulty ${difficulty}`
 }
 
-const filteredSongs = computed(() => {
-  const term = search.value.trim().toLowerCase()
-  if (!term) return songs.value
-  return songs.value.filter((song) => songTitle(song.title).toLowerCase().includes(term))
+const songGroups = computed(() => {
+  const groups = new Map<string, SongGroup>()
+  for (const song of songs.value) {
+    const key = songTitle(song.title)
+    const existing = groups.get(key)
+    if (existing) {
+      existing.variants.push(song)
+    } else {
+      groups.set(key, { title: song.title, variants: [song] })
+    }
+  }
+  for (const group of groups.values()) {
+    group.variants.sort((a, b) => a.difficulty - b.difficulty)
+  }
+  return [...groups.values()].sort((a, b) => songTitle(a.title).localeCompare(songTitle(b.title)))
 })
 
-async function selectSong(song: Song) {
-  selected.value = song
+const filteredGroups = computed(() => {
+  const term = search.value.trim().toLowerCase()
+  if (!term) return songGroups.value
+  return songGroups.value.filter((group) => songTitle(group.title).toLowerCase().includes(term))
+})
+
+async function loadLeaderboard(song: Song) {
+  selectedVariant.value = song
   entriesStatus.value = 'loading'
   try {
     const response = await fetch(
@@ -56,6 +79,16 @@ async function selectSong(song: Song) {
   } catch {
     entriesStatus.value = 'error'
   }
+}
+
+function selectGroup(group: SongGroup) {
+  selectedGroup.value = group
+  loadLeaderboard(group.variants[0]!)
+}
+
+function backToSongs() {
+  selectedGroup.value = null
+  selectedVariant.value = null
 }
 
 onMounted(async () => {
@@ -75,25 +108,35 @@ onMounted(async () => {
   <div class="song-leaderboard-page">
     <h1>Song Leaderboards</h1>
 
-    <div v-if="!selected" class="song-picker">
+    <div v-if="!selectedGroup" class="song-picker">
       <input v-model="search" type="text" placeholder="Search songs…" class="song-search" />
       <p v-if="songsStatus === 'loading'">Loading…</p>
       <p v-else-if="songsStatus === 'error'" class="error">Could not reach server.</p>
-      <p v-else-if="filteredSongs.length === 0" class="empty">No songs found.</p>
+      <p v-else-if="filteredGroups.length === 0" class="empty">No songs found.</p>
       <ul v-else class="song-list">
-        <li v-for="song in filteredSongs" :key="song.hash">
-          <button type="button" @click="selectSong(song)">
-            {{ songTitle(song.title) }}
-            <span class="song-meta">{{ difficultyLabel(song.difficulty) }} ★{{ song.level }}</span>
+        <li v-for="group in filteredGroups" :key="songTitle(group.title)">
+          <button type="button" @click="selectGroup(group)">
+            {{ songTitle(group.title) }}
           </button>
         </li>
       </ul>
     </div>
 
     <div v-else class="song-detail">
-      <button type="button" class="back" @click="selected = null">&larr; Back to songs</button>
-      <h2>{{ songTitle(selected.title) }}</h2>
-      <p class="song-meta">{{ difficultyLabel(selected.difficulty) }} ★{{ selected.level }}</p>
+      <button type="button" class="back" @click="backToSongs">&larr; Back to songs</button>
+      <h2>{{ songTitle(selectedGroup.title) }}</h2>
+
+      <div class="difficulty-tabs">
+        <button
+          v-for="variant in selectedGroup.variants"
+          :key="variant.hash"
+          type="button"
+          :class="{ active: variant === selectedVariant }"
+          @click="loadLeaderboard(variant)"
+        >
+          {{ difficultyLabel(variant.difficulty) }} ★{{ variant.level }}
+        </button>
+      </div>
 
       <p v-if="entriesStatus === 'loading'">Loading…</p>
       <p v-else-if="entriesStatus === 'error'" class="error">Could not reach server.</p>
@@ -159,19 +202,9 @@ onMounted(async () => {
 
 .song-list button {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
   padding: 0.5rem 0.7rem;
   cursor: pointer;
   text-align: left;
-}
-
-.song-meta {
-  color: #888;
-  font-size: 0.85rem;
-  white-space: nowrap;
 }
 
 .song-detail {
@@ -186,6 +219,23 @@ onMounted(async () => {
   align-self: flex-start;
   padding: 0.3rem 0.6rem;
   cursor: pointer;
+}
+
+.difficulty-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.difficulty-tabs button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.difficulty-tabs button.active {
+  font-weight: bold;
+  border-color: currentColor;
 }
 
 .error {
