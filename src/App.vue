@@ -3,11 +3,13 @@ import { ref } from 'vue'
 import AccessCodeInput from './components/AccessCodeInput.vue'
 import UserPage from './components/UserPage.vue'
 import DiffChartPage from './components/DiffChartPage.vue'
+import LeaderboardPage from './components/LeaderboardPage.vue'
+import SongLeaderboardPage from './components/SongLeaderboardPage.vue'
 import type { UserData } from './types'
 
 const accessCode = ref<string | null>(null)
 const currentUser = ref<UserData | null>(null)
-const view = ref<'scores' | 'charts'>('scores')
+const view = ref<'scores' | 'charts' | 'leaderboard' | 'songs'>('scores')
 
 function handleVerified(code: string, user: UserData) {
   accessCode.value = code
@@ -30,12 +32,24 @@ function logout() {
       <button type="button" :class="{ active: view === 'charts' }" @click="view = 'charts'">
         Diff Charts
       </button>
+      <button
+        type="button"
+        :class="{ active: view === 'leaderboard' }"
+        @click="view = 'leaderboard'"
+      >
+        Leaderboard
+      </button>
+      <button type="button" :class="{ active: view === 'songs' }" @click="view = 'songs'">
+        Song Leaderboards
+      </button>
     </nav>
   </header>
 
   <main>
     <template v-if="currentUser && accessCode">
-      <DiffChartPage v-if="view === 'charts'" :scores="currentUser.scores" />
+      <SongLeaderboardPage v-if="view === 'songs'" />
+      <LeaderboardPage v-else-if="view === 'leaderboard'" />
+      <DiffChartPage v-else-if="view === 'charts'" :scores="currentUser.scores" />
       <UserPage
         v-else
         :user="currentUser"
