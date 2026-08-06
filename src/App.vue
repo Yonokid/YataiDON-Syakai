@@ -49,7 +49,11 @@ function logout() {
     <template v-if="currentUser && accessCode">
       <SongLeaderboardPage v-if="view === 'songs'" />
       <LeaderboardPage v-else-if="view === 'leaderboard'" />
-      <DiffChartPage v-else-if="view === 'charts'" :scores="currentUser.scores" />
+      <DiffChartPage
+        v-else-if="view === 'charts'"
+        :scores="currentUser.scores"
+        :access-code="accessCode"
+      />
       <UserPage
         v-else
         :user="currentUser"
