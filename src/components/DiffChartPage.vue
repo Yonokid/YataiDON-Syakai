@@ -25,6 +25,10 @@ interface ChartFile {
 const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+const tabBase =
+  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
+const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
+
 const props = defineProps<{ scores: Score[]; accessCode: string }>()
 
 const jumpingHash = ref<string | null>(null)
@@ -80,27 +84,27 @@ function songTitle(song: ChartSong) {
 </script>
 
 <template>
-  <div class="diffchart-page">
-    <div class="chart-tabs">
+  <div class="flex w-full max-w-3xl flex-col gap-4">
+    <div class="flex flex-wrap gap-2">
       <button
         v-for="chart in charts"
         :key="chart.name"
         type="button"
-        :class="{ active: chart === selected }"
+        :class="[tabBase, chart === selected && tabActive]"
         @click="selected = chart"
       >
         {{ chart.name }}
       </button>
     </div>
 
-    <div v-for="section in sections" :key="section.order" class="section">
-      <h2>{{ section.name }}</h2>
-      <table class="songs-table">
+    <div v-for="section in sections" :key="section.order" class="flex flex-col gap-2">
+      <h2 class="text-lg font-bold">{{ section.name }}</h2>
+      <table class="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th>Song</th>
-            <th>Difficulty</th>
-            <th></th>
+            <th class="th-cell">Song</th>
+            <th class="th-cell">Difficulty</th>
+            <th class="th-cell"></th>
           </tr>
         </thead>
         <tbody>
@@ -109,15 +113,16 @@ function songTitle(song: ChartSong) {
             :key="song.hash ?? song.order"
             :class="crownClass(song.hash)"
           >
-            <td>
-              <router-link v-if="song.hash" :to="`/songs/${song.hash}`">{{ songTitle(song) }}</router-link>
+            <td class="td-cell">
+              <router-link v-if="song.hash" :to="`/songs/${song.hash}`" class="row-link">{{ songTitle(song) }}</router-link>
               <template v-else>{{ songTitle(song) }}</template>
             </td>
-            <td>{{ song.difficulty }}</td>
-            <td>
+            <td class="td-cell">{{ song.difficulty }}</td>
+            <td class="td-cell">
               <button
                 v-if="song.hash"
                 type="button"
+                class="btn whitespace-nowrap"
                 :disabled="jumpingHash === song.hash"
                 @click="sendToGame(song.hash)"
               >
@@ -129,58 +134,11 @@ function songTitle(song: ChartSong) {
       </table>
     </div>
 
-    <p v-if="jumpError" class="jump-error">{{ jumpError }}</p>
+    <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
   </div>
 </template>
 
 <style scoped>
-.diffchart-page {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  max-width: 48rem;
-}
-
-.chart-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.chart-tabs button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.chart-tabs button.active {
-  font-weight: bold;
-  border-color: currentColor;
-}
-
-.songs-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.songs-table th,
-.songs-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-}
-
-.songs-table button {
-  padding: 0.3rem 0.6rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.jump-error {
-  color: #c0392b;
-  font-size: 0.85rem;
-}
-
 .crown-clear {
   background-color: rgba(192, 192, 192, 0.35);
 }

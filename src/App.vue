@@ -4,33 +4,37 @@ import { currentUser, accessCode, login, logout } from './stores/auth'
 function handleLogout() {
   logout()
 }
+
+const navBase =
+  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
+const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
 </script>
 
 <template>
   <header>
-    <nav v-if="currentUser && accessCode" class="nav-tabs">
+    <nav v-if="currentUser && accessCode" class="flex flex-wrap justify-center gap-2 py-3">
       <router-link to="/" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">Home</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Home</button>
       </router-link>
       <router-link to="/scores" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">Scores</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Scores</button>
       </router-link>
       <router-link to="/user" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">User</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">User</button>
       </router-link>
       <router-link to="/charts" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">Diff Charts</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Diff Charts</button>
       </router-link>
       <router-link to="/leaderboard" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">Leaderboard</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Leaderboard</button>
       </router-link>
       <router-link to="/songs" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="{ active: isActive }" @click="navigate">Song Leaderboards</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Song Leaderboards</button>
       </router-link>
     </nav>
   </header>
 
-  <main>
+  <main class="flex min-h-[80vh] items-center justify-center p-4">
     <router-view v-slot="{ Component, route }">
       <component
         :is="Component"
@@ -53,29 +57,3 @@ function handleLogout() {
     </router-view>
   </main>
 </template>
-
-<style scoped>
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-}
-
-.nav-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0;
-}
-
-.nav-tabs button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.nav-tabs button.active {
-  font-weight: bold;
-  border-color: currentColor;
-}
-</style>

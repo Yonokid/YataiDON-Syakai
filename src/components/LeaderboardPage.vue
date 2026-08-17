@@ -25,64 +25,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="leaderboard-page">
-    <h1>Leaderboard</h1>
-    <p class="subtitle">Total score, Oni + Ura difficulties</p>
+  <div class="flex w-full max-w-lg flex-col items-center gap-3">
+    <h1 class="text-xl font-bold">Leaderboard</h1>
+    <p class="muted -mt-2">Total score, Oni + Ura difficulties</p>
 
     <p v-if="status === 'loading'">Loading…</p>
-    <p v-else-if="status === 'error'" class="error">Could not reach server.</p>
-    <p v-else-if="entries.length === 0" class="empty">No scores yet.</p>
-    <table v-else class="leaderboard-table">
+    <p v-else-if="status === 'error'" class="error-text">Could not reach server.</p>
+    <p v-else-if="entries.length === 0" class="muted">No scores yet.</p>
+    <table v-else class="w-full border-collapse text-sm">
       <thead>
         <tr>
-          <th>Rank</th>
-          <th>Username</th>
-          <th>Total Score</th>
+          <th class="th-cell">Rank</th>
+          <th class="th-cell">Username</th>
+          <th class="th-cell">Total Score</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(entry, index) in entries" :key="entry.username">
-          <td>{{ index + 1 }}</td>
-          <td><router-link :to="`/u/${entry.username}`">{{ entry.username }}</router-link></td>
-          <td>{{ entry.total_score.toLocaleString() }}</td>
+          <td class="td-cell">{{ index + 1 }}</td>
+          <td class="td-cell"><router-link :to="`/u/${entry.username}`" class="row-link">{{ entry.username }}</router-link></td>
+          <td class="td-cell">{{ entry.total_score.toLocaleString() }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-<style scoped>
-.leaderboard-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 32rem;
-}
-
-.subtitle {
-  color: #888;
-  margin-top: -0.5rem;
-}
-
-.error {
-  color: #c0392b;
-}
-
-.empty {
-  color: #888;
-}
-
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.leaderboard-table th,
-.leaderboard-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-}
-</style>

@@ -104,170 +104,65 @@ async function saveUsername() {
 </script>
 
 <template>
-  <div class="user-page">
-    <div v-if="user.username === DEFAULT_USERNAME && !promptDismissed" class="username-prompt">
+  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
+    <div
+      v-if="user.username === DEFAULT_USERNAME && !promptDismissed"
+      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
+    >
       <p>Please set a new username</p>
-      <form class="username-prompt-form" @submit.prevent="saveUsername">
+      <form class="flex flex-wrap justify-center gap-2" @submit.prevent="saveUsername">
         <input
           v-model="newUsername"
           type="text"
           maxlength="32"
           placeholder="New username"
           :disabled="isSaving"
+          class="field"
         />
-        <button type="submit" :disabled="isSaving || !newUsername.trim()">Save</button>
+        <button type="submit" class="btn" :disabled="isSaving || !newUsername.trim()">Save</button>
       </form>
-      <p v-if="saveError" class="username-prompt-error">{{ saveError }}</p>
+      <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
     </div>
 
-    <h1>{{ user.username }}</h1>
+    <h1 class="text-xl font-bold">{{ user.username }}</h1>
 
-    <div class="import-section">
-      <p v-if="user.import_completed" class="import-pending">Pre-existing scores imported.</p>
-      <p v-else-if="user.import_requested" class="import-pending">
+    <div class="flex flex-col items-center gap-1">
+      <p v-if="user.import_completed" class="muted text-center text-sm">Pre-existing scores imported.</p>
+      <p v-else-if="user.import_requested" class="muted text-center text-sm">
         Import requested — scores will be imported next time YataiDON is launched.
       </p>
       <button
         v-else
         type="button"
+        class="btn"
         :disabled="isRequestingImport"
         @click="requestScoreImport"
       >
         Import pre-existing scores
       </button>
-      <p v-if="importError" class="username-prompt-error">{{ importError }}</p>
+      <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
     </div>
 
-    <div class="chara-colors-section">
-      <span class="chara-colors-label">Don Colors</span>
-      <div class="chara-colors-swatches">
-        <label class="chara-color-swatch">
-          <input v-model="charaColor1" type="color" />
+    <div class="flex flex-col items-center gap-2">
+      <span class="muted text-sm">Don Colors</span>
+      <div class="flex gap-4">
+        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+          <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
           Body
         </label>
-        <label class="chara-color-swatch">
-          <input v-model="charaColor2" type="color" />
+        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+          <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
           Face
         </label>
-        <label class="chara-color-swatch">
-          <input v-model="charaColor3" type="color" />
+        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+          <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
           Accent
         </label>
       </div>
-      <button type="button" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
-      <p v-if="colorSaveError" class="username-prompt-error">{{ colorSaveError }}</p>
+      <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
+      <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
     </div>
 
-    <button type="button" class="logout" @click="$emit('logout')">Log out</button>
+    <button type="button" class="btn" @click="$emit('logout')">Log out</button>
   </div>
 </template>
-
-<style scoped>
-.user-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 48rem;
-}
-
-.username-prompt {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(128, 128, 128, 0.3);
-  border-radius: 0.4rem;
-  text-align: center;
-}
-
-.username-prompt-form {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.username-prompt-form input {
-  padding: 0.4rem 0.6rem;
-}
-
-.username-prompt-form button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.username-prompt-form button.secondary {
-  background: none;
-}
-
-.username-prompt-error {
-  color: #c0392b;
-  font-size: 0.85rem;
-}
-
-.import-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.import-section button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.import-pending {
-  color: #888;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.chara-colors-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.chara-colors-label {
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.chara-colors-swatches {
-  display: flex;
-  gap: 1rem;
-}
-
-.chara-color-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.chara-color-swatch input {
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-}
-
-.chara-colors-section button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.logout {
-  padding: 0.4rem 1rem;
-  cursor: pointer;
-}
-</style>

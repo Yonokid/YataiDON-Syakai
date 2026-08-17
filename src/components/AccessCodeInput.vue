@@ -64,8 +64,8 @@ watch(rememberMe, (remember) => {
 </script>
 
 <template>
-  <div class="access-code-field">
-    <label for="access-code">Access Code</label>
+  <div class="flex max-w-sm flex-col items-center gap-2">
+    <label for="access-code" class="text-sm font-medium">Access Code</label>
     <input
       id="access-code"
       type="text"
@@ -77,72 +77,31 @@ watch(rememberMe, (remember) => {
       :placeholder="'X'.repeat(ACCESS_CODE_LENGTH)"
       :value="accessCode"
       @input="handleInput"
+      class="w-full rounded-md border border-neutral-300 px-4 py-2 text-center font-mono text-lg tracking-widest uppercase dark:border-neutral-700 dark:bg-neutral-900"
     />
-    <span class="access-code-count" :class="{ complete: isComplete }">
+    <span
+      class="text-sm text-neutral-500 dark:text-neutral-400"
+      :class="{ 'text-green-600 dark:text-green-400': isComplete }"
+    >
       {{ accessCode.length }} / {{ ACCESS_CODE_LENGTH }}
     </span>
-    <label class="remember-me">
+    <label class="flex cursor-pointer items-center gap-2 text-sm">
       <input type="checkbox" v-model="rememberMe" />
       Remember me
     </label>
-    <span v-if="verifyStatus !== 'idle'" class="access-code-status" :class="verifyStatus">
-      <template v-if="verifyStatus === 'checking'">Checking…</template>
-      <template v-else-if="verifyStatus === 'valid'">Access code verified</template>
-      <template v-else-if="verifyStatus === 'invalid'">Access code not found</template>
-      <template v-else>Could not reach server</template>
+    <span v-if="verifyStatus !== 'idle'" class="text-sm">
+      <template v-if="verifyStatus === 'checking'">
+        <span class="text-neutral-500 dark:text-neutral-400">Checking…</span>
+      </template>
+      <template v-else-if="verifyStatus === 'valid'">
+        <span class="text-green-600 dark:text-green-400">Access code verified</span>
+      </template>
+      <template v-else-if="verifyStatus === 'invalid'">
+        <span class="text-red-600 dark:text-red-400">Access code not found</span>
+      </template>
+      <template v-else>
+        <span class="text-red-600 dark:text-red-400">Could not reach server</span>
+      </template>
     </span>
   </div>
 </template>
-
-<style scoped>
-.access-code-field {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  max-width: 24rem;
-}
-
-.access-code-field input {
-  font-family: monospace;
-  font-size: 1.1rem;
-  letter-spacing: 0.15em;
-  padding: 0.5rem 1rem;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.access-code-count {
-  font-size: 0.85rem;
-  color: #888;
-}
-
-.access-code-count.complete {
-  color: #2e8b57;
-}
-
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.access-code-status {
-  font-size: 0.85rem;
-}
-
-.access-code-status.checking {
-  color: #888;
-}
-
-.access-code-status.valid {
-  color: #2e8b57;
-}
-
-.access-code-status.invalid,
-.access-code-status.error {
-  color: #c0392b;
-}
-</style>

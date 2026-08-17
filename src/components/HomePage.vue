@@ -52,88 +52,45 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="home-page">
-    <h1>Welcome, {{ user.username }}</h1>
+  <div class="flex w-full max-w-lg flex-col items-center gap-4">
+    <h1 class="text-xl font-bold">Welcome, {{ user.username }}</h1>
 
-    <p class="online-count">
+    <p>
       <span v-if="onlineCount !== null">{{ onlineCount }} user{{ onlineCount === 1 ? '' : 's' }} online</span>
       <span v-else class="muted">Online count unavailable</span>
     </p>
 
-    <div class="rank-section">
-      <span class="section-label">Global Leaderboard</span>
+    <div class="flex w-full flex-col items-center gap-1">
+      <span class="muted text-sm">Global Leaderboard</span>
       <p v-if="rank !== null">
         #{{ rank }} — {{ totalScore!.toLocaleString() }} points
       </p>
       <p v-else class="muted">Not ranked yet</p>
     </div>
 
-    <div class="recent-section">
-      <span class="section-label">Recent Scores</span>
+    <div class="flex w-full flex-col items-center gap-1">
+      <span class="muted text-sm">Recent Scores</span>
       <p v-if="recentScores.length === 0" class="muted">No scores yet.</p>
-      <table v-else class="recent-table">
+      <table v-else class="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th>Song</th>
-            <th>Difficulty</th>
-            <th>Score</th>
-            <th>Crown</th>
+            <th class="th-cell">Song</th>
+            <th class="th-cell">Difficulty</th>
+            <th class="th-cell">Score</th>
+            <th class="th-cell">Crown</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="entry in recentScores" :key="`${entry.hash}-${entry.difficulty}`">
-            <td><router-link :to="`/songs/${entry.hash}`">{{ songTitle(entry.title) }}</router-link></td>
-            <td>{{ difficultyLabel(entry.difficulty) }}</td>
-            <td>{{ entry.score.toLocaleString() }}</td>
-            <td>{{ entry.crown }}</td>
+            <td class="td-cell">
+              <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
+            </td>
+            <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+            <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
+            <td class="td-cell">{{ entry.crown }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </template>
-
-<style scoped>
-.home-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 32rem;
-}
-
-.online-count {
-  margin: 0;
-}
-
-.muted {
-  color: #888;
-}
-
-.section-label {
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.rank-section,
-.recent-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  width: 100%;
-}
-
-.recent-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.recent-table th,
-.recent-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-}
-</style>

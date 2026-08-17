@@ -21,6 +21,10 @@ interface ScoreEntry {
 const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+const tabBase =
+  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
+const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
+
 const route = useRoute()
 
 const songs = ref<Song[]>([])
@@ -78,14 +82,14 @@ watch(
 </script>
 
 <template>
-  <div class="song-page">
-    <router-link to="/songs" class="back">&larr; Back to songs</router-link>
+  <div class="flex w-full max-w-lg flex-col items-center gap-2">
+    <router-link to="/songs" class="self-start px-2 py-1 text-sm hover:underline">&larr; Back to songs</router-link>
 
     <template v-if="currentSong">
-      <h2>{{ songTitle(currentSong.title) }}</h2>
-      <p class="hash-subtitle">{{ currentSong.hash }}</p>
+      <h2 class="text-lg font-bold">{{ songTitle(currentSong.title) }}</h2>
+      <p class="-mt-1 font-mono text-xs text-neutral-500 dark:text-neutral-400">{{ currentSong.hash }}</p>
 
-      <div class="difficulty-tabs">
+      <div class="flex flex-wrap justify-center gap-2">
         <router-link
           v-for="variant in variants"
           :key="variant.hash"
@@ -93,98 +97,38 @@ watch(
           custom
           v-slot="{ navigate, isActive }"
         >
-          <button type="button" :class="{ active: isActive }" @click="navigate">
+          <button type="button" :class="[tabBase, isActive && tabActive]" @click="navigate">
             {{ difficultyLabel(variant.difficulty) }} ★{{ variant.level }}
           </button>
         </router-link>
       </div>
     </template>
     <p v-else-if="songsStatus === 'loading'">Loading…</p>
-    <p v-else-if="songsStatus === 'error'" class="error">Could not reach server.</p>
-    <p v-else class="error">Song not found.</p>
+    <p v-else-if="songsStatus === 'error'" class="error-text">Could not reach server.</p>
+    <p v-else class="error-text">Song not found.</p>
 
     <p v-if="entriesStatus === 'loading'">Loading…</p>
-    <p v-else-if="entriesStatus === 'error'" class="error">Could not reach server.</p>
-    <p v-else-if="entries.length === 0" class="empty">No scores yet.</p>
-    <table v-else class="leaderboard-table">
+    <p v-else-if="entriesStatus === 'error'" class="error-text">Could not reach server.</p>
+    <p v-else-if="entries.length === 0" class="muted">No scores yet.</p>
+    <table v-else class="w-full border-collapse text-sm">
       <thead>
         <tr>
-          <th>Rank</th>
-          <th>Username</th>
-          <th>Score</th>
-          <th>Crown</th>
-          <th>Max Combo</th>
+          <th class="th-cell">Rank</th>
+          <th class="th-cell">Username</th>
+          <th class="th-cell">Score</th>
+          <th class="th-cell">Crown</th>
+          <th class="th-cell">Max Combo</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(entry, index) in entries" :key="entry.username">
-          <td>{{ index + 1 }}</td>
-          <td><router-link :to="`/u/${entry.username}`">{{ entry.username }}</router-link></td>
-          <td>{{ entry.score.toLocaleString() }}</td>
-          <td>{{ entry.crown }}</td>
-          <td>{{ entry.max_combo }}</td>
+          <td class="td-cell">{{ index + 1 }}</td>
+          <td class="td-cell"><router-link :to="`/u/${entry.username}`" class="row-link">{{ entry.username }}</router-link></td>
+          <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
+          <td class="td-cell">{{ entry.crown }}</td>
+          <td class="td-cell">{{ entry.max_combo }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-<style scoped>
-.song-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 32rem;
-}
-
-.back {
-  align-self: flex-start;
-  padding: 0.3rem 0.6rem;
-}
-
-.hash-subtitle {
-  margin: -0.3rem 0 0;
-  font-size: 0.75rem;
-  font-family: monospace;
-  color: #888;
-}
-
-.difficulty-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.difficulty-tabs button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.difficulty-tabs button.active {
-  font-weight: bold;
-  border-color: currentColor;
-}
-
-.error {
-  color: #c0392b;
-}
-
-.empty {
-  color: #888;
-}
-
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.leaderboard-table th,
-.leaderboard-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-}
-</style>

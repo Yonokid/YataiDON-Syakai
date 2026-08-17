@@ -61,17 +61,20 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="song-leaderboard-page">
-    <h1>Song Leaderboards</h1>
+  <div class="flex w-full max-w-lg flex-col items-center gap-3">
+    <h1 class="text-xl font-bold">Song Leaderboards</h1>
 
-    <div class="song-picker">
-      <input v-model="search" type="text" placeholder="Search songs…" class="song-search" />
+    <div class="flex w-full flex-col items-center gap-3">
+      <input v-model="search" type="text" placeholder="Search songs…" class="field w-full" />
       <p v-if="songsStatus === 'loading'">Loading…</p>
-      <p v-else-if="songsStatus === 'error'" class="error">Could not reach server.</p>
-      <p v-else-if="filteredGroups.length === 0" class="empty">No songs found.</p>
-      <ul v-else class="song-list">
+      <p v-else-if="songsStatus === 'error'" class="error-text">Could not reach server.</p>
+      <p v-else-if="filteredGroups.length === 0" class="muted">No songs found.</p>
+      <ul v-else class="flex max-h-96 w-full flex-col gap-1 overflow-y-auto">
         <li v-for="group in filteredGroups" :key="songTitle(group.title)">
-          <router-link :to="`/songs/${group.variants[0]!.hash}`">
+          <router-link
+            :to="`/songs/${group.variants[0]!.hash}`"
+            class="block w-full rounded-md px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          >
             {{ songTitle(group.title) }}
           </router-link>
         </li>
@@ -79,54 +82,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.song-leaderboard-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 32rem;
-}
-
-.song-picker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-}
-
-.song-search {
-  width: 100%;
-  padding: 0.4rem 0.6rem;
-}
-
-.song-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  max-height: 24rem;
-  overflow-y: auto;
-}
-
-.song-list a {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 0.7rem;
-  text-align: left;
-}
-
-.error {
-  color: #c0392b;
-}
-
-.empty {
-  color: #888;
-}
-</style>

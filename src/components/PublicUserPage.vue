@@ -48,36 +48,38 @@ watch(() => route.params.username, (username) => load(username as string))
 </script>
 
 <template>
-  <div class="public-user-page">
+  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
     <p v-if="status === 'loading'">Loading…</p>
-    <p v-else-if="status === 'not-found'" class="error">User not found.</p>
-    <p v-else-if="status === 'error'" class="error">Could not reach server.</p>
+    <p v-else-if="status === 'not-found'" class="error-text">User not found.</p>
+    <p v-else-if="status === 'error'" class="error-text">Could not reach server.</p>
     <template v-else-if="user">
-      <h1>{{ user.username }}</h1>
+      <h1 class="text-xl font-bold">{{ user.username }}</h1>
 
-      <p v-if="user.scores.length === 0" class="empty">No scores yet.</p>
-      <div v-else class="scores-table-wrap">
-        <table class="scores-table">
+      <p v-if="user.scores.length === 0" class="muted">No scores yet.</p>
+      <div v-else class="w-full overflow-x-auto">
+        <table class="w-full border-collapse text-sm whitespace-nowrap">
           <thead>
             <tr>
-              <th>Song</th>
-              <th>Difficulty</th>
-              <th>Level</th>
-              <th>Score</th>
-              <th>Crown</th>
-              <th>Rank</th>
-              <th>Max Combo</th>
+              <th class="th-cell">Song</th>
+              <th class="th-cell">Difficulty</th>
+              <th class="th-cell">Level</th>
+              <th class="th-cell">Score</th>
+              <th class="th-cell">Crown</th>
+              <th class="th-cell">Rank</th>
+              <th class="th-cell">Max Combo</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="entry in user.scores" :key="`${entry.hash}-${entry.difficulty}`">
-              <td><router-link :to="`/songs/${entry.hash}`">{{ songTitle(entry.title) }}</router-link></td>
-              <td>{{ difficultyLabel(entry.difficulty) }}</td>
-              <td>{{ entry.level }}</td>
-              <td>{{ entry.score.toLocaleString() }}</td>
-              <td>{{ entry.crown }}</td>
-              <td>{{ entry.rank }}</td>
-              <td>{{ entry.max_combo }}</td>
+              <td class="td-cell">
+                <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
+              </td>
+              <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+              <td class="td-cell">{{ entry.level }}</td>
+              <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
+              <td class="td-cell">{{ entry.crown }}</td>
+              <td class="td-cell">{{ entry.rank }}</td>
+              <td class="td-cell">{{ entry.max_combo }}</td>
             </tr>
           </tbody>
         </table>
@@ -85,40 +87,3 @@ watch(() => route.params.username, (username) => load(username as string))
     </template>
   </div>
 </template>
-
-<style scoped>
-.public-user-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 48rem;
-}
-
-.error {
-  color: #c0392b;
-}
-
-.empty {
-  color: #888;
-}
-
-.scores-table-wrap {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.scores-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.scores-table th,
-.scores-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-  white-space: nowrap;
-}
-</style>

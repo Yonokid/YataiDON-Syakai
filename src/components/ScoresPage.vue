@@ -37,34 +37,37 @@ async function sendToGame(hash: string) {
 </script>
 
 <template>
-  <div class="scores-page">
-    <p v-if="user.scores.length === 0" class="empty">No scores yet.</p>
-    <div v-else class="scores-table-wrap">
-      <table class="scores-table">
+  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
+    <p v-if="user.scores.length === 0" class="muted">No scores yet.</p>
+    <div v-else class="w-full overflow-x-auto">
+      <table class="w-full border-collapse text-sm whitespace-nowrap">
         <thead>
           <tr>
-            <th>Song</th>
-            <th>Difficulty</th>
-            <th>Level</th>
-            <th>Score</th>
-            <th>Crown</th>
-            <th>Rank</th>
-            <th>Max Combo</th>
-            <th></th>
+            <th class="th-cell">Song</th>
+            <th class="th-cell">Difficulty</th>
+            <th class="th-cell">Level</th>
+            <th class="th-cell">Score</th>
+            <th class="th-cell">Crown</th>
+            <th class="th-cell">Rank</th>
+            <th class="th-cell">Max Combo</th>
+            <th class="th-cell"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="entry in user.scores" :key="`${entry.hash}-${entry.difficulty}`">
-            <td><router-link :to="`/songs/${entry.hash}`">{{ songTitle(entry.title) }}</router-link></td>
-            <td>{{ difficultyLabel(entry.difficulty) }}</td>
-            <td>{{ entry.level }}</td>
-            <td>{{ entry.score.toLocaleString() }}</td>
-            <td>{{ entry.crown }}</td>
-            <td>{{ entry.rank }}</td>
-            <td>{{ entry.max_combo }}</td>
-            <td>
+            <td class="td-cell">
+              <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
+            </td>
+            <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+            <td class="td-cell">{{ entry.level }}</td>
+            <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
+            <td class="td-cell">{{ entry.crown }}</td>
+            <td class="td-cell">{{ entry.rank }}</td>
+            <td class="td-cell">{{ entry.max_combo }}</td>
+            <td class="td-cell">
               <button
                 type="button"
+                class="btn"
                 :disabled="jumpingHash === entry.hash"
                 @click="sendToGame(entry.hash)"
               >
@@ -75,49 +78,6 @@ async function sendToGame(hash: string) {
         </tbody>
       </table>
     </div>
-    <p v-if="jumpError" class="username-prompt-error">{{ jumpError }}</p>
+    <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
   </div>
 </template>
-
-<style scoped>
-.scores-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 48rem;
-}
-
-.empty {
-  color: #888;
-}
-
-.username-prompt-error {
-  color: #c0392b;
-  font-size: 0.85rem;
-}
-
-.scores-table-wrap {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.scores-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.scores-table th,
-.scores-table td {
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-  white-space: nowrap;
-}
-
-.scores-table button {
-  padding: 0.3rem 0.6rem;
-  cursor: pointer;
-}
-</style>
