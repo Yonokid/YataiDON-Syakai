@@ -826,7 +826,12 @@
           {
             "order": 19,
             "difficulty": "ura",
-            "hash": null
+            "hash": "72167e13e44fd57ac6386e7168fc4438",
+            "title": {
+            "en": "Marteau en fer",
+            "ja": "マルトーアンフェール",
+            "ko": "Marteau en fer"
+            }
           },
           {
             "difficulty": "oni",
@@ -3676,7 +3681,13 @@
           {
             "order": 3,
             "difficulty": "oni",
-            "hash": null
+            "hash": "dc1b5721d8b3b1eb0c101f696168421d",
+            "title": {
+              "en": "ZOMEKI THUNDER",
+              "ja": "ZOMEKI THUNDER",
+              "ko": "ZOMEKI THUNDER",
+              "zh": "ZOMEKI THUNDER"
+            }
           },
           {
             "order": 4,
