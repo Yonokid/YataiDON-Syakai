@@ -43,7 +43,7 @@ onMounted(async () => {
       <tbody>
         <tr v-for="(entry, index) in entries" :key="entry.username">
           <td>{{ index + 1 }}</td>
-          <td>{{ entry.username }}</td>
+          <td><router-link :to="`/u/${entry.username}`">{{ entry.username }}</router-link></td>
           <td>{{ entry.total_score.toLocaleString() }}</td>
         </tr>
       </tbody>

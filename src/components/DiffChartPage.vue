@@ -109,7 +109,10 @@ function songTitle(song: ChartSong) {
             :key="song.hash ?? song.order"
             :class="crownClass(song.hash)"
           >
-            <td>{{ songTitle(song) }}</td>
+            <td>
+              <router-link v-if="song.hash" :to="`/songs/${song.hash}`">{{ songTitle(song) }}</router-link>
+              <template v-else>{{ songTitle(song) }}</template>
+            </td>
             <td>{{ song.difficulty }}</td>
             <td>
               <button
