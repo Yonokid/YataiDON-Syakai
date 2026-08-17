@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import type { UserData } from '../types'
 
 const ACCESS_CODE_LENGTH = 24
@@ -10,7 +11,16 @@ const emit = defineEmits<{
   verified: [code: string, user: UserData]
 }>()
 
-const accessCode = ref(localStorage.getItem(STORAGE_KEY) ?? '')
+const route = useRoute()
+const router = useRouter()
+
+const qrCode = typeof route.query.code === 'string' ? route.query.code.toUpperCase() : ''
+if (qrCode) {
+  // strip the code from the URL immediately so it doesn't linger in browser history
+  router.replace({ query: { ...route.query, code: undefined } })
+}
+
+const accessCode = ref(qrCode || localStorage.getItem(STORAGE_KEY) || '')
 const rememberMe = ref(accessCode.value !== '')
 const verifyStatus = ref<'idle' | 'checking' | 'valid' | 'invalid' | 'error'>('idle')
 
