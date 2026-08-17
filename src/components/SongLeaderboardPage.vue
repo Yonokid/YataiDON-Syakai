@@ -125,6 +125,7 @@ onMounted(async () => {
     <div v-else class="song-detail">
       <button type="button" class="back" @click="backToSongs">&larr; Back to songs</button>
       <h2>{{ songTitle(selectedGroup.title) }}</h2>
+      <p v-if="selectedVariant" class="hash-subtitle">{{ selectedVariant.hash }}</p>
 
       <div class="difficulty-tabs">
         <button
@@ -236,6 +237,13 @@ onMounted(async () => {
 .difficulty-tabs button.active {
   font-weight: bold;
   border-color: currentColor;
+}
+
+.hash-subtitle {
+  margin: -0.3rem 0 0;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #888;
 }
 
 .error {
