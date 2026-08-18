@@ -7,6 +7,7 @@ interface AdminUser {
   title: string | null
   dan: number | null
   gold: boolean | null
+  score_count: number
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -151,6 +152,7 @@ function logout() {
               <th class="th-cell">Title</th>
               <th class="th-cell">Dan</th>
               <th class="th-cell">Gold</th>
+              <th class="th-cell">Scores</th>
               <th class="th-cell"></th>
             </tr>
           </thead>
@@ -160,6 +162,7 @@ function logout() {
               <td class="td-cell">{{ user.title ?? '—' }}</td>
               <td class="td-cell">{{ user.dan ?? '—' }}</td>
               <td class="td-cell">{{ user.gold ? 'Yes' : 'No' }}</td>
+              <td class="td-cell">{{ user.score_count }}</td>
               <td class="td-cell">
                 <div class="flex gap-2">
                   <button type="button" class="btn" @click="startEdit(user)">Edit</button>
@@ -168,7 +171,7 @@ function logout() {
               </td>
             </tr>
             <tr v-if="users.length === 0">
-              <td class="td-cell muted" colspan="5">No users found.</td>
+              <td class="td-cell muted" colspan="6">No users found.</td>
             </tr>
           </tbody>
         </table>
