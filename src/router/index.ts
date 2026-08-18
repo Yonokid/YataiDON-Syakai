@@ -9,11 +9,13 @@ import DiffChartPage from '../components/DiffChartPage.vue'
 import LeaderboardPage from '../components/LeaderboardPage.vue'
 import SongLeaderboardPage from '../components/SongLeaderboardPage.vue'
 import SongPage from '../components/SongPage.vue'
+import AdminPage from '../components/AdminPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/login', name: 'login', component: AccessCodeInput },
+    { path: '/admin', name: 'admin', component: AdminPage },
     { path: '/', name: 'home', component: HomePage },
     { path: '/scores', name: 'scores', component: ScoresPage },
     { path: '/user', name: 'user', component: UserPage },
@@ -27,7 +29,7 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const authenticated = !!(currentUser.value && accessCode.value)
-  if (!authenticated && to.name !== 'login') return { name: 'login' }
+  if (!authenticated && to.name !== 'login' && to.name !== 'admin') return { name: 'login' }
   if (authenticated && to.name === 'login') return { name: 'home' }
 })
 
