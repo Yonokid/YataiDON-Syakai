@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface AdminUser {
   access_code: string
@@ -11,9 +12,28 @@ interface AdminUser {
   score_count: number
 }
 
+interface SuspiciousScore {
+  id: number
+  access_code: string
+  username: string | null
+  hash: string
+  title: Record<string, string> | null
+  difficulty: number
+  score: number
+  good: number
+  ok: number
+  bad: number
+  max_combo: number
+  reason: string
+  is_import: boolean
+  status: string
+  ts: string
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 const STORAGE_KEY = 'admin_key'
 const { t } = useI18n()
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 const adminKey = ref(localStorage.getItem(STORAGE_KEY) ?? '')
 const unlocked = ref(false)
@@ -48,6 +68,7 @@ async function fetchUsers() {
     users.value = data.users
     unlocked.value = true
     localStorage.setItem(STORAGE_KEY, adminKey.value)
+    fetchSuspiciousScores()
   } catch {
     loadError.value = t('admin.loadError')
   } finally {
@@ -55,8 +76,46 @@ async function fetchUsers() {
   }
 }
 
+const suspiciousScores = ref<SuspiciousScore[]>([])
+const suspiciousTab = ref<'pending' | 'import_warning'>('pending')
+const suspiciousLoading = ref(false)
+const suspiciousError = ref('')
+
+async function fetchSuspiciousScores() {
+  suspiciousLoading.value = true
+  suspiciousError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/suspicious_scores?admin_key=${encodeURIComponent(adminKey.value)}&status=${suspiciousTab.value}`,
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const data = await response.json()
+    suspiciousScores.value = data.scores
+  } catch {
+    suspiciousError.value = t('admin.suspiciousLoadError')
+  } finally {
+    suspiciousLoading.value = false
+  }
+}
+
+async function reviewScore(item: SuspiciousScore, action: 'approve' | 'deny') {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/review_score?admin_key=${encodeURIComponent(adminKey.value)}&id=${item.id}&action=${action}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    suspiciousScores.value = suspiciousScores.value.filter((s) => s.id !== item.id)
+  } catch {
+    suspiciousError.value = t('admin.suspiciousReviewError')
+  }
+}
+
 onMounted(() => {
-  if (adminKey.value) fetchUsers()
+  if (adminKey.value) {
+    fetchUsers()
+    fetchSuspiciousScores()
+  }
 })
 
 function startEdit(user: AdminUser) {
@@ -114,7 +173,13 @@ async function deleteUser(user: AdminUser) {
 function logout() {
   unlocked.value = false
   users.value = []
+  suspiciousScores.value = []
   localStorage.removeItem(STORAGE_KEY)
+}
+
+function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
+  suspiciousTab.value = tab
+  fetchSuspiciousScores()
 }
 </script>
 
@@ -207,6 +272,67 @@ function logout() {
             <button type="submit" class="btn" :disabled="isSaving">{{ $t('common.save') }}</button>
           </div>
         </form>
+      </div>
+
+      <h2 class="mt-4 text-lg font-bold">{{ $t('admin.suspiciousTitle') }}</h2>
+      <div class="flex w-full gap-2">
+        <button
+          type="button"
+          class="btn"
+          :disabled="suspiciousTab === 'pending'"
+          @click="switchSuspiciousTab('pending')"
+        >
+          {{ $t('admin.suspiciousTabPending') }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          :disabled="suspiciousTab === 'import_warning'"
+          @click="switchSuspiciousTab('import_warning')"
+        >
+          {{ $t('admin.suspiciousTabImportWarning') }}
+        </button>
+      </div>
+
+      <p v-if="suspiciousError" class="error-text text-sm">{{ suspiciousError }}</p>
+      <p v-if="suspiciousLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
+
+      <div v-else class="w-full overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr>
+              <th class="th-cell">{{ $t('common.username') }}</th>
+              <th class="th-cell">{{ $t('admin.thSong') }}</th>
+              <th class="th-cell">{{ $t('admin.thScore') }}</th>
+              <th class="th-cell">{{ $t('admin.thReason') }}</th>
+              <th class="th-cell" v-if="suspiciousTab === 'pending'"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in suspiciousScores" :key="item.id">
+              <td class="td-cell">{{ item.username ?? item.access_code }}</td>
+              <td class="td-cell">
+                {{ item.title ? songTitle(item.title) : item.hash }}
+                ({{ difficultyLabel(item.difficulty) }})
+              </td>
+              <td class="td-cell">{{ item.score }}</td>
+              <td class="td-cell">{{ item.reason }}</td>
+              <td class="td-cell" v-if="suspiciousTab === 'pending'">
+                <div class="flex gap-2">
+                  <button type="button" class="btn" @click="reviewScore(item, 'approve')">
+                    {{ $t('admin.allow') }}
+                  </button>
+                  <button type="button" class="btn" @click="reviewScore(item, 'deny')">
+                    {{ $t('admin.deny') }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="suspiciousScores.length === 0">
+              <td class="td-cell muted" colspan="5">{{ $t('admin.noSuspiciousScores') }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </template>
   </div>
