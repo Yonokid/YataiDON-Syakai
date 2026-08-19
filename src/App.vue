@@ -52,6 +52,14 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
           (c: { chara_color_1: string; chara_color_2: string; chara_color_3: string }) =>
             currentUser && Object.assign(currentUser, c)
         "
+        @costume-updated="
+          (c: {
+            chara_head_index: number
+            chara_body_index: number
+            chara_cos_index: number
+            chara_is_costume: boolean
+          }) => currentUser && Object.assign(currentUser, c)
+        "
         @import-requested="() => currentUser && (currentUser.import_requested = true)"
       />
     </router-view>

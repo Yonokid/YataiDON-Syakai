@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import QRCode from 'qrcode'
 import type { UserData } from '../types'
+
+interface CostumeEntry {
+  icon: string
+  name: string
+}
+interface CostumeNames {
+  body: Record<string, CostumeEntry>
+  head: Record<string, CostumeEntry>
+  costume: Record<string, CostumeEntry>
+}
 
 const DEFAULT_USERNAME = 'Don-chan'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -11,6 +21,14 @@ const emit = defineEmits<{
   logout: []
   'username-updated': [username: string]
   'chara-colors-updated': [colors: { chara_color_1: string; chara_color_2: string; chara_color_3: string }]
+  'costume-updated': [
+    costume: {
+      chara_head_index: number
+      chara_body_index: number
+      chara_cos_index: number
+      chara_is_costume: boolean
+    },
+  ]
   'import-requested': []
 }>()
 
@@ -61,6 +79,65 @@ async function saveCharaColors() {
     colorSaveError.value = 'Could not save colors. Please try again.'
   } finally {
     isSavingColors.value = false
+  }
+}
+
+const costumeNames = ref<CostumeNames | null>(null)
+fetch(`${import.meta.env.BASE_URL}costumes/costume_names.json`)
+  .then((r) => r.json())
+  .then((d) => (costumeNames.value = d))
+
+const isCostumeMode = ref(props.user.chara_is_costume)
+const headIndex = ref(props.user.chara_head_index)
+const bodyIndex = ref(props.user.chara_body_index)
+const cosIndex = ref(props.user.chara_cos_index)
+const isSavingCostume = ref(false)
+const costumeSaveError = ref('')
+
+function costumeOptions(kind: 'head' | 'body' | 'costume') {
+  const entries = costumeNames.value?.[kind]
+  if (!entries) return []
+  return Object.entries(entries)
+    .map(([id, entry]) => ({ id: Number(id), ...entry }))
+    .sort((a, b) => a.id - b.id)
+}
+
+const headOptions = computed(() => costumeOptions('head'))
+const bodyOptions = computed(() => costumeOptions('body'))
+const costumeOptionsList = computed(() => costumeOptions('costume'))
+
+function iconUrl(kind: 'head' | 'body' | 'costume', id: number) {
+  const entry = costumeNames.value?.[kind]?.[id]
+  return entry ? `${import.meta.env.BASE_URL}costumes/${entry.icon}` : ''
+}
+
+async function saveCostume() {
+  isSavingCostume.value = true
+  costumeSaveError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_costume?access_code=${encodeURIComponent(props.accessCode)}`,
+      {
+        method: 'POST',
+        body: new URLSearchParams({
+          chara_head_index: String(headIndex.value),
+          chara_body_index: String(bodyIndex.value),
+          chara_cos_index: String(cosIndex.value),
+          chara_is_costume: String(isCostumeMode.value),
+        }),
+      },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('costume-updated', {
+      chara_head_index: headIndex.value,
+      chara_body_index: bodyIndex.value,
+      chara_cos_index: cosIndex.value,
+      chara_is_costume: isCostumeMode.value,
+    })
+  } catch {
+    costumeSaveError.value = 'Could not save costume. Please try again.'
+  } finally {
+    isSavingCostume.value = false
   }
 }
 
@@ -170,6 +247,68 @@ async function saveUsername() {
       </div>
       <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
       <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
+    </div>
+
+    <div class="flex flex-col items-center gap-2">
+      <span class="muted text-sm">Costume</span>
+      <label class="flex items-center gap-2 text-sm">
+        <input v-model="isCostumeMode" type="checkbox" />
+        Full costume (unchecked = separate head/body)
+      </label>
+
+      <div v-if="isCostumeMode" class="flex flex-col items-center gap-1">
+        <span class="muted text-xs">{{ costumeNames?.costume[cosIndex]?.name }}</span>
+        <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+          <button
+            v-for="o in costumeOptionsList"
+            :key="o.id"
+            type="button"
+            :title="o.name"
+            class="rounded-md border p-1"
+            :class="cosIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+            @click="cosIndex = o.id"
+          >
+            <img :src="iconUrl('costume', o.id)" alt="" class="h-12 w-12" />
+          </button>
+        </div>
+      </div>
+      <div v-else class="flex w-full flex-col gap-4">
+        <div class="flex flex-col items-center gap-1">
+          <span class="muted text-xs">Head — {{ costumeNames?.head[headIndex]?.name }}</span>
+          <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+            <button
+              v-for="o in headOptions"
+              :key="o.id"
+              type="button"
+              :title="o.name"
+              class="rounded-md border p-1"
+              :class="headIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+              @click="headIndex = o.id"
+            >
+              <img :src="iconUrl('head', o.id)" alt="" class="h-12 w-12" />
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <span class="muted text-xs">Body — {{ costumeNames?.body[bodyIndex]?.name }}</span>
+          <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+            <button
+              v-for="o in bodyOptions"
+              :key="o.id"
+              type="button"
+              :title="o.name"
+              class="rounded-md border p-1"
+              :class="bodyIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+              @click="bodyIndex = o.id"
+            >
+              <img :src="iconUrl('body', o.id)" alt="" class="h-12 w-12" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">Save Costume</button>
+      <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-2">

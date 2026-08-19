@@ -21,5 +21,9 @@ export interface UserData {
   chara_color_1: string
   chara_color_2: string
   chara_color_3: string
+  chara_head_index: number
+  chara_body_index: number
+  chara_cos_index: number
+  chara_is_costume: boolean
   scores: Score[]
 }
