@@ -26,18 +26,18 @@ onMounted(async () => {
 
 <template>
   <div class="flex w-full max-w-lg flex-col items-center gap-3">
-    <h1 class="text-xl font-bold">Leaderboard</h1>
-    <p class="muted -mt-2">Total score, Oni + Ura difficulties</p>
+    <h1 class="text-xl font-bold">{{ $t('leaderboard.title') }}</h1>
+    <p class="muted -mt-2">{{ $t('leaderboard.subtitle') }}</p>
 
-    <p v-if="status === 'loading'">Loading…</p>
-    <p v-else-if="status === 'error'" class="error-text">Could not reach server.</p>
-    <p v-else-if="entries.length === 0" class="muted">No scores yet.</p>
+    <p v-if="status === 'loading'">{{ $t('common.loading') }}</p>
+    <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
+    <p v-else-if="entries.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
     <table v-else class="w-full border-collapse text-sm">
       <thead>
         <tr>
-          <th class="th-cell">Rank</th>
-          <th class="th-cell">Username</th>
-          <th class="th-cell">Total Score</th>
+          <th class="th-cell">{{ $t('common.rank') }}</th>
+          <th class="th-cell">{{ $t('common.username') }}</th>
+          <th class="th-cell">{{ $t('leaderboard.thTotalScore') }}</th>
         </tr>
       </thead>
       <tbody>

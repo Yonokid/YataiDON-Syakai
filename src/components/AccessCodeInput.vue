@@ -75,7 +75,7 @@ watch(rememberMe, (remember) => {
 
 <template>
   <div class="flex max-w-sm flex-col items-center gap-2">
-    <label for="access-code" class="text-sm font-medium">Access Code</label>
+    <label for="access-code" class="text-sm font-medium">{{ $t('accessCode.label') }}</label>
     <input
       id="access-code"
       type="text"
@@ -97,20 +97,20 @@ watch(rememberMe, (remember) => {
     </span>
     <label class="flex cursor-pointer items-center gap-2 text-sm">
       <input type="checkbox" v-model="rememberMe" />
-      Remember me
+      {{ $t('accessCode.rememberMe') }}
     </label>
     <span v-if="verifyStatus !== 'idle'" class="text-sm">
       <template v-if="verifyStatus === 'checking'">
-        <span class="text-neutral-500 dark:text-neutral-400">Checking…</span>
+        <span class="text-neutral-500 dark:text-neutral-400">{{ $t('accessCode.checking') }}</span>
       </template>
       <template v-else-if="verifyStatus === 'valid'">
-        <span class="text-green-600 dark:text-green-400">Access code verified</span>
+        <span class="text-green-600 dark:text-green-400">{{ $t('accessCode.valid') }}</span>
       </template>
       <template v-else-if="verifyStatus === 'invalid'">
-        <span class="text-red-600 dark:text-red-400">Access code not found</span>
+        <span class="text-red-600 dark:text-red-400">{{ $t('accessCode.invalid') }}</span>
       </template>
       <template v-else>
-        <span class="text-red-600 dark:text-red-400">Could not reach server</span>
+        <span class="text-red-600 dark:text-red-400">{{ $t('accessCode.error') }}</span>
       </template>
     </span>
   </div>

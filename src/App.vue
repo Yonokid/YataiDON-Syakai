@@ -14,22 +14,22 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
   <header>
     <nav v-if="currentUser && accessCode" class="flex flex-wrap justify-center gap-2 py-3">
       <router-link to="/" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Home</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.home') }}</button>
       </router-link>
       <router-link to="/scores" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Scores</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.scores') }}</button>
       </router-link>
       <router-link to="/user" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">User</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.user') }}</button>
       </router-link>
       <router-link to="/charts" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Diff Charts</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.charts') }}</button>
       </router-link>
       <router-link to="/leaderboard" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Leaderboard</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.leaderboard') }}</button>
       </router-link>
       <router-link to="/songs" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">Song Leaderboards</button>
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.songs') }}</button>
       </router-link>
     </nav>
   </header>

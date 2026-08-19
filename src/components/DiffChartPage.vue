@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { Score } from '../types'
 
 interface ChartSong {
@@ -30,6 +31,7 @@ const tabBase =
 const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
 
 const props = defineProps<{ scores: Score[]; accessCode: string }>()
+const { t } = useI18n()
 
 const jumpingHash = ref<string | null>(null)
 const jumpError = ref('')
@@ -45,7 +47,7 @@ async function sendToGame(hash: string | null) {
     )
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
   } catch {
-    jumpError.value = 'Could not send song to game. Please try again.'
+    jumpError.value = t('diffChart.jumpError')
   } finally {
     jumpingHash.value = null
   }
@@ -78,8 +80,8 @@ function crownClass(hash: string | null) {
 }
 
 function songTitle(song: ChartSong) {
-  if (!song.title) return '(unknown song)'
-  return song.title.en ?? Object.values(song.title)[0] ?? '(unknown song)'
+  if (!song.title) return t('diffChart.unknownSong')
+  return song.title.en ?? Object.values(song.title)[0] ?? t('diffChart.unknownSong')
 }
 </script>
 
@@ -102,8 +104,8 @@ function songTitle(song: ChartSong) {
       <table class="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th class="th-cell">Song</th>
-            <th class="th-cell">Difficulty</th>
+            <th class="th-cell">{{ $t('common.song') }}</th>
+            <th class="th-cell">{{ $t('common.difficulty') }}</th>
             <th class="th-cell"></th>
           </tr>
         </thead>
@@ -126,7 +128,7 @@ function songTitle(song: ChartSong) {
                 :disabled="jumpingHash === song.hash"
                 @click="sendToGame(song.hash)"
               >
-                {{ jumpingHash === song.hash ? 'Sending…' : 'Send to Game' }}
+                {{ jumpingHash === song.hash ? $t('common.sending') : $t('common.sendToGame') }}
               </button>
             </td>
           </tr>

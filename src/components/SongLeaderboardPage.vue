@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface Song {
   hash: string
@@ -19,10 +20,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 const songs = ref<Song[]>([])
 const songsStatus = ref<'loading' | 'loaded' | 'error'>('loading')
 const search = ref('')
-
-function songTitle(title: Record<string, string>) {
-  return title.en ?? Object.values(title)[0] ?? '(untitled)'
-}
+const { songTitle } = useSongDisplay()
 
 const songGroups = computed(() => {
   const groups = new Map<string, SongGroup>()
@@ -62,13 +60,13 @@ onMounted(async () => {
 
 <template>
   <div class="flex w-full max-w-lg flex-col items-center gap-3">
-    <h1 class="text-xl font-bold">Song Leaderboards</h1>
+    <h1 class="text-xl font-bold">{{ $t('songLeaderboard.title') }}</h1>
 
     <div class="flex w-full flex-col items-center gap-3">
-      <input v-model="search" type="text" placeholder="Search songs…" class="field w-full" />
-      <p v-if="songsStatus === 'loading'">Loading…</p>
-      <p v-else-if="songsStatus === 'error'" class="error-text">Could not reach server.</p>
-      <p v-else-if="filteredGroups.length === 0" class="muted">No songs found.</p>
+      <input v-model="search" type="text" :placeholder="$t('songLeaderboard.searchPlaceholder')" class="field w-full" />
+      <p v-if="songsStatus === 'loading'">{{ $t('common.loading') }}</p>
+      <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
+      <p v-else-if="filteredGroups.length === 0" class="muted">{{ $t('songLeaderboard.noSongsFound') }}</p>
       <ul v-else class="flex max-h-96 w-full flex-col gap-1 overflow-y-auto">
         <li v-for="group in filteredGroups" :key="songTitle(group.title)">
           <router-link

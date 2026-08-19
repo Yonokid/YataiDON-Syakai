@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSongDisplay } from '../composables/useSongDisplay'
 import type { UserData } from '../types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
-
-const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
-
-function songTitle(title: Record<string, string>) {
-  return title.en ?? Object.values(title)[0] ?? '(untitled)'
-}
-
-function difficultyLabel(difficulty: number) {
-  return DIFFICULTY_LABELS[difficulty] ?? `Difficulty ${difficulty}`
-}
+const { t } = useI18n()
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 const jumpingHash = ref<string | null>(null)
 const jumpError = ref('')
@@ -29,7 +23,7 @@ async function sendToGame(hash: string) {
     )
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
   } catch {
-    jumpError.value = 'Could not send song to game. Please try again.'
+    jumpError.value = t('diffChart.jumpError')
   } finally {
     jumpingHash.value = null
   }
@@ -38,18 +32,18 @@ async function sendToGame(hash: string) {
 
 <template>
   <div class="flex w-full max-w-3xl flex-col items-center gap-4">
-    <p v-if="user.scores.length === 0" class="muted">No scores yet.</p>
+    <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
     <div v-else class="w-full overflow-x-auto">
       <table class="w-full border-collapse text-sm whitespace-nowrap">
         <thead>
           <tr>
-            <th class="th-cell">Song</th>
-            <th class="th-cell">Difficulty</th>
-            <th class="th-cell">Level</th>
-            <th class="th-cell">Score</th>
-            <th class="th-cell">Crown</th>
-            <th class="th-cell">Rank</th>
-            <th class="th-cell">Max Combo</th>
+            <th class="th-cell">{{ $t('common.song') }}</th>
+            <th class="th-cell">{{ $t('common.difficulty') }}</th>
+            <th class="th-cell">{{ $t('common.level') }}</th>
+            <th class="th-cell">{{ $t('common.score') }}</th>
+            <th class="th-cell">{{ $t('common.crown') }}</th>
+            <th class="th-cell">{{ $t('common.rank') }}</th>
+            <th class="th-cell">{{ $t('common.maxCombo') }}</th>
             <th class="th-cell"></th>
           </tr>
         </thead>
@@ -71,7 +65,7 @@ async function sendToGame(hash: string) {
                 :disabled="jumpingHash === entry.hash"
                 @click="sendToGame(entry.hash)"
               >
-                {{ jumpingHash === entry.hash ? 'Sending…' : 'Send to Game' }}
+                {{ jumpingHash === entry.hash ? $t('common.sending') : $t('common.sendToGame') }}
               </button>
             </td>
           </tr>

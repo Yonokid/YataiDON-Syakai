@@ -1,20 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useSongDisplay } from '../composables/useSongDisplay'
 import type { UserData, Score } from '../types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
-
-const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
-
-function songTitle(title: Record<string, string>) {
-  return title.en ?? Object.values(title)[0] ?? '(untitled)'
-}
-
-function difficultyLabel(difficulty: number) {
-  return DIFFICULTY_LABELS[difficulty] ?? `Difficulty ${difficulty}`
-}
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 const onlineCount = ref<number | null>(null)
 const recentScores = ref<Score[]>([])
@@ -53,31 +45,31 @@ onMounted(async () => {
 
 <template>
   <div class="flex w-full max-w-lg flex-col items-center gap-4">
-    <h1 class="text-xl font-bold">Welcome, {{ user.username }}</h1>
+    <h1 class="text-xl font-bold">{{ $t('home.welcome', { username: user.username }) }}</h1>
 
     <p>
-      <span v-if="onlineCount !== null">{{ onlineCount }} user{{ onlineCount === 1 ? '' : 's' }} online</span>
-      <span v-else class="muted">Online count unavailable</span>
+      <span v-if="onlineCount !== null">{{ $t('home.usersOnline', onlineCount) }}</span>
+      <span v-else class="muted">{{ $t('home.onlineUnavailable') }}</span>
     </p>
 
     <div class="flex w-full flex-col items-center gap-1">
-      <span class="muted text-sm">Global Leaderboard</span>
+      <span class="muted text-sm">{{ $t('home.globalLeaderboard') }}</span>
       <p v-if="rank !== null">
-        #{{ rank }} — {{ totalScore!.toLocaleString() }} points
+        {{ $t('home.rankPoints', { rank, points: totalScore!.toLocaleString() }) }}
       </p>
-      <p v-else class="muted">Not ranked yet</p>
+      <p v-else class="muted">{{ $t('home.notRankedYet') }}</p>
     </div>
 
     <div class="flex w-full flex-col items-center gap-1">
-      <span class="muted text-sm">Recent Scores</span>
-      <p v-if="recentScores.length === 0" class="muted">No scores yet.</p>
+      <span class="muted text-sm">{{ $t('home.recentScores') }}</span>
+      <p v-if="recentScores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
       <table v-else class="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th class="th-cell">Song</th>
-            <th class="th-cell">Difficulty</th>
-            <th class="th-cell">Score</th>
-            <th class="th-cell">Crown</th>
+            <th class="th-cell">{{ $t('common.song') }}</th>
+            <th class="th-cell">{{ $t('common.difficulty') }}</th>
+            <th class="th-cell">{{ $t('common.score') }}</th>
+            <th class="th-cell">{{ $t('common.crown') }}</th>
           </tr>
         </thead>
         <tbody>

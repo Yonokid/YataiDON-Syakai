@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useSongDisplay } from '../composables/useSongDisplay'
 import type { Score } from '../types'
 
 interface PublicUser {
@@ -17,15 +18,7 @@ const route = useRoute()
 const user = ref<PublicUser | null>(null)
 const status = ref<'loading' | 'loaded' | 'error' | 'not-found'>('loading')
 
-const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
-
-function songTitle(title: Record<string, string>) {
-  return title.en ?? Object.values(title)[0] ?? '(untitled)'
-}
-
-function difficultyLabel(difficulty: number) {
-  return DIFFICULTY_LABELS[difficulty] ?? `Difficulty ${difficulty}`
-}
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 async function load(username: string) {
   status.value = 'loading'
@@ -49,24 +42,24 @@ watch(() => route.params.username, (username) => load(username as string))
 
 <template>
   <div class="flex w-full max-w-3xl flex-col items-center gap-4">
-    <p v-if="status === 'loading'">Loading…</p>
-    <p v-else-if="status === 'not-found'" class="error-text">User not found.</p>
-    <p v-else-if="status === 'error'" class="error-text">Could not reach server.</p>
+    <p v-if="status === 'loading'">{{ $t('common.loading') }}</p>
+    <p v-else-if="status === 'not-found'" class="error-text">{{ $t('publicUser.userNotFound') }}</p>
+    <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <template v-else-if="user">
       <h1 class="text-xl font-bold">{{ user.username }}</h1>
 
-      <p v-if="user.scores.length === 0" class="muted">No scores yet.</p>
+      <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
       <div v-else class="w-full overflow-x-auto">
         <table class="w-full border-collapse text-sm whitespace-nowrap">
           <thead>
             <tr>
-              <th class="th-cell">Song</th>
-              <th class="th-cell">Difficulty</th>
-              <th class="th-cell">Level</th>
-              <th class="th-cell">Score</th>
-              <th class="th-cell">Crown</th>
-              <th class="th-cell">Rank</th>
-              <th class="th-cell">Max Combo</th>
+              <th class="th-cell">{{ $t('common.song') }}</th>
+              <th class="th-cell">{{ $t('common.difficulty') }}</th>
+              <th class="th-cell">{{ $t('common.level') }}</th>
+              <th class="th-cell">{{ $t('common.score') }}</th>
+              <th class="th-cell">{{ $t('common.crown') }}</th>
+              <th class="th-cell">{{ $t('common.rank') }}</th>
+              <th class="th-cell">{{ $t('common.maxCombo') }}</th>
             </tr>
           </thead>
           <tbody>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import QRCode from 'qrcode'
 import type { UserData } from '../types'
 
@@ -31,6 +32,7 @@ const emit = defineEmits<{
   ]
   'import-requested': []
 }>()
+const { t } = useI18n()
 
 const qrRevealed = ref(false)
 const qrDataUrl = ref('')
@@ -76,7 +78,7 @@ async function saveCharaColors() {
       chara_color_3: charaColor3.value,
     })
   } catch {
-    colorSaveError.value = 'Could not save colors. Please try again.'
+    colorSaveError.value = t('user.colorSaveError')
   } finally {
     isSavingColors.value = false
   }
@@ -135,19 +137,14 @@ async function saveCostume() {
       chara_is_costume: isCostumeMode.value,
     })
   } catch {
-    costumeSaveError.value = 'Could not save costume. Please try again.'
+    costumeSaveError.value = t('user.costumeSaveError')
   } finally {
     isSavingCostume.value = false
   }
 }
 
 async function requestScoreImport() {
-  if (
-    !confirm(
-      'Import your pre-existing scores? You can only do this once.',
-    )
-  )
-    return
+  if (!confirm(t('user.importConfirm'))) return
 
   isRequestingImport.value = true
   importError.value = ''
@@ -159,7 +156,7 @@ async function requestScoreImport() {
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
     emit('import-requested')
   } catch {
-    importError.value = 'Could not request import. Please try again.'
+    importError.value = t('user.importError')
   } finally {
     isRequestingImport.value = false
   }
@@ -182,7 +179,7 @@ async function saveUsername() {
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
     emit('username-updated', username)
   } catch {
-    saveError.value = 'Could not save username. Please try again.'
+    saveError.value = t('user.usernameSaveError')
   } finally {
     isSaving.value = false
   }
@@ -195,17 +192,17 @@ async function saveUsername() {
       v-if="user.username === DEFAULT_USERNAME && !promptDismissed"
       class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
     >
-      <p>Please set a new username</p>
+      <p>{{ $t('user.setUsername') }}</p>
       <form class="flex flex-wrap justify-center gap-2" @submit.prevent="saveUsername">
         <input
           v-model="newUsername"
           type="text"
           maxlength="32"
-          placeholder="New username"
+          :placeholder="$t('user.newUsernamePlaceholder')"
           :disabled="isSaving"
           class="field"
         />
-        <button type="submit" class="btn" :disabled="isSaving || !newUsername.trim()">Save</button>
+        <button type="submit" class="btn" :disabled="isSaving || !newUsername.trim()">{{ $t('common.save') }}</button>
       </form>
       <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
     </div>
@@ -213,9 +210,9 @@ async function saveUsername() {
     <h1 class="text-xl font-bold">{{ user.username }}</h1>
 
     <div class="flex flex-col items-center gap-1">
-      <p v-if="user.import_completed" class="muted text-center text-sm">Pre-existing scores imported.</p>
+      <p v-if="user.import_completed" class="muted text-center text-sm">{{ $t('user.importCompleted') }}</p>
       <p v-else-if="user.import_requested" class="muted text-center text-sm">
-        Import requested — scores will be imported next time YataiDON is launched.
+        {{ $t('user.importRequested') }}
       </p>
       <button
         v-else
@@ -224,36 +221,36 @@ async function saveUsername() {
         :disabled="isRequestingImport"
         @click="requestScoreImport"
       >
-        Import pre-existing scores
+        {{ $t('user.importButton') }}
       </button>
       <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">Don Colors</span>
+      <span class="muted text-sm">{{ $t('user.donColors') }}</span>
       <div class="flex gap-4">
         <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
           <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
-          Body
+          {{ $t('user.body') }}
         </label>
         <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
           <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
-          Face
+          {{ $t('user.face') }}
         </label>
         <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
           <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
-          Accent
+          {{ $t('user.accent') }}
         </label>
       </div>
-      <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">Save Colors</button>
+      <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">{{ $t('user.saveColors') }}</button>
       <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">Costume</span>
+      <span class="muted text-sm">{{ $t('user.costume') }}</span>
       <label class="flex items-center gap-2 text-sm">
         <input v-model="isCostumeMode" type="checkbox" />
-        Full costume (unchecked = separate head/body)
+        {{ $t('user.fullCostume') }}
       </label>
 
       <div v-if="isCostumeMode" class="flex flex-col items-center gap-1">
@@ -274,7 +271,7 @@ async function saveUsername() {
       </div>
       <div v-else class="flex w-full flex-col gap-4">
         <div class="flex flex-col items-center gap-1">
-          <span class="muted text-xs">Head — {{ costumeNames?.head[headIndex]?.name }}</span>
+          <span class="muted text-xs">{{ $t('user.head') }} — {{ costumeNames?.head[headIndex]?.name }}</span>
           <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
             <button
               v-for="o in headOptions"
@@ -290,7 +287,7 @@ async function saveUsername() {
           </div>
         </div>
         <div class="flex flex-col items-center gap-1">
-          <span class="muted text-xs">Body — {{ costumeNames?.body[bodyIndex]?.name }}</span>
+          <span class="muted text-xs">{{ $t('user.body') }} — {{ costumeNames?.body[bodyIndex]?.name }}</span>
           <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
             <button
               v-for="o in bodyOptions"
@@ -307,12 +304,12 @@ async function saveUsername() {
         </div>
       </div>
 
-      <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">Save Costume</button>
+      <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">{{ $t('user.saveCostume') }}</button>
       <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">Log in on phone</span>
+      <span class="muted text-sm">{{ $t('user.loginOnPhone') }}</span>
       <button
         type="button"
         class="relative h-[220px] w-[220px] overflow-hidden rounded-md border border-neutral-300 dark:border-neutral-700"
@@ -329,15 +326,14 @@ async function saveUsername() {
           v-if="!qrRevealed"
           class="absolute inset-0 flex items-center justify-center bg-white/40 text-center text-sm font-medium dark:bg-black/40"
         >
-          Tap to reveal
+          {{ $t('user.tapToReveal') }}
         </span>
       </button>
       <p class="muted max-w-xs text-center text-xs">
-        Scan with your phone's camera to log in instantly. Anyone who scans this can access your
-        account — keep it hidden from others.
+        {{ $t('user.qrHint') }}
       </p>
     </div>
 
-    <button type="button" class="btn" @click="$emit('logout')">Log out</button>
+    <button type="button" class="btn" @click="$emit('logout')">{{ $t('user.logout') }}</button>
   </div>
 </template>

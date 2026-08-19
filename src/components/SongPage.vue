@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface Song {
   hash: string
@@ -18,7 +19,6 @@ interface ScoreEntry {
   max_combo: number
 }
 
-const DIFFICULTY_LABELS = ['Easy', 'Normal', 'Hard', 'Oni', 'Ura', 'Tower', 'Dan']
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const tabBase =
@@ -31,14 +31,7 @@ const songs = ref<Song[]>([])
 const songsStatus = ref<'loading' | 'loaded' | 'error'>('loading')
 const entries = ref<ScoreEntry[]>([])
 const entriesStatus = ref<'loading' | 'loaded' | 'error'>('loading')
-
-function songTitle(title: Record<string, string>) {
-  return title.en ?? Object.values(title)[0] ?? '(untitled)'
-}
-
-function difficultyLabel(difficulty: number) {
-  return DIFFICULTY_LABELS[difficulty] ?? `Difficulty ${difficulty}`
-}
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 const currentSong = computed(() => songs.value.find((s) => s.hash === route.params.hash))
 const variants = computed(() => {
@@ -83,7 +76,7 @@ watch(
 
 <template>
   <div class="flex w-full max-w-lg flex-col items-center gap-2">
-    <router-link to="/songs" class="self-start px-2 py-1 text-sm hover:underline">&larr; Back to songs</router-link>
+    <router-link to="/songs" class="self-start px-2 py-1 text-sm hover:underline">{{ $t('song.backToSongs') }}</router-link>
 
     <template v-if="currentSong">
       <h2 class="text-lg font-bold">{{ songTitle(currentSong.title) }}</h2>
@@ -103,21 +96,21 @@ watch(
         </router-link>
       </div>
     </template>
-    <p v-else-if="songsStatus === 'loading'">Loading…</p>
-    <p v-else-if="songsStatus === 'error'" class="error-text">Could not reach server.</p>
-    <p v-else class="error-text">Song not found.</p>
+    <p v-else-if="songsStatus === 'loading'">{{ $t('common.loading') }}</p>
+    <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
+    <p v-else class="error-text">{{ $t('song.songNotFound') }}</p>
 
-    <p v-if="entriesStatus === 'loading'">Loading…</p>
-    <p v-else-if="entriesStatus === 'error'" class="error-text">Could not reach server.</p>
-    <p v-else-if="entries.length === 0" class="muted">No scores yet.</p>
+    <p v-if="entriesStatus === 'loading'">{{ $t('common.loading') }}</p>
+    <p v-else-if="entriesStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
+    <p v-else-if="entries.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
     <table v-else class="w-full border-collapse text-sm">
       <thead>
         <tr>
-          <th class="th-cell">Rank</th>
-          <th class="th-cell">Username</th>
-          <th class="th-cell">Score</th>
-          <th class="th-cell">Crown</th>
-          <th class="th-cell">Max Combo</th>
+          <th class="th-cell">{{ $t('common.rank') }}</th>
+          <th class="th-cell">{{ $t('common.username') }}</th>
+          <th class="th-cell">{{ $t('common.score') }}</th>
+          <th class="th-cell">{{ $t('common.crown') }}</th>
+          <th class="th-cell">{{ $t('common.maxCombo') }}</th>
         </tr>
       </thead>
       <tbody>
