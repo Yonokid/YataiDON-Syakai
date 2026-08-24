@@ -156,7 +156,12 @@
           {
             "order": 14,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "トンツカタンタン",
+              "en": "Tontsukatantan",
+              "ko": "Tontsukatantan"
+            }
           },
           {
             "order": 15,
@@ -241,12 +246,20 @@
           {
             "order": 5,
             "difficulty": "oni",
-            "hash": null
+            "hash": "c4f208cfe1a9b0485779343d5f5e1fdb",
+            "title": {
+              "ja": "VISIONS"
+            }
           },
           {
             "order": 6,
             "difficulty": "ura",
-            "hash": null
+            "hash": "7971e0b08c94a38e412d928a2c5b078e",
+            "title": {
+              "ja": "魔法をかけて！",
+              "en": "魔法をかけて!",
+              "ko": "魔法をかけて!"
+            }
           },
           {
             "order": 7,
@@ -486,7 +499,12 @@
           {
             "order": 12,
             "difficulty": "oni",
-            "hash": null
+            "hash": "9723e3f107f428d781e3b708f9dc5799",
+            "title": {
+              "ja": "残酷な夜に輝け",
+              "en": "Shine in the Cruel Night",
+              "ko": "Shine in the Cruel Night"
+            }
           },
           {
             "order": 13,
@@ -560,7 +578,10 @@
           {
             "order": 20,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "BRAND NEW STARS!!"
+            }
           },
           {
             "order": 21,
@@ -683,7 +704,12 @@
           {
             "order": 32,
             "difficulty": "oni",
-            "hash": null
+            "hash": "3644b585946c6b1a37c642b4538d5815",
+            "title": {
+              "ja": "コドモオトナヒーロー (feat. 竹ぱら, しなこ, リアピ)",
+              "en": "Adults Hero With a Child's Heart (feat. Takepara, Shinako, Riapi)",
+              "ko": "Adults Hero With a Child's Heart (feat. Takepara, Shinako, Riapi)"
+            }
           },
           {
             "order": 33,

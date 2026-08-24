@@ -106,7 +106,13 @@
           {
             "order": 9,
             "difficulty": "oni",
-            "hash": "2602a530ed0c84c815790a00278934c7"
+            "hash": "2602a530ed0c84c815790a00278934c7",
+            "title": {
+              "ja": "ダーク・エクス・マキナ♡",
+              "en": "DARK EX MACHINA♡",
+              "ko": "DARK EX MACHINA♡",
+              "zh": "DARK EX MACHINA♡"
+            }
           },
           {
             "order": 10,
@@ -266,7 +272,10 @@
           {
             "order": 0,
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578",
+            "title": {
+              "ja": "Emma【達人】"
+            }
           },
           {
             "order": 1,
@@ -514,7 +523,10 @@
           {
             "order": 15,
             "difficulty": "oni",
-            "hash": null
+            "hash": "60816154602d124f46e3b3122bd87b36",
+            "title": {
+              "ja": "Hurtling Boys"
+            }
           },
           {
             "order": 16,
@@ -551,27 +563,51 @@
           {
             "order": 19,
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0",
+            "title": {
+              "ja": "4+1のそれぞれの未来【普通】",
+              "en": "4+1 Myriad Futures 【普通】",
+              "ko": "4+1노 소레조레노 미라이 【普通】",
+              "zh": "4+1的各自的未来 【普通】"
+            }
           },
           {
             "order": 20,
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0",
+            "title": {
+              "ja": "4+1のそれぞれの未来【玄人】",
+              "en": "4+1 Myriad Futures 【玄人】",
+              "ko": "4+1노 소레조레노 미라이 【玄人】",
+              "zh": "4+1的各自的未来 【玄人】"
+            }
           },
           {
             "order": 21,
             "difficulty": "ura",
-            "hash": null
+            "hash": "71b6306501a4b3e33cdceaee730f37c0",
+            "title": {
+              "ja": "4+1のそれぞれの未来【達人】",
+              "en": "4+1 Myriad Futures 【達人】",
+              "ko": "4+1노 소레조레노 미라이 【達人】",
+              "zh": "4+1的各自的未来 【達人】"
+            }
           },
           {
             "order": 22,
             "difficulty": "ura",
-            "hash": null
+            "hash": "fc696809f31838e8780ea11c283b5237",
+            "title": {
+              "ja": "Lightning Boys"
+            }
           },
           {
             "order": 23,
             "difficulty": "ura",
-            "hash": null
+            "hash": "78e909e9fd5ed7a2ebe39ea49daa3faa",
+            "title": {
+              "ja": "LΔchesis"
+            }
           },
           {
             "order": 24,
@@ -1359,7 +1395,13 @@
           {
             "order": 10,
             "difficulty": "ura",
-            "hash": null
+            "hash": "f92132c8985dc98d2808c22c6a662026",
+            "title": {
+              "ja": "パン vs ごはん！ 大決戦！【達人】",
+              "en": "PAN vs GOHAN! DAIKESSEN! 【達人】",
+              "ko": "PAN vs GOHAN! DAIKESSEN! 【達人】",
+              "zh": "PAN vs GOHAN! DAIKESSEN! 【達人】"
+            }
           },
           {
             "order": 11,
@@ -1647,7 +1689,13 @@
           {
             "order": 19,
             "difficulty": "oni",
-            "hash": null
+            "hash": "e496b388f1c24708bbd877ccedd26cba",
+            "title": {
+              "ja": "パン vs ごはん！ 大決戦！【達人】",
+              "en": "PAN vs GOHAN! DAIKESSEN! 【達人】",
+              "ko": "PAN vs GOHAN! DAIKESSEN! 【達人】",
+              "zh": "PAN vs GOHAN! DAIKESSEN! 【達人】"
+            }
           },
           {
             "order": 20,
@@ -1673,7 +1721,13 @@
           {
             "order": 22,
             "difficulty": "ura",
-            "hash": null
+            "hash": "bff6ebcc0a9e5ed0ad45759f646e9159",
+            "title": {
+              "ja": "ヘイラ(にじさんじ)",
+              "en": "Hater",
+              "ko": "Hater",
+              "zh": "Hater"
+            }
           },
           {
             "order": 23,
@@ -2074,7 +2128,10 @@
           {
             "order": 32,
             "difficulty": "oni",
-            "hash": null
+            "hash": "faaa21e810c45d5582150d3d1c0d777b",
+            "title": {
+              "ja": "Lightning Boys"
+            }
           },
           {
             "order": 33,
@@ -2148,7 +2205,10 @@
           {
             "order": 3,
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578",
+            "title": {
+              "ja": "Emma【玄人】"
+            }
           },
           {
             "order": 4,
@@ -2243,7 +2303,13 @@
           {
             "order": 13,
             "difficulty": "oni",
-            "hash": null
+            "hash": "3a5fdd27a8493b2ca89009314bc43585",
+            "title": {
+              "ja": "メタルホーク BGM1",
+              "en": "METAL HAWK BGM1",
+              "ko": "METAL HAWK BGM1",
+              "zh": "METAL HAWK BGM1"
+            }
           },
           {
             "order": 14,
@@ -2519,7 +2585,13 @@
           {
             "order": 23,
             "difficulty": "ura",
-            "hash": null
+            "hash": "d3bfbd807e834aa8daaa75078865d71d",
+            "title": {
+              "ja": "白鳥の湖",
+              "en": "Swan Lake",
+              "ko": "백조의 호수",
+              "zh": "天鹅湖"
+            }
           },
           {
             "order": 24,
@@ -2710,12 +2782,23 @@
           {
             "order": 11,
             "difficulty": "oni",
-            "hash": null
+            "hash": "9754a4011ed2a466bcb38740d06ff541",
+            "title": {
+              "ja": "濃紅",
+              "ko": "코이쿠레나이",
+              "zh": "浓红"
+            }
           },
           {
             "order": 12,
             "difficulty": "oni",
-            "hash": null
+            "hash": "aee6c771231523e5be0acfc5743f43f5",
+            "title": {
+              "ja": "濃紅(にじさんじ)",
+              "en": "Koikurenai",
+              "ko": "코이쿠레나이",
+              "zh": "浓红"
+            }
           },
           {
             "order": 13,
@@ -2795,7 +2878,12 @@
           {
             "order": 20,
             "difficulty": "oni",
-            "hash": null
+            "hash": "896d3fc3efe3a8e599d6010278d3591e",
+            "title": {
+              "ja": "【双打】 双竜ノ乱",
+              "ko": "【SouUchi】 소우류우노 란",
+              "zh": "【双打】 双龙之乱"
+            }
           },
           {
             "order": 21,
@@ -2843,7 +2931,10 @@
           {
             "order": 25,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【達人】"
+            }
           },
           {
             "order": 26,
@@ -2961,7 +3052,13 @@
           {
             "order": 0,
             "difficulty": "ura",
-            "hash": null
+            "hash": "92414d717b6e678abc9fc82d46b98d8c",
+            "title": {
+              "ja": "あなたとトゥラッタッタ♪",
+              "en": "ANATATO TURATTATTA♪",
+              "ko": "ANATATO TURATTATTA♪",
+              "zh": "ANATATO TURATTATTA♪"
+            }
           },
           {
             "order": 1,
@@ -2976,7 +3073,11 @@
           {
             "order": 2,
             "difficulty": "ura",
-            "hash": null
+            "hash": "3b485f112293e1991e4433f20932feda",
+            "title": {
+              "ja": "ゲゲゲの鬼太郎",
+              "zh": "咯咯咯鬼太郎"
+            }
           },
           {
             "order": 3,
@@ -3178,7 +3279,10 @@
           {
             "order": 11,
             "difficulty": "ura",
-            "hash": null
+            "hash": "38c0a352e5799688915e66f27314e578",
+            "title": {
+              "ja": "Emma【普通】"
+            }
           },
           {
             "order": 12,
@@ -3275,7 +3379,10 @@
           {
             "order": 21,
             "difficulty": "oni",
-            "hash": null
+            "hash": "b92b357fd6719541b450fdc43b120ee0",
+            "title": {
+              "ja": "スーパーD&D ～完全にリードしてアイマイミー～"
+            }
           },
           {
             "order": 22,
@@ -3385,7 +3492,11 @@
           {
             "order": 32,
             "difficulty": "ura",
-            "hash": null
+            "hash": "5a45cc8ed9433d589c1faeac407fcaa9",
+            "title": {
+              "ja": "ピコピコ ルイン",
+              "zh": "Pico Pico Ruin"
+            }
           },
           {
             "order": 33,
@@ -3817,22 +3928,40 @@
           {
             "order": 4,
             "difficulty": "oni",
-            "hash": null
+            "hash": "e496b388f1c24708bbd877ccedd26cba",
+            "title": {
+              "ja": "パン vs ごはん！ 大決戦！【普通】",
+              "en": "PAN vs GOHAN! DAIKESSEN! 【普通】",
+              "ko": "PAN vs GOHAN! DAIKESSEN! 【普通】",
+              "zh": "PAN vs GOHAN! DAIKESSEN! 【普通】"
+            }
           },
           {
             "order": 5,
             "difficulty": "ura",
-            "hash": null
+            "hash": "f92132c8985dc98d2808c22c6a662026",
+            "title": {
+              "ja": "パン vs ごはん！ 大決戦！【普通】",
+              "en": "PAN vs GOHAN! DAIKESSEN! 【普通】",
+              "ko": "PAN vs GOHAN! DAIKESSEN! 【普通】",
+              "zh": "PAN vs GOHAN! DAIKESSEN! 【普通】"
+            }
           },
           {
             "order": 6,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【玄人】"
+            }
           },
           {
             "order": 7,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【普通】"
+            }
           },
           {
             "order": 8,

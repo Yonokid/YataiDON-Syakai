@@ -181,7 +181,12 @@
           {
             "order": 16,
             "difficulty": "oni",
-            "hash": null
+            "hash": "b1f54c9b80424672e7b6af31522499b9",
+            "title": {
+              "ja": "モア！ジャンプ！モア！",
+              "en": "MORE! JUMP! MORE!",
+              "ko": "모어! 점프! 모어!"
+            }
           },
           {
             "order": 17,
@@ -349,7 +354,12 @@
           {
             "order": 11,
             "difficulty": "ura",
-            "hash": null
+            "hash": "5e101c4be88717c57b96d97f5d5bbc02",
+            "title": {
+              "ja": "無敵的ハピネス！(SOS団5人Ver.)",
+              "en": "MUTEKI TEKI HAPPINESS!(Five SOS Members Ver.)",
+              "ko": "MUTEKI TEKI HAPPINESS!(SOS단 5인 Ver.)"
+            }
           },
           {
             "order": 12,
@@ -979,7 +989,12 @@
           {
             "order": 18,
             "difficulty": "oni",
-            "hash": null
+            "hash": "908c692b84323272c37a17bb2059bdb9",
+            "title": {
+              "ja": "トンデモワンダーズ",
+              "en": "Tondemo-Wonderz",
+              "ko": "톤데모 원더즈"
+            }
           },
           {
             "order": 19,
@@ -1006,7 +1021,12 @@
           {
             "order": 21,
             "difficulty": "ura",
-            "hash": null
+            "hash": "ab96e4d1f71d443eebf1b2fd5d9d8b05",
+            "title": {
+              "ja": "Daddy's Style -今夜はダディダディ-",
+              "en": "Daddy's Style",
+              "ko": "Daddy's Style"
+            }
           },
           {
             "order": 22,
@@ -1676,7 +1696,12 @@
           {
             "order": 34,
             "difficulty": "oni",
-            "hash": null
+            "hash": "5b9be1ad9e2bb22c38ba6d8cc38b4f73",
+            "title": {
+              "ja": "アリア",
+              "en": "Aria",
+              "ko": "Aria"
+            }
           },
           {
             "order": 35,
@@ -2963,7 +2988,13 @@
           {
             "order": 35,
             "difficulty": "oni",
-            "hash": null
+            "hash": "23b91b1eea0dbe2a4f5ed32ea859eb09",
+            "title": {
+              "ja": "マルトーアンフェール",
+              "en": "Marteau en fer",
+              "ko": "Marteau en fer",
+              "zh": "鐵鎚"
+            }
           },
           {
             "order": 36,
@@ -2979,7 +3010,12 @@
           {
             "order": 37,
             "difficulty": "oni",
-            "hash": null
+            "hash": "eba6b733076c8f1fbaf490ce995026b1",
+            "title": {
+              "ja": "闇の魂",
+              "en": "Spirit of Darkness",
+              "ko": "야미노 타마시이"
+            }
           },
           {
             "order": 38,
@@ -3299,7 +3335,12 @@
           {
             "order": 8,
             "difficulty": "oni",
-            "hash": null
+            "hash": "915116fb5bf36ef3dc28db4dffaf9f57",
+            "title": {
+              "ja": "てらてら",
+              "en": "SHOW OFF",
+              "ko": "번질번질"
+            }
           },
           {
             "order": 9,

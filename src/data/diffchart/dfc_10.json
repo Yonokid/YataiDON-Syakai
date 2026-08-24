@@ -75,7 +75,13 @@
           {
             "order": 6,
             "difficulty": "oni",
-            "hash": null
+            "hash": "2602a530ed0c84c815790a00278934c7",
+            "title": {
+              "ja": "ダーク・エクス・マキナ♡",
+              "en": "DARK EX MACHINA♡",
+              "ko": "DARK EX MACHINA♡",
+              "zh": "DARK EX MACHINA♡"
+            }
           },
           {
             "order": 7,
@@ -165,7 +171,11 @@
           {
             "order": 15,
             "difficulty": "oni",
-            "hash": null
+            "hash": "14e09f8e6b52afb11246e488b5387ff5",
+            "title": {
+              "ja": "poxei♦︎DOON",
+              "zh": "poxei◆DOON"
+            }
           },
           {
             "order": 16,
@@ -555,7 +565,10 @@
           {
             "order": 11,
             "difficulty": "oni",
-            "hash": null
+            "hash": "60816154602d124f46e3b3122bd87b36",
+            "title": {
+              "ja": "Hurtling Boys"
+            }
           },
           {
             "order": 12,
@@ -582,12 +595,18 @@
           {
             "order": 14,
             "difficulty": "ura",
-            "hash": null
+            "hash": "fc696809f31838e8780ea11c283b5237",
+            "title": {
+              "ja": "Lightning Boys"
+            }
           },
           {
             "order": 15,
             "difficulty": "ura",
-            "hash": null
+            "hash": "78e909e9fd5ed7a2ebe39ea49daa3faa",
+            "title": {
+              "ja": "LΔchesis"
+            }
           },
           {
             "order": 16,
@@ -1518,7 +1537,10 @@
           {
             "order": 23,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【達人】"
+            }
           },
           {
             "order": 24,
@@ -2276,7 +2298,13 @@
           {
             "order": 0,
             "difficulty": "ura",
-            "hash": null
+            "hash": "92414d717b6e678abc9fc82d46b98d8c",
+            "title": {
+              "ja": "あなたとトゥラッタッタ♪",
+              "en": "ANATATO TURATTATTA♪",
+              "ko": "ANATATO TURATTATTA♪",
+              "zh": "ANATATO TURATTATTA♪"
+            }
           },
           {
             "order": 1,
@@ -2354,7 +2382,11 @@
           {
             "order": 8,
             "difficulty": "ura",
-            "hash": null
+            "hash": "3b485f112293e1991e4433f20932feda",
+            "title": {
+              "ja": "ゲゲゲの鬼太郎",
+              "zh": "咯咯咯鬼太郎"
+            }
           },
           {
             "order": 9,
@@ -2465,7 +2497,13 @@
           {
             "order": 19,
             "difficulty": "oni",
-            "hash": null
+            "hash": "3a5fdd27a8493b2ca89009314bc43585",
+            "title": {
+              "ja": "メタルホーク BGM1",
+              "en": "METAL HAWK BGM1",
+              "ko": "METAL HAWK BGM1",
+              "zh": "METAL HAWK BGM1"
+            }
           },
           {
             "order": 20,
@@ -2858,7 +2896,13 @@
           {
             "order": 33,
             "difficulty": "ura",
-            "hash": null
+            "hash": "d3bfbd807e834aa8daaa75078865d71d",
+            "title": {
+              "ja": "白鳥の湖",
+              "en": "Swan Lake",
+              "ko": "백조의 호수",
+              "zh": "天鹅湖"
+            }
           },
           {
             "order": 34,
@@ -2896,7 +2940,13 @@
           {
             "order": 37,
             "difficulty": "ura",
-            "hash": null
+            "hash": "bff6ebcc0a9e5ed0ad45759f646e9159",
+            "title": {
+              "ja": "ヘイラ(にじさんじ)",
+              "en": "Hater",
+              "ko": "Hater",
+              "zh": "Hater"
+            }
           },
           {
             "order": 38,
@@ -3002,7 +3052,12 @@
           {
             "order": 3,
             "difficulty": "oni",
-            "hash": null
+            "hash": "9754a4011ed2a466bcb38740d06ff541",
+            "title": {
+              "ja": "濃紅",
+              "ko": "코이쿠레나이",
+              "zh": "浓红"
+            }
           },
           {
             "order": 4,
@@ -3091,7 +3146,10 @@
           {
             "order": 12,
             "difficulty": "oni",
-            "hash": null
+            "hash": "faaa21e810c45d5582150d3d1c0d777b",
+            "title": {
+              "ja": "Lightning Boys"
+            }
           }
         ],
         "color": "#000000",
@@ -3397,7 +3455,11 @@
           {
             "order": 28,
             "difficulty": "ura",
-            "hash": null
+            "hash": "5a45cc8ed9433d589c1faeac407fcaa9",
+            "title": {
+              "ja": "ピコピコ ルイン",
+              "zh": "Pico Pico Ruin"
+            }
           },
           {
             "order": 29,
@@ -3709,7 +3771,10 @@
           {
             "order": 10,
             "difficulty": "oni",
-            "hash": null
+            "hash": "b92b357fd6719541b450fdc43b120ee0",
+            "title": {
+              "ja": "スーパーD&D ～完全にリードしてアイマイミー～"
+            }
           },
           {
             "order": 11,
@@ -3777,7 +3842,10 @@
           {
             "order": 17,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【玄人】"
+            }
           },
           {
             "order": 18,
@@ -4019,7 +4087,10 @@
           {
             "order": 8,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7d2248d1565dc60a453193fd9d6f1b16",
+            "title": {
+              "ja": "BATTLE NO.1【普通】"
+            }
           },
           {
             "order": 9,

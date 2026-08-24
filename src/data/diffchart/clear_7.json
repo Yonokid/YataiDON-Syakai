@@ -34,7 +34,13 @@
           {
             "order": 2,
             "difficulty": "oni",
-            "hash": null
+            "hash": "3f0af7c7bb1eda3304675830618cc0d6",
+            "title": {
+              "ja": "さいたま2001",
+              "en": "사이타마 2001",
+              "ko": "사이타마 2001",
+              "zh": "埼玉2001"
+            }
           },
           {
             "order": 3,
@@ -49,7 +55,12 @@
           {
             "order": 4,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "Love Love Love Love Loveばきゅーんっ！",
+              "en": "Love love love love lovebakyuun!",
+              "ko": "Love love love love lovebakyuun!"
+            }
           },
           {
             "order": 5,
@@ -165,7 +176,12 @@
           {
             "order": 0,
             "difficulty": "oni",
-            "hash": null
+            "hash": "7ea70100a9b2a13cf421d5e1328a296b",
+            "title": {
+              "ja": "無敵的ハピネス！(SOS団5人Ver.)",
+              "en": "MUTEKI TEKI HAPPINESS!(Five SOS Members Ver.)",
+              "ko": "MUTEKI TEKI HAPPINESS!(SOS단 5인 Ver.)"
+            }
           },
           {
             "order": 1,
@@ -373,7 +389,10 @@
           {
             "order": 23,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "BRIGHTEST STARS!!"
+            }
           },
           {
             "order": 24,
@@ -408,7 +427,12 @@
           {
             "order": 27,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "カーマイン",
+              "en": "CARMINE",
+              "ko": "CARMINE"
+            }
           },
           {
             "order": 28,
@@ -709,12 +733,22 @@
           {
             "order": 25,
             "difficulty": "oni",
-            "hash": null
+            "hash": "fb63898fd4463091e937de97a5c292b2",
+            "title": {
+              "ja": "革命道中",
+              "en": "On The Way",
+              "ko": "On The Way"
+            }
           },
           {
             "order": 26,
             "difficulty": "oni",
-            "hash": null
+            "hash": "8b3938da91a5b6f9bf2bbad7f859e1f2",
+            "title": {
+              "ja": "Daddy's Style -今夜はダディダディ-",
+              "en": "Daddy's Style",
+              "ko": "Daddy's Style"
+            }
           },
           {
             "order": 27,
@@ -970,7 +1004,10 @@
           {
             "order": 15,
             "difficulty": "oni",
-            "hash": null
+            "hash": "ccb6931dade9493a672d090ea041ac6a",
+            "title": {
+              "ja": "THE REVO"
+            }
           },
           {
             "order": 16,
@@ -1436,7 +1473,10 @@
           {
             "order": 5,
             "difficulty": "oni",
-            "hash": null
+            "hash": null,
+            "title": {
+              "ja": "LIMIT BREAK DREAMERS"
+            }
           },
           {
             "order": 6,

@@ -309,7 +309,10 @@
           {
             "order": 28,
             "difficulty": "oni",
-            "hash": null
+            "hash": "10cdc19228f6a9df532ad5ccd3fa54c5",
+            "title": {
+              "ja": "IRIS OUT"
+            }
           },
           {
             "order": 29,
@@ -1118,7 +1121,10 @@
           {
             "order": 19,
             "difficulty": "oni",
-            "hash": null
+            "hash": "3f4522f045e85123a114458032fc814e",
+            "title": {
+              "ja": "World Keeps Turning"
+            }
           },
           {
             "order": 20,
@@ -1281,7 +1287,12 @@
           {
             "order": 35,
             "difficulty": "oni",
-            "hash": null
+            "hash": "ff87faef86df9c59f70b11e74271a1f0",
+            "title": {
+              "ja": "チェリーポップ",
+              "en": "Cherry Pop",
+              "ko": "Cherry Pop"
+            }
           },
           {
             "order": 36,
@@ -1350,7 +1361,12 @@
           {
             "order": 42,
             "difficulty": "oni",
-            "hash": null
+            "hash": "b177c4bd3adee88e156655e16e7293d1",
+            "title": {
+              "ja": "スパートシンドローマー",
+              "en": "Spurt Syndromer",
+              "ko": "Spurt Syndromer"
+            }
           },
           {
             "order": 43,
@@ -1377,7 +1393,12 @@
           {
             "order": 45,
             "difficulty": "oni",
-            "hash": null
+            "hash": "d3e9c759ef3def24dd88b5881bfa1368",
+            "title": {
+              "ja": "ツナガリズム",
+              "en": "Tsunaga-rhythm",
+              "ko": "Tsunaga-rhythm"
+            }
           },
           {
             "order": 46,
@@ -1518,7 +1539,13 @@
           {
             "order": 59,
             "difficulty": "ura",
-            "hash": null
+            "hash": "80609d19c7e9bb32e61bd6e3acbace6d",
+            "title": {
+              "ja": "虹色・夢色・太鼓色",
+              "en": "Nijiiro Yumeiro Taikoiro",
+              "ko": "니지이로·유메이로·타이코이로",
+              "zh": "虹色·梦色·太鼓色"
+            }
           },
           {
             "order": 60,
@@ -2610,7 +2637,12 @@
           {
             "order": 12,
             "difficulty": "oni",
-            "hash": null
+            "hash": "af6e832d1373a4a0083b569991be210e",
+            "title": {
+              "ja": "CR詠ZY",
+              "en": "CRAZY",
+              "ko": "CR에이ZY"
+            }
           },
           {
             "order": 13,
@@ -2911,7 +2943,10 @@
           {
             "order": 41,
             "difficulty": "oni",
-            "hash": null
+            "hash": "5ac57b4d7423f7fef116aec09617f9e3",
+            "title": {
+              "ja": "Re:Play!!"
+            }
           },
           {
             "order": 42,
@@ -3075,7 +3110,12 @@
           {
             "order": 57,
             "difficulty": "oni",
-            "hash": null
+            "hash": "9b952a9fe920d88d7fabc58bcf2e2653",
+            "title": {
+              "ja": "汚れなきクソ野郎ども",
+              "en": "Innocent bastards",
+              "ko": "순수한 쓰레기들"
+            }
           },
           {
             "order": 58,
@@ -3113,7 +3153,12 @@
           {
             "order": 61,
             "difficulty": "oni",
-            "hash": null
+            "hash": "ede8e4445683c122949e143d91da4b89",
+            "title": {
+              "ja": "クスシキ",
+              "en": "KUSUSHIKI",
+              "ko": "KUSUSHIKI"
+            }
           },
           {
             "order": 62,
@@ -3412,7 +3457,12 @@
           {
             "order": 12,
             "difficulty": "oni",
-            "hash": null
+            "hash": "268100afa2c96afccebb3164feb1a752",
+            "title": {
+              "ja": "バグ",
+              "en": "bug",
+              "ko": "버그"
+            }
           },
           {
             "order": 13,
