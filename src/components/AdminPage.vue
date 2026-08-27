@@ -51,6 +51,13 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
+const activeTab = ref<'users' | 'merge'>('users')
+const mergeTargetCode = ref('')
+const mergeSourceCode = ref('')
+const isMerging = ref(false)
+const mergeError = ref('')
+const mergeSuccess = ref(false)
+
 async function fetchUsers() {
   isLoading.value = true
   loadError.value = ''
@@ -156,6 +163,15 @@ async function saveEdit() {
   }
 }
 
+async function copyAccessCode(user: AdminUser) {
+  try {
+    await navigator.clipboard.writeText(user.access_code)
+    loadError.value = ''
+  } catch {
+    loadError.value = t('admin.copyCodeError')
+  }
+}
+
 async function deleteUser(user: AdminUser) {
   if (!confirm(t('admin.deleteConfirm', { username: user.username }))) return
   try {
@@ -167,6 +183,32 @@ async function deleteUser(user: AdminUser) {
     users.value = users.value.filter((u) => u.access_code !== user.access_code)
   } catch {
     loadError.value = t('admin.deleteError')
+  }
+}
+
+async function mergeUsers() {
+  const target = mergeTargetCode.value.trim()
+  const source = mergeSourceCode.value.trim()
+  if (!target || !source || target === source) return
+  if (!confirm(t('admin.mergeConfirm', { target, source }))) return
+  isMerging.value = true
+  mergeError.value = ''
+  mergeSuccess.value = false
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/merge_users?admin_key=${encodeURIComponent(adminKey.value)}` +
+        `&target_access_code=${encodeURIComponent(target)}&source_access_code=${encodeURIComponent(source)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    mergeSuccess.value = true
+    mergeTargetCode.value = ''
+    mergeSourceCode.value = ''
+    fetchUsers()
+  } catch {
+    mergeError.value = t('admin.mergeError')
+  } finally {
+    isMerging.value = false
   }
 }
 
@@ -201,12 +243,44 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
 
     <template v-else>
       <div class="flex w-full flex-wrap items-center justify-between gap-2">
-        <form class="flex gap-2" @submit.prevent="fetchUsers">
-          <input v-model="query" type="text" :placeholder="$t('admin.searchPlaceholder')" class="field" />
-          <button type="submit" class="btn" :disabled="isLoading">{{ $t('admin.search') }}</button>
-        </form>
+        <div class="flex gap-2">
+          <button type="button" class="btn" :disabled="activeTab === 'users'" @click="activeTab = 'users'">
+            {{ $t('admin.tabUsers') }}
+          </button>
+          <button type="button" class="btn" :disabled="activeTab === 'merge'" @click="activeTab = 'merge'">
+            {{ $t('admin.tabMerge') }}
+          </button>
+        </div>
         <button type="button" class="btn" @click="logout">{{ $t('admin.lock') }}</button>
       </div>
+
+      <template v-if="activeTab === 'merge'">
+        <form class="flex w-full max-w-sm flex-col gap-3" @submit.prevent="mergeUsers">
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('admin.mergeTargetLabel') }}
+            <input v-model="mergeTargetCode" type="text" class="field" />
+          </label>
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('admin.mergeSourceLabel') }}
+            <input v-model="mergeSourceCode" type="text" class="field" />
+          </label>
+          <p v-if="mergeError" class="error-text text-sm">{{ mergeError }}</p>
+          <p v-if="mergeSuccess" class="text-sm">{{ $t('admin.mergeSuccess') }}</p>
+          <button
+            type="submit"
+            class="btn"
+            :disabled="isMerging || !mergeTargetCode.trim() || !mergeSourceCode.trim() || mergeTargetCode.trim() === mergeSourceCode.trim()"
+          >
+            {{ $t('admin.mergeButton') }}
+          </button>
+        </form>
+      </template>
+
+      <template v-else>
+      <form class="flex gap-2" @submit.prevent="fetchUsers">
+        <input v-model="query" type="text" :placeholder="$t('admin.searchPlaceholder')" class="field" />
+        <button type="submit" class="btn" :disabled="isLoading">{{ $t('admin.search') }}</button>
+      </form>
 
       <p v-if="loadError" class="error-text text-sm">{{ loadError }}</p>
       <p v-if="isLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
@@ -232,6 +306,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               <td class="td-cell">{{ user.score_count }}</td>
               <td class="td-cell">
                 <div class="flex gap-2">
+                  <button type="button" class="btn" @click="copyAccessCode(user)">{{ $t('admin.copyCode') }}</button>
                   <button type="button" class="btn" @click="startEdit(user)">{{ $t('admin.edit') }}</button>
                   <button type="button" class="btn" @click="deleteUser(user)">{{ $t('admin.delete') }}</button>
                 </div>
@@ -334,6 +409,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           </tbody>
         </table>
       </div>
+      </template>
     </template>
   </div>
 </template>
