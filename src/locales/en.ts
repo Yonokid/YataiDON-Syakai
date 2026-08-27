@@ -100,6 +100,18 @@ export default {
   publicUser: {
     userNotFound: 'User not found.',
   },
+  scores: {
+    searchPlaceholder: 'Search songs…',
+    noResults: 'No matching scores.',
+    statsTitle: 'Crown Statistics',
+    version: 'Version',
+    allVersions: 'All Versions',
+    allDifficulties: 'All Difficulties',
+    tierClear: 'Clear',
+    tierFullCombo: 'Full Combo',
+    tierDonderful: 'Donderful Combo',
+    obtainedOfPossible: 'Progress',
+  },
   songLeaderboard: {
     title: 'Song Leaderboards',
     searchPlaceholder: 'Search songs…',
