@@ -132,7 +132,7 @@ export default {
     songNotFound: 'Song not found.',
   },
   user: {
-    setUsername: 'Please set a new username',
+    setUsername: 'Change username',
     newUsernamePlaceholder: 'New username',
     importCompleted: 'Pre-existing scores imported.',
     importRequested: 'Import requested; scores will be imported next time YataiDON is launched.',

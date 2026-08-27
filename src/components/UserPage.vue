@@ -14,7 +14,6 @@ interface CostumeNames {
   costume: Record<string, CostumeEntry>
 }
 
-const DEFAULT_USERNAME = 'Don-chan'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
@@ -42,7 +41,6 @@ watchEffect(async () => {
   qrDataUrl.value = await QRCode.toDataURL(loginUrl, { margin: 1, width: 220 })
 })
 
-const promptDismissed = ref(false)
 const newUsername = ref('')
 const isSaving = ref(false)
 const saveError = ref('')
@@ -189,7 +187,6 @@ async function saveUsername() {
 <template>
   <div class="flex w-full max-w-3xl flex-col items-center gap-4">
     <div
-      v-if="user.username === DEFAULT_USERNAME && !promptDismissed"
       class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
     >
       <p>{{ $t('user.setUsername') }}</p>
