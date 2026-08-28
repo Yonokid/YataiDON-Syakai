@@ -375,6 +375,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <th class="th-cell">{{ $t('admin.thName') }}</th>
                 <th class="th-cell">{{ $t('admin.thColor') }}</th>
                 <th class="th-cell">{{ $t('admin.thDefaultUnlocked') }}</th>
+                <th class="th-cell">{{ $t('admin.thConditionJa') }}</th>
                 <th class="th-cell">{{ $t('admin.thCondition') }}</th>
                 <th class="th-cell"></th>
               </tr>
@@ -385,13 +386,14 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <td class="td-cell">{{ title.name }}</td>
                 <td class="td-cell">{{ title.color ?? $t('admin.dash') }}</td>
                 <td class="td-cell">{{ title.default_unlocked ? $t('admin.yes') : $t('admin.no') }}</td>
+                <td class="td-cell">{{ title.unlock_condition_ja ?? $t('admin.dash') }}</td>
                 <td class="td-cell">{{ title.unlock_condition_en ?? $t('admin.dash') }}</td>
                 <td class="td-cell">
                   <button type="button" class="btn" @click="startEditTitle(title)">{{ $t('admin.edit') }}</button>
                 </td>
               </tr>
               <tr v-if="titles.length === 0">
-                <td class="td-cell muted" colspan="6">{{ $t('admin.noTitlesFound') }}</td>
+                <td class="td-cell muted" colspan="7">{{ $t('admin.noTitlesFound') }}</td>
               </tr>
             </tbody>
           </table>

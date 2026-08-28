@@ -95,6 +95,7 @@ export default {
     thName: 'Name',
     thColor: 'Color',
     thDefaultUnlocked: 'Default unlocked',
+    thConditionJa: 'Condition (JA)',
     thCondition: 'Condition (EN, computed)',
     editTitle: 'Edit title #{number}',
     nameLabel: 'Name',
