@@ -16,6 +16,7 @@ export interface Score {
 
 export interface UserData {
   username: string
+  title: string
   import_requested: boolean
   import_completed: boolean
   chara_color_1: string

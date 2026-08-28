@@ -48,6 +48,7 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
         @verified="login"
         @logout="handleLogout"
         @username-updated="(v: string) => currentUser && (currentUser.username = v)"
+        @title-updated="(v: string) => currentUser && (currentUser.title = v)"
         @chara-colors-updated="
           (c: { chara_color_1: string; chara_color_2: string; chara_color_3: string }) =>
             currentUser && Object.assign(currentUser, c)

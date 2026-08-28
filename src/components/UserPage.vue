@@ -2,6 +2,7 @@
 import { computed, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import QRCode from 'qrcode'
+import Nameplate from './Nameplate.vue'
 import type { UserData } from '../types'
 
 interface CostumeEntry {
@@ -16,10 +17,13 @@ interface CostumeNames {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+const DEFAULT_TITLE = 'ドンダーデビュー！'
+
 const props = defineProps<{ user: UserData; accessCode: string }>()
 const emit = defineEmits<{
   logout: []
   'username-updated': [username: string]
+  'title-updated': [title: string]
   'chara-colors-updated': [colors: { chara_color_1: string; chara_color_2: string; chara_color_3: string }]
   'costume-updated': [
     costume: {
@@ -44,6 +48,34 @@ watchEffect(async () => {
 const newUsername = ref('')
 const isSaving = ref(false)
 const saveError = ref('')
+
+const titleMode = ref<'default' | 'custom'>(props.user.title === DEFAULT_TITLE ? 'default' : 'custom')
+const customTitle = ref(props.user.title === DEFAULT_TITLE ? '' : props.user.title)
+const isSavingTitle = ref(false)
+const titleSaveError = ref('')
+
+async function saveTitle() {
+  const title = titleMode.value === 'default' ? DEFAULT_TITLE : customTitle.value.trim()
+  if (!title) return
+
+  isSavingTitle.value = true
+  titleSaveError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_title?access_code=${encodeURIComponent(props.accessCode)}`,
+      {
+        method: 'POST',
+        body: new URLSearchParams({ title }),
+      },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('title-updated', title)
+  } catch {
+    titleSaveError.value = t('user.titleSaveError')
+  } finally {
+    isSavingTitle.value = false
+  }
+}
 
 const isRequestingImport = ref(false)
 const importError = ref('')
@@ -204,7 +236,40 @@ async function saveUsername() {
       <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
     </div>
 
-    <h1 class="text-xl font-bold">{{ user.username }}</h1>
+    <Nameplate :username="user.username" :title="user.title" />
+
+    <div
+      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
+    >
+      <p>{{ $t('user.setTitle') }}</p>
+      <form class="flex flex-wrap items-center justify-center gap-2" @submit.prevent="saveTitle">
+        <label class="flex cursor-pointer items-center gap-1 text-sm">
+          <input v-model="titleMode" type="radio" value="default" :disabled="isSavingTitle" />
+          {{ $t('user.titleDefault') }}
+        </label>
+        <label class="flex cursor-pointer items-center gap-1 text-sm">
+          <input v-model="titleMode" type="radio" value="custom" :disabled="isSavingTitle" />
+          {{ $t('user.titleCustom') }}
+        </label>
+        <input
+          v-if="titleMode === 'custom'"
+          v-model="customTitle"
+          type="text"
+          maxlength="32"
+          :placeholder="$t('user.customTitlePlaceholder')"
+          :disabled="isSavingTitle"
+          class="field"
+        />
+        <button
+          type="submit"
+          class="btn"
+          :disabled="isSavingTitle || (titleMode === 'custom' && !customTitle.trim())"
+        >
+          {{ $t('common.save') }}
+        </button>
+      </form>
+      <p v-if="titleSaveError" class="error-text text-sm">{{ titleSaveError }}</p>
+    </div>
 
     <div class="flex flex-col items-center gap-1">
       <p v-if="user.import_completed" class="muted text-center text-sm">{{ $t('user.importCompleted') }}</p>

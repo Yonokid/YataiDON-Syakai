@@ -156,5 +156,10 @@ export default {
       "Scan with your phone's camera to log in instantly. This is sensitive!",
     logout: 'Log out',
     usernameSaveError: 'Could not save username. Please try again.',
+    setTitle: 'Change title',
+    titleDefault: 'Default',
+    titleCustom: 'Custom',
+    customTitlePlaceholder: 'Custom title',
+    titleSaveError: 'Could not save title. That title may already belong to the game.',
   },
 }
