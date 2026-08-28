@@ -89,6 +89,23 @@ export default {
     allow: 'Allow',
     deny: 'Deny',
     noSuspiciousScores: 'Nothing here.',
+    tabTitles: 'Titles',
+    titlesLoadError: 'Could not load titles. Please try again.',
+    thNumber: '#',
+    thName: 'Name',
+    thColor: 'Color',
+    thDefaultUnlocked: 'Default unlocked',
+    thCondition: 'Condition (EN, computed)',
+    editTitle: 'Edit title #{number}',
+    nameLabel: 'Name',
+    colorLabel: 'Color',
+    unlockConditionJaLabel: 'Unlock condition (JA, shown to players)',
+    structuredConditionNote:
+      'This title also has a structured chart/count condition (from populate_titles.py); the English text above is computed from that and cannot be edited here. Default-unlocked overrides it and grants the title to everyone.',
+    noStructuredConditionNote:
+      'No structured condition is set for this title -- default-unlocked is the only way anyone gets it.',
+    titleSaveError: 'Could not save title. Please try again.',
+    noTitlesFound: 'No titles found.',
   },
   diffChart: {
     jumpError: 'Could not send song to game. Please try again.',

@@ -12,6 +12,16 @@ interface AdminUser {
   score_count: number
 }
 
+interface AdminTitle {
+  number: number
+  name: string
+  color: string | null
+  unlock_condition_ja: string | null
+  unlock_condition_en: string | null
+  default_unlocked: boolean
+  has_structured_condition: boolean
+}
+
 interface SuspiciousScore {
   id: number
   access_code: string
@@ -51,7 +61,7 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
-const activeTab = ref<'users' | 'merge'>('users')
+const activeTab = ref<'users' | 'titles' | 'merge'>('users')
 const mergeTargetCode = ref('')
 const mergeSourceCode = ref('')
 const isMerging = ref(false)
@@ -116,6 +126,80 @@ async function reviewScore(item: SuspiciousScore, action: 'approve' | 'deny') {
   } catch {
     suspiciousError.value = t('admin.suspiciousReviewError')
   }
+}
+
+const titles = ref<AdminTitle[]>([])
+const titlesLoading = ref(false)
+const titlesLoaded = ref(false)
+const titlesError = ref('')
+
+const editingTitle = ref<AdminTitle | null>(null)
+const editTitleName = ref('')
+const editTitleColor = ref('')
+const editTitleConditionJa = ref('')
+const editTitleDefaultUnlocked = ref(false)
+const isSavingTitle = ref(false)
+const saveTitleError = ref('')
+
+async function fetchTitles() {
+  titlesLoading.value = true
+  titlesError.value = ''
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/titles?admin_key=${encodeURIComponent(adminKey.value)}`)
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const data = await response.json()
+    titles.value = data.titles
+    titlesLoaded.value = true
+  } catch {
+    titlesError.value = t('admin.titlesLoadError')
+  } finally {
+    titlesLoading.value = false
+  }
+}
+
+function startEditTitle(title: AdminTitle) {
+  editingTitle.value = title
+  editTitleName.value = title.name
+  editTitleColor.value = title.color ?? ''
+  editTitleConditionJa.value = title.unlock_condition_ja ?? ''
+  editTitleDefaultUnlocked.value = title.default_unlocked
+  saveTitleError.value = ''
+}
+
+function cancelEditTitle() {
+  editingTitle.value = null
+}
+
+async function saveEditTitle() {
+  if (!editingTitle.value) return
+  isSavingTitle.value = true
+  saveTitleError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/update_title?admin_key=${encodeURIComponent(adminKey.value)}&number=${editingTitle.value.number}`,
+      {
+        method: 'POST',
+        body: new URLSearchParams({
+          name: editTitleName.value,
+          color: editTitleColor.value,
+          unlock_condition: editTitleConditionJa.value,
+          default_unlocked: editTitleDefaultUnlocked.value ? 'true' : 'false',
+        }),
+      },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    editingTitle.value = null
+    await fetchTitles()
+  } catch {
+    saveTitleError.value = t('admin.titleSaveError')
+  } finally {
+    isSavingTitle.value = false
+  }
+}
+
+function switchTab(tab: 'users' | 'titles' | 'merge') {
+  activeTab.value = tab
+  if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
 }
 
 onMounted(() => {
@@ -244,10 +328,13 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
     <template v-else>
       <div class="flex w-full flex-wrap items-center justify-between gap-2">
         <div class="flex gap-2">
-          <button type="button" class="btn" :disabled="activeTab === 'users'" @click="activeTab = 'users'">
+          <button type="button" class="btn" :disabled="activeTab === 'users'" @click="switchTab('users')">
             {{ $t('admin.tabUsers') }}
           </button>
-          <button type="button" class="btn" :disabled="activeTab === 'merge'" @click="activeTab = 'merge'">
+          <button type="button" class="btn" :disabled="activeTab === 'titles'" @click="switchTab('titles')">
+            {{ $t('admin.tabTitles') }}
+          </button>
+          <button type="button" class="btn" :disabled="activeTab === 'merge'" @click="switchTab('merge')">
             {{ $t('admin.tabMerge') }}
           </button>
         </div>
@@ -274,6 +361,82 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             {{ $t('admin.mergeButton') }}
           </button>
         </form>
+      </template>
+
+      <template v-else-if="activeTab === 'titles'">
+        <p v-if="titlesError" class="error-text text-sm">{{ titlesError }}</p>
+        <p v-if="titlesLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
+
+        <div v-else class="w-full overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr>
+                <th class="th-cell">{{ $t('admin.thNumber') }}</th>
+                <th class="th-cell">{{ $t('admin.thName') }}</th>
+                <th class="th-cell">{{ $t('admin.thColor') }}</th>
+                <th class="th-cell">{{ $t('admin.thDefaultUnlocked') }}</th>
+                <th class="th-cell">{{ $t('admin.thCondition') }}</th>
+                <th class="th-cell"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="title in titles" :key="title.number">
+                <td class="td-cell">{{ title.number }}</td>
+                <td class="td-cell">{{ title.name }}</td>
+                <td class="td-cell">{{ title.color ?? $t('admin.dash') }}</td>
+                <td class="td-cell">{{ title.default_unlocked ? $t('admin.yes') : $t('admin.no') }}</td>
+                <td class="td-cell">{{ title.unlock_condition_en ?? $t('admin.dash') }}</td>
+                <td class="td-cell">
+                  <button type="button" class="btn" @click="startEditTitle(title)">{{ $t('admin.edit') }}</button>
+                </td>
+              </tr>
+              <tr v-if="titles.length === 0">
+                <td class="td-cell muted" colspan="6">{{ $t('admin.noTitlesFound') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          v-if="editingTitle"
+          class="fixed inset-0 flex items-center justify-center bg-black/40 p-4"
+          @click.self="cancelEditTitle"
+        >
+          <form
+            class="flex w-full max-w-sm flex-col gap-3 rounded-md border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+            @submit.prevent="saveEditTitle"
+          >
+            <h2 class="font-semibold">{{ $t('admin.editTitle', { number: editingTitle.number }) }}</h2>
+            <label class="flex flex-col gap-1 text-sm">
+              {{ $t('admin.nameLabel') }}
+              <input v-model="editTitleName" type="text" class="field" />
+            </label>
+            <label class="flex flex-col gap-1 text-sm">
+              {{ $t('admin.colorLabel') }}
+              <input v-model="editTitleColor" type="text" class="field" />
+            </label>
+            <label class="flex flex-col gap-1 text-sm">
+              {{ $t('admin.unlockConditionJaLabel') }}
+              <textarea v-model="editTitleConditionJa" rows="3" class="field" />
+            </label>
+            <label class="flex items-center gap-2 text-sm">
+              <input v-model="editTitleDefaultUnlocked" type="checkbox" />
+              {{ $t('admin.thDefaultUnlocked') }}
+            </label>
+            <p class="muted text-xs">
+              {{
+                editingTitle.has_structured_condition
+                  ? $t('admin.structuredConditionNote')
+                  : $t('admin.noStructuredConditionNote')
+              }}
+            </p>
+            <p v-if="saveTitleError" class="error-text text-sm">{{ saveTitleError }}</p>
+            <div class="flex justify-end gap-2">
+              <button type="button" class="btn" @click="cancelEditTitle">{{ $t('common.cancel') }}</button>
+              <button type="submit" class="btn" :disabled="isSavingTitle">{{ $t('common.save') }}</button>
+            </div>
+          </form>
+        </div>
       </template>
 
       <template v-else>
