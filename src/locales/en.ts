@@ -6,6 +6,7 @@ export default {
     charts: 'Difficulty Charts',
     leaderboard: 'Leaderboard',
     songs: 'Song Leaderboards',
+    titles: 'Titles',
   },
   common: {
     loading: 'Loading…',
@@ -130,6 +131,18 @@ export default {
   song: {
     backToSongs: '← Back to songs',
     songNotFound: 'Song not found.',
+  },
+  titles: {
+    title: 'Titles',
+    searchPlaceholder: 'Search titles…',
+    noTitlesFound: 'No titles found.',
+    filterAll: 'All',
+    filterUnlocked: 'Unlocked',
+    filterLocked: 'Locked',
+    unlockedBadge: 'Unlocked',
+    unlockConditionUnknown: 'Unlock condition not yet mapped.',
+    loadError: 'Could not load titles. Please try again.',
+    countShown: '{shown} / {total} titles',
   },
   user: {
     setUsername: 'Change username',

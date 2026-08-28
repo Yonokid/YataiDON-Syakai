@@ -10,6 +10,7 @@ import LeaderboardPage from '../components/LeaderboardPage.vue'
 import SongLeaderboardPage from '../components/SongLeaderboardPage.vue'
 import SongPage from '../components/SongPage.vue'
 import AdminPage from '../components/AdminPage.vue'
+import TitlesPage from '../components/TitlesPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: '/leaderboard', name: 'leaderboard', component: LeaderboardPage },
     { path: '/songs', name: 'songs', component: SongLeaderboardPage },
     { path: '/songs/:hash', name: 'song', component: SongPage },
+    { path: '/titles', name: 'titles', component: TitlesPage },
   ],
 })
 
