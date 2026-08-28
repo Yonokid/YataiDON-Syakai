@@ -49,13 +49,20 @@ const newUsername = ref('')
 const isSaving = ref(false)
 const saveError = ref('')
 
-const titleMode = ref<'default' | 'custom'>(props.user.title === DEFAULT_TITLE ? 'default' : 'custom')
-const customTitle = ref(props.user.title === DEFAULT_TITLE ? '' : props.user.title)
+const presetTitleNames = computed(() => [
+  DEFAULT_TITLE,
+  ...new Set(props.user.unlocked_titles.map((t) => t.name)),
+])
+const isPreset = presetTitleNames.value.includes(props.user.title)
+
+const titleMode = ref<'preset' | 'custom'>(isPreset ? 'preset' : 'custom')
+const presetTitle = ref(isPreset ? props.user.title : DEFAULT_TITLE)
+const customTitle = ref(isPreset ? '' : props.user.title)
 const isSavingTitle = ref(false)
 const titleSaveError = ref('')
 
 async function saveTitle() {
-  const title = titleMode.value === 'default' ? DEFAULT_TITLE : customTitle.value.trim()
+  const title = titleMode.value === 'preset' ? presetTitle.value : customTitle.value.trim()
   if (!title) return
 
   isSavingTitle.value = true
@@ -244,13 +251,21 @@ async function saveUsername() {
       <p>{{ $t('user.setTitle') }}</p>
       <form class="flex flex-wrap items-center justify-center gap-2" @submit.prevent="saveTitle">
         <label class="flex cursor-pointer items-center gap-1 text-sm">
-          <input v-model="titleMode" type="radio" value="default" :disabled="isSavingTitle" />
-          {{ $t('user.titleDefault') }}
+          <input v-model="titleMode" type="radio" value="preset" :disabled="isSavingTitle" />
+          {{ $t('user.titlePreset') }}
         </label>
         <label class="flex cursor-pointer items-center gap-1 text-sm">
           <input v-model="titleMode" type="radio" value="custom" :disabled="isSavingTitle" />
           {{ $t('user.titleCustom') }}
         </label>
+        <select
+          v-if="titleMode === 'preset'"
+          v-model="presetTitle"
+          :disabled="isSavingTitle"
+          class="field"
+        >
+          <option v-for="name in presetTitleNames" :key="name" :value="name">{{ name }}</option>
+        </select>
         <input
           v-if="titleMode === 'custom'"
           v-model="customTitle"

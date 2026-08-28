@@ -14,9 +14,15 @@ export interface Score {
   max_combo: number
 }
 
+export interface UnlockedTitle {
+  number: number
+  name: string
+}
+
 export interface UserData {
   username: string
   title: string
+  unlocked_titles: UnlockedTitle[]
   import_requested: boolean
   import_completed: boolean
   chara_color_1: string
