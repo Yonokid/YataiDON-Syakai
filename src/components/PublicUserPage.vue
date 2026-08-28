@@ -2,12 +2,13 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSongDisplay } from '../composables/useSongDisplay'
-import Nameplate from './Nameplate.vue'
+import Nameplate, { type NameplateColor } from './Nameplate.vue'
 import type { Score } from '../types'
 
 interface PublicUser {
   username: string
   title: string
+  nameplate_color: NameplateColor
   chara_color_1: string
   chara_color_2: string
   chara_color_3: string
@@ -48,7 +49,7 @@ watch(() => route.params.username, (username) => load(username as string))
     <p v-else-if="status === 'not-found'" class="error-text">{{ $t('publicUser.userNotFound') }}</p>
     <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <template v-else-if="user">
-      <Nameplate :username="user.username" :title="user.title" />
+      <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
 
       <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
       <div v-else class="w-full overflow-x-auto">

@@ -1,3 +1,5 @@
+import type { NameplateColor } from './components/Nameplate.vue'
+
 export interface Score {
   hash: string
   title: Record<string, string>
@@ -22,6 +24,7 @@ export interface UnlockedTitle {
 export interface UserData {
   username: string
   title: string
+  nameplate_color: NameplateColor
   unlocked_titles: UnlockedTitle[]
   import_requested: boolean
   import_completed: boolean
