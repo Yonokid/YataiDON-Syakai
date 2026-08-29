@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 
 interface LeaderboardEntry {
+  id: number
   username: string
   total_score: number
 }
@@ -41,9 +42,9 @@ onMounted(async () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(entry, index) in entries" :key="entry.username">
+        <tr v-for="(entry, index) in entries" :key="entry.id">
           <td class="td-cell">{{ index + 1 }}</td>
-          <td class="td-cell"><router-link :to="`/u/${entry.username}`" class="row-link">{{ entry.username }}</router-link></td>
+          <td class="td-cell"><router-link :to="`/u/${entry.id}`" class="row-link">{{ entry.username }}</router-link></td>
           <td class="td-cell">{{ entry.total_score.toLocaleString() }}</td>
         </tr>
       </tbody>

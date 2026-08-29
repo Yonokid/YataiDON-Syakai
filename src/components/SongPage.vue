@@ -12,6 +12,7 @@ interface Song {
 }
 
 interface ScoreEntry {
+  id: number
   username: string
   score: number
   crown: number
@@ -114,9 +115,9 @@ watch(
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(entry, index) in entries" :key="entry.username">
+        <tr v-for="(entry, index) in entries" :key="entry.id">
           <td class="td-cell">{{ index + 1 }}</td>
-          <td class="td-cell"><router-link :to="`/u/${entry.username}`" class="row-link">{{ entry.username }}</router-link></td>
+          <td class="td-cell"><router-link :to="`/u/${entry.id}`" class="row-link">{{ entry.username }}</router-link></td>
           <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
           <td class="td-cell">{{ entry.crown }}</td>
           <td class="td-cell">{{ entry.max_combo }}</td>

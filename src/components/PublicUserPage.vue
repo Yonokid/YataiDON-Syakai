@@ -6,6 +6,7 @@ import Nameplate, { type NameplateColor } from './Nameplate.vue'
 import type { Score } from '../types'
 
 interface PublicUser {
+  id: number
   username: string
   title: string
   nameplate_color: NameplateColor
@@ -23,10 +24,10 @@ const status = ref<'loading' | 'loaded' | 'error' | 'not-found'>('loading')
 
 const { songTitle, difficultyLabel } = useSongDisplay()
 
-async function load(username: string) {
+async function load(id: string) {
   status.value = 'loading'
   try {
-    const response = await fetch(`${API_BASE_URL}/public_user?username=${encodeURIComponent(username)}`)
+    const response = await fetch(`${API_BASE_URL}/public_user?id=${encodeURIComponent(id)}`)
     if (response.status === 404) {
       status.value = 'not-found'
       return
@@ -39,8 +40,8 @@ async function load(username: string) {
   }
 }
 
-onMounted(() => load(route.params.username as string))
-watch(() => route.params.username, (username) => load(username as string))
+onMounted(() => load(route.params.id as string))
+watch(() => route.params.id, (id) => load(id as string))
 </script>
 
 <template>

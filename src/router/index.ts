@@ -20,7 +20,7 @@ const router = createRouter({
     { path: '/', name: 'home', component: HomePage },
     { path: '/scores', name: 'scores', component: ScoresPage },
     { path: '/user', name: 'user', component: UserPage },
-    { path: '/u/:username', name: 'public-user', component: PublicUserPage },
+    { path: '/u/:id', name: 'public-user', component: PublicUserPage },
     { path: '/charts', name: 'charts', component: DiffChartPage },
     { path: '/leaderboard', name: 'leaderboard', component: LeaderboardPage },
     { path: '/songs', name: 'songs', component: SongLeaderboardPage },
