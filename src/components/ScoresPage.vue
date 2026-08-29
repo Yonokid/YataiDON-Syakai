@@ -7,7 +7,11 @@ import type { UserData } from '../types'
 
 interface CatalogSong {
   hash: string
+  title: Record<string, string>
+  subtitle: Record<string, string>
   difficulty: number
+  level: number
+  genre: string
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -16,6 +20,7 @@ const CROWN_TIERS = [
   { tier: 2, labelKey: 'scores.tierFullCombo' },
   { tier: 3, labelKey: 'scores.tierDonderful' },
 ] as const
+const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
 const { t } = useI18n()
@@ -99,6 +104,70 @@ const crownStats = computed(() =>
     return { labelKey, obtained, possible, percent: possible === 0 ? 0 : (obtained / possible) * 100 }
   }),
 )
+
+function crownClass(crown: number) {
+  return CROWN_CLASSES[crown] ?? CROWN_CLASSES[0]
+}
+
+// Same song, different difficulties, share the same TITLE/SUBTITLE (populate_songs.py parses
+// them once per file, outside the per-difficulty loop) -- there's no other field tying charts
+// of one song together, so that pair is the grouping key.
+function songKey(s: CatalogSong) {
+  return `${JSON.stringify(s.title)}|${JSON.stringify(s.subtitle)}`
+}
+
+interface GenreRow {
+  key: string
+  title: Record<string, string>
+  hash: string
+  rowCrown: number | null
+  badges: { difficulty: number; crown: number }[]
+}
+
+// Per-song crown breakdown, grouped by genre -- only meaningful for one version at a time
+// (the catalog has thousands of songs; "all versions" would produce an unusable wall).
+const genreSections = computed(() => {
+  if (selectedVersion.value === 'all') return []
+  const hashSet = new Set((versionHashes as Record<string, string[]>)[selectedVersion.value] ?? [])
+  const inVersion = catalog.value.filter((s) => hashSet.has(s.hash))
+  const difficulty = selectedDifficulty.value === 'all' ? null : Number(selectedDifficulty.value)
+
+  const bySong = new Map<string, CatalogSong[]>()
+  for (const s of inVersion) {
+    const key = songKey(s)
+    if (!bySong.has(key)) bySong.set(key, [])
+    bySong.get(key)!.push(s)
+  }
+
+  const byGenre = new Map<string, GenreRow[]>()
+  for (const group of bySong.values()) {
+    const charts = difficulty === null ? group : group.filter((s) => s.difficulty === difficulty)
+    if (charts.length === 0) continue
+    const sorted = [...charts].sort((a, b) => a.difficulty - b.difficulty)
+    const badges = sorted.map((s) => ({
+      difficulty: s.difficulty,
+      crown: crownByKey.value.get(`${s.hash}-${s.difficulty}`) ?? 0,
+    }))
+    const crowns = new Set(badges.map((b) => b.crown))
+    const row: GenreRow = {
+      key: songKey(sorted[0]!),
+      title: sorted[0]!.title,
+      hash: sorted[sorted.length - 1]!.hash,
+      rowCrown: crowns.size === 1 ? badges[0]!.crown : null,
+      badges,
+    }
+    const genre = sorted[0]!.genre
+    if (!byGenre.has(genre)) byGenre.set(genre, [])
+    byGenre.get(genre)!.push(row)
+  }
+
+  return [...byGenre.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([genre, rows]) => ({
+      genre,
+      rows: rows.sort((a, b) => songTitle(a.title).localeCompare(songTitle(b.title))),
+    }))
+})
 </script>
 
 <template>
@@ -182,6 +251,66 @@ const crownStats = computed(() =>
           </tr>
         </tbody>
       </table>
+
+      <p v-if="selectedVersion === 'all'" class="muted">{{ $t('scores.selectVersionForBreakdown') }}</p>
+      <template v-else>
+        <div v-for="section in genreSections" :key="section.genre" class="flex flex-col gap-2">
+          <h3 class="font-bold">{{ section.genre }}</h3>
+          <table class="w-full border-collapse text-sm">
+            <thead>
+              <tr>
+                <th class="th-cell">{{ $t('common.song') }}</th>
+                <th class="th-cell">{{ $t('common.difficulty') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in section.rows"
+                :key="row.key"
+                :class="row.rowCrown !== null ? crownClass(row.rowCrown) : ''"
+              >
+                <td class="td-cell">
+                  <router-link :to="`/songs/${row.hash}`" class="row-link">{{ songTitle(row.title) }}</router-link>
+                </td>
+                <td class="td-cell">
+                  <span class="flex flex-wrap gap-1">
+                    <span
+                      v-for="badge in row.badges"
+                      :key="badge.difficulty"
+                      class="rounded px-1.5 py-0.5 text-xs"
+                      :class="row.rowCrown === null ? crownClass(badge.crown) : ''"
+                    >
+                      {{ difficultyLabel(badge.difficulty) }}
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
     </section>
   </div>
 </template>
+
+<style scoped>
+.crown-clear {
+  background-color: rgba(192, 192, 192, 0.35);
+}
+
+.crown-fc {
+  background-color: rgba(255, 215, 0, 0.35);
+}
+
+.crown-dfc {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.35),
+    rgba(255, 165, 0, 0.35),
+    rgba(255, 255, 0, 0.35),
+    rgba(0, 255, 0, 0.35),
+    rgba(0, 191, 255, 0.35),
+    rgba(148, 0, 211, 0.35)
+  );
+}
+</style>

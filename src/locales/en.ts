@@ -140,6 +140,8 @@ export default {
     tierFullCombo: 'Full Combo',
     tierDonderful: 'Donderful Combo',
     obtainedOfPossible: 'Progress',
+    genreBreakdownTitle: 'By Genre',
+    selectVersionForBreakdown: 'Select a specific version above to see a per-song crown breakdown.',
   },
   songLeaderboard: {
     title: 'Song Leaderboards',
