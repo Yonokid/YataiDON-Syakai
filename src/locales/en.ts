@@ -148,6 +148,8 @@ export default {
     title: 'Song Leaderboards',
     searchPlaceholder: 'Search songs…',
     noSongsFound: 'No songs found.',
+    mostPlayed: 'Most Played Songs',
+    plays: 'plays',
   },
   song: {
     backToSongs: '← Back to songs',
