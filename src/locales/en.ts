@@ -136,6 +136,7 @@ export default {
     version: 'Version',
     allVersions: 'All Versions',
     allDifficulties: 'All Difficulties',
+    oniUra: 'Oni + Ura',
     tierClear: 'Clear',
     tierFullCombo: 'Full Combo',
     tierDonderful: 'Donderful Combo',

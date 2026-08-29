@@ -21,6 +21,10 @@ const CROWN_TIERS = [
   { tier: 3, labelKey: 'scores.tierDonderful' },
 ] as const
 const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
+const DIFFICULTY_ONI = 3
+const DIFFICULTY_URA = 4
+const DIFFICULTY_TOWER = 5
+const DIFFICULTY_DAN = 6
 
 const props = defineProps<{ user: UserData; accessCode: string }>()
 const { t } = useI18n()
@@ -76,7 +80,17 @@ function versionLabel(key: string) {
   return key.replace('/', ' - ')
 }
 
-const difficultyOptions = computed(() => [...new Set(catalog.value.map((s) => s.difficulty))].sort((a, b) => a - b))
+const difficultyOptions = computed(() =>
+  [...new Set(catalog.value.map((s) => s.difficulty))]
+    .filter((d) => d !== DIFFICULTY_TOWER && d !== DIFFICULTY_DAN)
+    .sort((a, b) => a - b),
+)
+
+function difficultyMatches(d: number): boolean {
+  if (selectedDifficulty.value === 'all') return true
+  if (selectedDifficulty.value === 'oni_ura') return d === DIFFICULTY_ONI || d === DIFFICULTY_URA
+  return d === Number(selectedDifficulty.value)
+}
 
 const crownByKey = computed(() => {
   const map = new Map<string, number>()
@@ -89,10 +103,7 @@ const possibleCharts = computed(() => {
     selectedVersion.value === 'all'
       ? null
       : new Set((versionHashes as Record<string, string[]>)[selectedVersion.value] ?? [])
-  const difficulty = selectedDifficulty.value === 'all' ? null : Number(selectedDifficulty.value)
-  return catalog.value.filter(
-    (s) => (hashSet === null || hashSet.has(s.hash)) && (difficulty === null || s.difficulty === difficulty),
-  )
+  return catalog.value.filter((s) => (hashSet === null || hashSet.has(s.hash)) && difficultyMatches(s.difficulty))
 })
 
 const crownStats = computed(() =>
@@ -130,7 +141,6 @@ const genreSections = computed(() => {
   if (selectedVersion.value === 'all') return []
   const hashSet = new Set((versionHashes as Record<string, string[]>)[selectedVersion.value] ?? [])
   const inVersion = catalog.value.filter((s) => hashSet.has(s.hash))
-  const difficulty = selectedDifficulty.value === 'all' ? null : Number(selectedDifficulty.value)
 
   const bySong = new Map<string, CatalogSong[]>()
   for (const s of inVersion) {
@@ -141,7 +151,7 @@ const genreSections = computed(() => {
 
   const byGenre = new Map<string, GenreRow[]>()
   for (const group of bySong.values()) {
-    const charts = difficulty === null ? group : group.filter((s) => s.difficulty === difficulty)
+    const charts = group.filter((s) => difficultyMatches(s.difficulty))
     if (charts.length === 0) continue
     const sorted = [...charts].sort((a, b) => a.difficulty - b.difficulty)
     const badges = sorted.map((s) => ({
@@ -228,6 +238,7 @@ const genreSections = computed(() => {
         <select v-model="selectedDifficulty" class="field">
           <option value="all">{{ $t('scores.allDifficulties') }}</option>
           <option v-for="d in difficultyOptions" :key="d" :value="d">{{ difficultyLabel(d) }}</option>
+          <option value="oni_ura">{{ $t('scores.oniUra') }}</option>
         </select>
       </div>
       <p v-if="catalogStatus === 'loading'">{{ $t('common.loading') }}</p>
