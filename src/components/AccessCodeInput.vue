@@ -2,10 +2,10 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { UserData } from '../types'
+import { STORAGE_KEY } from '../stores/auth'
 
 const ACCESS_CODE_LENGTH = 24
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
-const STORAGE_KEY = 'yataidon_access_code'
 
 const emit = defineEmits<{
   verified: [code: string, user: UserData]
@@ -58,6 +58,8 @@ watch(accessCode, async (code) => {
       localStorage.setItem(STORAGE_KEY, requestedCode)
     }
     emit('verified', requestedCode, user)
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+    router.push(redirect)
   } catch {
     if (accessCode.value !== requestedCode) return
     verifyStatus.value = 'error'

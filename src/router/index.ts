@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { currentUser, accessCode } from '../stores/auth'
+import { currentUser, accessCode, restoreSession } from '../stores/auth'
 import AccessCodeInput from '../components/AccessCodeInput.vue'
 import HomePage from '../components/HomePage.vue'
 import UserPage from '../components/UserPage.vue'
@@ -29,9 +29,13 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
+  if (!(currentUser.value && accessCode.value)) await restoreSession()
+
   const authenticated = !!(currentUser.value && accessCode.value)
-  if (!authenticated && to.name !== 'login' && to.name !== 'admin') return { name: 'login' }
+  if (!authenticated && to.name !== 'login' && to.name !== 'admin') {
+    return { name: 'login', query: { redirect: to.fullPath } }
+  }
   if (authenticated && to.name === 'login') return { name: 'home' }
 })
 
