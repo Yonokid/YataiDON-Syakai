@@ -40,7 +40,7 @@ const plateUrl = `${import.meta.env.BASE_URL}nameplates/${props.color}.png`
   background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  padding: 4% 8%;
+  padding: 0 8%;
   box-sizing: border-box;
 }
 
@@ -53,14 +53,14 @@ const plateUrl = `${import.meta.env.BASE_URL}nameplates/${props.color}.png`
 }
 
 .nameplate-title {
-  font-size: clamp(0.65rem, 2.2vw, 0.9rem);
+  font-size: clamp(0.9rem, 3vw, 1.3rem);
   font-weight: 600;
   color: #4a2f1c;
   line-height: 1;
 }
 
 .nameplate-username {
-  font-size: clamp(0.9rem, 3.2vw, 1.35rem);
+  font-size: clamp(1.05rem, 3.8vw, 1.6rem);
   font-weight: 700;
   color: #2b1a0e;
   line-height: 1;
