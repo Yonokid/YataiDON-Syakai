@@ -150,7 +150,7 @@ interface GenreRow {
   title: Record<string, string>
   hash: string
   rowCrown: number | null
-  badges: { difficulty: number; crown: number }[]
+  badges: { difficulty: number; crown: number; hash: string }[]
 }
 
 // Per-song crown breakdown, grouped by genre -- only meaningful for one version at a time
@@ -175,6 +175,7 @@ const genreSections = computed(() => {
     const badges = sorted.map((s) => ({
       difficulty: s.difficulty,
       crown: crownByKey.value.get(`${s.hash}-${s.difficulty}`) ?? 0,
+      hash: s.hash,
     }))
     const crowns = new Set(badges.map((b) => b.crown))
     const row: GenreRow = {
@@ -241,7 +242,7 @@ const genreSections = computed(() => {
                 <button
                   type="button"
                   class="btn"
-                  :disabled="jumpingReplayId === entry.score_id"
+                  :disabled="jumpingReplayId === entry.score_id || !entry.has_replay"
                   @click="sendReplayToGame(entry.score_id)"
                 >
                   {{ jumpingReplayId === entry.score_id ? $t('common.sending') : $t('common.watchReplay') }}
@@ -312,14 +313,18 @@ const genreSections = computed(() => {
                 </td>
                 <td class="td-cell">
                   <span class="flex flex-wrap gap-1">
-                    <span
+                    <button
                       v-for="badge in row.badges"
                       :key="badge.difficulty"
+                      type="button"
                       class="rounded px-1.5 py-0.5 text-xs"
                       :class="row.rowCrown === null ? crownClass(badge.crown) : ''"
+                      :disabled="jumpingHash === badge.hash"
+                      :title="$t('common.sendToGame')"
+                      @click="sendToGame(badge.hash)"
                     >
-                      {{ difficultyLabel(badge.difficulty) }}
-                    </span>
+                      {{ jumpingHash === badge.hash ? $t('common.sending') : difficultyLabel(badge.difficulty) }}
+                    </button>
                   </span>
                 </td>
               </tr>
@@ -327,6 +332,7 @@ const genreSections = computed(() => {
           </table>
         </div>
       </template>
+      <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
     </section>
   </div>
 </template>

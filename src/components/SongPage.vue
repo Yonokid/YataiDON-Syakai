@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { accessCode } from '../stores/auth'
 import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface Song {
@@ -13,6 +15,8 @@ interface Song {
 
 interface ScoreEntry {
   id: number
+  score_id: number
+  has_replay: boolean
   username: string
   score: number
   crown: number
@@ -27,6 +31,26 @@ const tabBase =
 const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
 
 const route = useRoute()
+const { t } = useI18n()
+
+const jumpingReplayId = ref<number | null>(null)
+const replayJumpError = ref('')
+
+async function sendReplayToGame(scoreId: number) {
+  jumpingReplayId.value = scoreId
+  replayJumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_replay_jump?access_code=${encodeURIComponent(accessCode.value ?? '')}&score_id=${scoreId}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    replayJumpError.value = t('diffChart.replayJumpError')
+  } finally {
+    jumpingReplayId.value = null
+  }
+}
 
 const songs = ref<Song[]>([])
 const songsStatus = ref<'loading' | 'loaded' | 'error'>('loading')
@@ -112,6 +136,7 @@ watch(
           <th class="th-cell">{{ $t('common.score') }}</th>
           <th class="th-cell">{{ $t('common.crown') }}</th>
           <th class="th-cell">{{ $t('common.maxCombo') }}</th>
+          <th class="th-cell"></th>
         </tr>
       </thead>
       <tbody>
@@ -121,8 +146,19 @@ watch(
           <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
           <td class="td-cell">{{ entry.crown }}</td>
           <td class="td-cell">{{ entry.max_combo }}</td>
+          <td class="td-cell">
+            <button
+              type="button"
+              class="btn"
+              :disabled="jumpingReplayId === entry.score_id || !entry.has_replay"
+              @click="sendReplayToGame(entry.score_id)"
+            >
+              {{ jumpingReplayId === entry.score_id ? $t('common.sending') : $t('common.watchReplay') }}
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+    <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
   </div>
 </template>

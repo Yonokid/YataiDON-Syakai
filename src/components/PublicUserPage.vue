@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { accessCode } from '../stores/auth'
 import { useSongDisplay } from '../composables/useSongDisplay'
 import Nameplate, { type NameplateColor } from './Nameplate.vue'
 import type { Score } from '../types'
@@ -18,11 +20,49 @@ interface PublicUser {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 const route = useRoute()
+const { t } = useI18n()
 
 const user = ref<PublicUser | null>(null)
 const status = ref<'loading' | 'loaded' | 'error' | 'not-found'>('loading')
 
 const { songTitle, difficultyLabel } = useSongDisplay()
+
+const jumpingHash = ref<string | null>(null)
+const jumpError = ref('')
+const jumpingReplayId = ref<number | null>(null)
+const replayJumpError = ref('')
+
+async function sendToGame(hash: string) {
+  jumpingHash.value = hash
+  jumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_song_jump?access_code=${encodeURIComponent(accessCode.value ?? '')}&hash=${encodeURIComponent(hash)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    jumpError.value = t('diffChart.jumpError')
+  } finally {
+    jumpingHash.value = null
+  }
+}
+
+async function sendReplayToGame(scoreId: number) {
+  jumpingReplayId.value = scoreId
+  replayJumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_replay_jump?access_code=${encodeURIComponent(accessCode.value ?? '')}&score_id=${scoreId}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    replayJumpError.value = t('diffChart.replayJumpError')
+  } finally {
+    jumpingReplayId.value = null
+  }
+}
 
 async function load(id: string) {
   status.value = 'loading'
@@ -64,6 +104,7 @@ watch(() => route.params.id, (id) => load(id as string))
               <th class="th-cell">{{ $t('common.crown') }}</th>
               <th class="th-cell">{{ $t('common.rank') }}</th>
               <th class="th-cell">{{ $t('common.maxCombo') }}</th>
+              <th class="th-cell"></th>
             </tr>
           </thead>
           <tbody>
@@ -77,10 +118,30 @@ watch(() => route.params.id, (id) => load(id as string))
               <td class="td-cell">{{ entry.crown }}</td>
               <td class="td-cell">{{ entry.rank }}</td>
               <td class="td-cell">{{ entry.max_combo }}</td>
+              <td class="td-cell">
+                <button
+                  type="button"
+                  class="btn"
+                  :disabled="jumpingHash === entry.hash"
+                  @click="sendToGame(entry.hash)"
+                >
+                  {{ jumpingHash === entry.hash ? $t('common.sending') : $t('common.sendToGame') }}
+                </button>
+                <button
+                  type="button"
+                  class="btn"
+                  :disabled="jumpingReplayId === entry.score_id || !entry.has_replay"
+                  @click="sendReplayToGame(entry.score_id)"
+                >
+                  {{ jumpingReplayId === entry.score_id ? $t('common.sending') : $t('common.watchReplay') }}
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
+      <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
     </template>
   </div>
 </template>
