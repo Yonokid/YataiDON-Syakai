@@ -24,6 +24,7 @@ export default {
     cancel: 'Cancel',
     sendToGame: 'Send to Game',
     sending: 'Sending…',
+    watchReplay: 'Watch Replay',
     untitled: '(untitled)',
     difficultyN: 'Difficulty {n}',
     difficulties: {
@@ -110,6 +111,7 @@ export default {
   },
   diffChart: {
     jumpError: 'Could not send song to game. Please try again.',
+    replayJumpError: 'Could not send replay to game. Please try again.',
     unknownSong: '(unknown song)',
   },
   home: {

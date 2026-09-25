@@ -1,6 +1,7 @@
 import type { NameplateColor } from './components/Nameplate.vue'
 
 export interface Score {
+  score_id: number
   hash: string
   title: Record<string, string>
   subtitle: Record<string, string>

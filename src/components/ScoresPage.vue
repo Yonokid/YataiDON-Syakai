@@ -32,6 +32,8 @@ const { songTitle, difficultyLabel } = useSongDisplay()
 
 const jumpingHash = ref<string | null>(null)
 const jumpError = ref('')
+const jumpingReplayId = ref<number | null>(null)
+const replayJumpError = ref('')
 const search = ref('')
 
 const filteredScores = computed(() => {
@@ -53,6 +55,22 @@ async function sendToGame(hash: string) {
     jumpError.value = t('diffChart.jumpError')
   } finally {
     jumpingHash.value = null
+  }
+}
+
+async function sendReplayToGame(scoreId: number) {
+  jumpingReplayId.value = scoreId
+  replayJumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_replay_jump?access_code=${encodeURIComponent(props.accessCode)}&score_id=${scoreId}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    replayJumpError.value = t('diffChart.replayJumpError')
+  } finally {
+    jumpingReplayId.value = null
   }
 }
 
@@ -220,12 +238,21 @@ const genreSections = computed(() => {
                 >
                   {{ jumpingHash === entry.hash ? $t('common.sending') : $t('common.sendToGame') }}
                 </button>
+                <button
+                  type="button"
+                  class="btn"
+                  :disabled="jumpingReplayId === entry.score_id"
+                  @click="sendReplayToGame(entry.score_id)"
+                >
+                  {{ jumpingReplayId === entry.score_id ? $t('common.sending') : $t('common.watchReplay') }}
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
+      <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
     </section>
 
     <section class="flex w-full flex-col gap-2">
