@@ -68,6 +68,11 @@ const isMerging = ref(false)
 const mergeError = ref('')
 const mergeSuccess = ref(false)
 
+const changingAccessCode = ref<AdminUser | null>(null)
+const changeAccessCodeNew = ref('')
+const isChangingAccessCode = ref(false)
+const changeAccessCodeError = ref('')
+
 async function fetchUsers() {
   isLoading.value = true
   loadError.value = ''
@@ -296,6 +301,43 @@ async function mergeUsers() {
   }
 }
 
+function startChangeAccessCode(user: AdminUser) {
+  changingAccessCode.value = user
+  changeAccessCodeNew.value = ''
+  changeAccessCodeError.value = ''
+}
+
+function cancelChangeAccessCode() {
+  changingAccessCode.value = null
+}
+
+async function saveChangeAccessCode() {
+  if (!changingAccessCode.value) return
+  const newCode = changeAccessCodeNew.value.trim()
+  if (!newCode || !/^\d{24}$/.test(newCode)) {
+    changeAccessCodeError.value = t('admin.changeAccessCodeError')
+    return
+  }
+  isChangingAccessCode.value = true
+  changeAccessCodeError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/change_access_code?admin_key=${encodeURIComponent(adminKey.value)}&old_access_code=${encodeURIComponent(changingAccessCode.value.access_code)}&new_access_code=${encodeURIComponent(newCode)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}))
+      throw new Error(data.detail || `Unexpected status ${response.status}`)
+    }
+    changingAccessCode.value = null
+    await fetchUsers()
+  } catch (e: any) {
+    changeAccessCodeError.value = e.message || t('admin.changeAccessCodeError')
+  } finally {
+    isChangingAccessCode.value = false
+  }
+}
+
 function logout() {
   unlocked.value = false
   users.value = []
@@ -473,6 +515,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <div class="flex gap-2">
                   <button type="button" class="btn" @click="copyAccessCode(user)">{{ $t('admin.copyCode') }}</button>
                   <button type="button" class="btn" @click="startEdit(user)">{{ $t('admin.edit') }}</button>
+                  <button type="button" class="btn" @click="startChangeAccessCode(user)">{{ $t('admin.changeAccessCode') }}</button>
                   <button type="button" class="btn" @click="deleteUser(user)">{{ $t('admin.delete') }}</button>
                 </div>
               </td>
@@ -510,6 +553,29 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           <div class="flex justify-end gap-2">
             <button type="button" class="btn" @click="cancelEdit">{{ $t('common.cancel') }}</button>
             <button type="submit" class="btn" :disabled="isSaving">{{ $t('common.save') }}</button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        v-if="changingAccessCode"
+        class="fixed inset-0 flex items-center justify-center bg-black/40 p-4"
+        @click.self="cancelChangeAccessCode"
+      >
+        <form
+          class="flex w-full max-w-sm flex-col gap-3 rounded-md border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+          @submit.prevent="saveChangeAccessCode"
+        >
+          <h2 class="font-semibold">{{ $t('admin.changeAccessCode', { username: changingAccessCode.username }) }}</h2>
+          <p class="muted text-sm">{{ $t('admin.changeAccessCodeConfirm', { username: changingAccessCode.username, oldCode: changingAccessCode.access_code }) }}</p>
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('admin.changeAccessCodeLabel') }}
+            <input v-model="changeAccessCodeNew" type="text" maxlength="24" class="field" placeholder="24-digit number" />
+          </label>
+          <p v-if="changeAccessCodeError" class="error-text text-sm">{{ changeAccessCodeError }}</p>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn" @click="cancelChangeAccessCode">{{ $t('common.cancel') }}</button>
+            <button type="submit" class="btn" :disabled="isChangingAccessCode">{{ $t('common.save') }}</button>
           </div>
         </form>
       </div>
