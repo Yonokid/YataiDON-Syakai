@@ -61,7 +61,8 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
-const activeTab = ref<'users' | 'titles' | 'merge'>('users')
+type Tab = 'users' | 'titles' | 'merge' | 'keys'
+const activeTab = ref<Tab>('users')
 const mergeTargetCode = ref('')
 const mergeSourceCode = ref('')
 const isMerging = ref(false)
@@ -202,8 +203,62 @@ async function saveEditTitle() {
   }
 }
 
-function switchTab(tab: 'users' | 'titles' | 'merge') {
+interface ApiKey {
+  key_id: string
+  label: string
+  created_at: string
+  revoked_at: string | null
+}
+
+const apiKeys = ref<ApiKey[]>([])
+const apiKeyLabel = ref('')
+const newApiKey = ref('')
+const apiKeyError = ref('')
+
+async function fetchApiKeys() {
+  apiKeyError.value = ''
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/api_keys?admin_key=${encodeURIComponent(adminKey.value)}`)
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    apiKeys.value = (await response.json()).keys
+  } catch {
+    apiKeyError.value = t('admin.apiKeyLoadError')
+  }
+}
+
+async function createApiKey() {
+  apiKeyError.value = ''
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/api_keys?admin_key=${encodeURIComponent(adminKey.value)}`, {
+      method: 'POST',
+      body: new URLSearchParams({ label: apiKeyLabel.value }),
+    })
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    newApiKey.value = (await response.json()).network_auth_key
+    apiKeyLabel.value = ''
+    await fetchApiKeys()
+  } catch {
+    apiKeyError.value = t('admin.apiKeyCreateError')
+  }
+}
+
+async function revokeApiKey(key: ApiKey) {
+  if (!confirm(t('admin.apiKeyRevokeConfirm', { keyId: key.key_id }))) return
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/api_keys/${encodeURIComponent(key.key_id)}/revoke?admin_key=${encodeURIComponent(adminKey.value)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    await fetchApiKeys()
+  } catch {
+    apiKeyError.value = t('admin.apiKeyRevokeError')
+  }
+}
+
+function switchTab(tab: Tab) {
   activeTab.value = tab
+  if (tab === 'keys') fetchApiKeys()
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
 }
 
@@ -342,6 +397,7 @@ function logout() {
   unlocked.value = false
   users.value = []
   suspiciousScores.value = []
+  newApiKey.value = ''
   localStorage.removeItem(STORAGE_KEY)
 }
 
@@ -379,11 +435,55 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           <button type="button" class="btn" :disabled="activeTab === 'merge'" @click="switchTab('merge')">
             {{ $t('admin.tabMerge') }}
           </button>
+          <button type="button" class="btn" :disabled="activeTab === 'keys'" @click="switchTab('keys')">
+            {{ $t('admin.tabApiKeys') }}
+          </button>
         </div>
         <button type="button" class="btn" @click="logout">{{ $t('admin.lock') }}</button>
       </div>
 
-      <template v-if="activeTab === 'merge'">
+      <template v-if="activeTab === 'keys'">
+        <form class="flex gap-2" @submit.prevent="createApiKey">
+          <input v-model="apiKeyLabel" type="text" :placeholder="$t('admin.apiKeyLabelPlaceholder')" class="field" />
+          <button type="submit" class="btn">{{ $t('admin.apiKeyCreate') }}</button>
+        </form>
+        <p v-if="apiKeyError" class="error-text text-sm">{{ apiKeyError }}</p>
+        <div v-if="newApiKey" class="w-full text-sm">
+          <p>{{ $t('admin.apiKeyCreated') }}</p>
+          <code class="break-all">{{ newApiKey }}</code>
+        </div>
+        <div class="w-full overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr>
+                <th class="th-cell">{{ $t('admin.thKeyId') }}</th>
+                <th class="th-cell">{{ $t('admin.thLabel') }}</th>
+                <th class="th-cell">{{ $t('admin.thCreated') }}</th>
+                <th class="th-cell">{{ $t('admin.thStatus') }}</th>
+                <th class="th-cell"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="key in apiKeys" :key="key.key_id">
+                <td class="td-cell">{{ key.key_id }}</td>
+                <td class="td-cell">{{ key.label }}</td>
+                <td class="td-cell">{{ new Date(key.created_at).toLocaleString() }}</td>
+                <td class="td-cell">{{ key.revoked_at ? $t('admin.apiKeyRevoked') : $t('admin.apiKeyActive') }}</td>
+                <td class="td-cell">
+                  <button v-if="!key.revoked_at" type="button" class="btn" @click="revokeApiKey(key)">
+                    {{ $t('admin.apiKeyRevoke') }}
+                  </button>
+                </td>
+              </tr>
+              <tr v-if="apiKeys.length === 0">
+                <td class="td-cell muted" colspan="5">{{ $t('admin.noApiKeys') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+
+      <template v-else-if="activeTab === 'merge'">
         <form class="flex w-full max-w-sm flex-col gap-3" @submit.prevent="mergeUsers">
           <label class="flex flex-col gap-1 text-sm">
             {{ $t('admin.mergeTargetLabel') }}
