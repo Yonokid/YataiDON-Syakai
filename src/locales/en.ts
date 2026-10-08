@@ -79,6 +79,8 @@ export default {
     thLabel: 'Label',
     thCreated: 'Created',
     thStatus: 'Status',
+    thLastUsed: 'Last used',
+    neverUsed: 'Never',
     apiKeyActive: 'Active',
     apiKeyRevoked: 'Revoked',
     noApiKeys: 'No API keys.',
