@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { currentUser, accessCode, restoreSession } from '../stores/auth'
+
 import AccessCodeInput from '../components/AccessCodeInput.vue'
-import HomePage from '../components/HomePage.vue'
-import UserPage from '../components/UserPage.vue'
-import ScoresPage from '../components/ScoresPage.vue'
-import PublicUserPage from '../components/PublicUserPage.vue'
+import AdminPage from '../components/AdminPage.vue'
 import DiffChartPage from '../components/DiffChartPage.vue'
+import HomePage from '../components/HomePage.vue'
 import LeaderboardPage from '../components/LeaderboardPage.vue'
+import PublicUserPage from '../components/PublicUserPage.vue'
+import ScoresPage from '../components/ScoresPage.vue'
 import SongLeaderboardPage from '../components/SongLeaderboardPage.vue'
 import SongPage from '../components/SongPage.vue'
-import AdminPage from '../components/AdminPage.vue'
 import TitlesPage from '../components/TitlesPage.vue'
+import UserPage from '../components/UserPage.vue'
+import { accessCode, currentUser, restoreSession } from '../stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

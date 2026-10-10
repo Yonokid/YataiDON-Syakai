@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+
 import type { UserData } from '../types'
 
 export const STORAGE_KEY = 'yataidon_access_code'

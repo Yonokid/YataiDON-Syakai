@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { UserData } from '../types'
+
 import { STORAGE_KEY } from '../stores/auth'
+import type { UserData } from '../types'
 
 const ACCESS_CODE_LENGTH = 20
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL

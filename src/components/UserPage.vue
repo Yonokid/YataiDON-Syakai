@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import QRCode from 'qrcode'
 import { computed, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
-import QRCode from 'qrcode'
-import Nameplate from './Nameplate.vue'
+
 import type { UserData } from '../types'
+import Nameplate from './Nameplate.vue'
 
 interface CostumeEntry {
   icon: string

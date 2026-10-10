@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { accessCode } from '../stores/auth'
+import { useRoute } from 'vue-router'
+
 import { useSongDisplay } from '../composables/useSongDisplay'
+import { accessCode } from '../stores/auth'
 
 interface Song {
   hash: string

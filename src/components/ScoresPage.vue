@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+
 import { useSongDisplay } from '../composables/useSongDisplay'
 import versionHashes from '../data/versions.json'
 import type { UserData } from '../types'

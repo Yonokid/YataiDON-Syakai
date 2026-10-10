@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { currentUser, accessCode, login, logout } from './stores/auth'
+import { accessCode, currentUser, login, logout } from './stores/auth'
 
 function handleLogout() {
   logout()

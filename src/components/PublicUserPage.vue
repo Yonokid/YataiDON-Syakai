@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { accessCode } from '../stores/auth'
+import { useRoute } from 'vue-router'
+
 import { useSongDisplay } from '../composables/useSongDisplay'
-import Nameplate, { type NameplateColor } from './Nameplate.vue'
+import { accessCode } from '../stores/auth'
 import type { Score } from '../types'
+import Nameplate, { type NameplateColor } from './Nameplate.vue'
 
 interface PublicUser {
   id: number

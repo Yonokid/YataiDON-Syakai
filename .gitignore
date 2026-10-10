@@ -40,3 +40,5 @@ __screenshots__/
 
 .env
 .env.*
+!.env.example
+public/costumes/

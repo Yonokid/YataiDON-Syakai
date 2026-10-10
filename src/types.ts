@@ -18,7 +18,7 @@ export interface Score {
   max_combo: number
 }
 
-export interface UnlockedTitle {
+interface UnlockedTitle {
   number: number
   name: string
 }

@@ -101,7 +101,6 @@ export default {
     changeAccessCodeLabel: 'New access code (24 digits)',
     changeAccessCodeConfirm: 'Change access code for "{username}" (currently {oldCode})? Enter the new 24-digit code below.',
     changeAccessCodeError: 'Could not change access code. Please try again.',
-    changeAccessCodeSuccess: 'Access code changed successfully.',
     suspiciousTitle: 'Suspicious scores',
     suspiciousTabPending: 'Pending review',
     suspiciousTabImportWarning: 'Import warnings',
@@ -158,7 +157,6 @@ export default {
     searchPlaceholder: 'Search songs…',
     noResults: 'No matching scores.',
     statsTitle: 'Crown Statistics',
-    version: 'Version',
     allVersions: 'All Versions',
     allDifficulties: 'All Difficulties',
     oniUra: 'Oni + Ura',
@@ -166,7 +164,6 @@ export default {
     tierFullCombo: 'Full Combo',
     tierDonderful: 'Donderful Combo',
     obtainedOfPossible: 'Progress',
-    genreBreakdownTitle: 'By Genre',
     selectVersionForBreakdown: 'Select a specific version above to see a per-song crown breakdown.',
   },
   songLeaderboard: {

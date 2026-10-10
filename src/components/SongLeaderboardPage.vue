@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+
 import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface Song {

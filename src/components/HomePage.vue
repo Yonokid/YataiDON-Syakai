@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+
 import { useSongDisplay } from '../composables/useSongDisplay'
-import type { UserData, Score } from '../types'
+import type { Score, UserData } from '../types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
