@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  envPrefix: "NETWORK_", // vite only exposes prefixed vars
   plugins: [
     vue(),
     vueDevTools(),

@@ -6,7 +6,7 @@ import { STORAGE_KEY } from '../stores/auth'
 import type { UserData } from '../types'
 
 const ACCESS_CODE_LENGTH = 20
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 
 const emit = defineEmits<{
   verified: [code: string, user: UserData]

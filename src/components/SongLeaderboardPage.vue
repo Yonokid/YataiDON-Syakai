@@ -16,7 +16,7 @@ interface SongGroup {
   variants: Song[]
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 
 interface MostPlayedSong extends Song {
   play_count: number

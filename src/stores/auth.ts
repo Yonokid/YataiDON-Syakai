@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { UserData } from '../types'
 
 export const STORAGE_KEY = 'yataidon_access_code'
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 
 export const accessCode = ref<string | null>(null)
 export const currentUser = ref<UserData | null>(null)

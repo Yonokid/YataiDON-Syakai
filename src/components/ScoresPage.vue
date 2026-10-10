@@ -15,7 +15,7 @@ interface CatalogSong {
   genre: string
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 const CROWN_TIERS = [
   { tier: 1, labelKey: 'scores.tierClear' },
   { tier: 2, labelKey: 'scores.tierFullCombo' },

@@ -10,7 +10,7 @@ Requires [Bun](https://bun.sh).
 
 ```sh
 bun install
-cp .env.example .env   # set VITE_API_BASE_URL to your backend
+cp .env.example .env
 bun run dev
 ```
 

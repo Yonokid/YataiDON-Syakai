@@ -41,7 +41,7 @@ interface SuspiciousScore {
   ts: string
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 const STORAGE_KEY = 'admin_key'
 const { t } = useI18n()
 const { songTitle, difficultyLabel } = useSongDisplay()

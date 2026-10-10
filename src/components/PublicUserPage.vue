@@ -19,7 +19,7 @@ interface PublicUser {
   scores: Score[]
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.NETWORK_URL
 const route = useRoute()
 const { t } = useI18n()
 
