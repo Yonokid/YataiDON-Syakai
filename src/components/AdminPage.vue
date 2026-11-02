@@ -211,7 +211,11 @@ interface ApiKey {
   revoked_at: string | null
   last_used: string | null
   tournament: boolean
+  campaigns: string[]
 }
+
+// campaigns the backend knows (KNOWN_CAMPAIGNS in hiroba lib/security.py)
+const CAMPAIGNS = ['mac'] as const
 
 const apiKeys = ref<ApiKey[]>([])
 const apiKeyLabel = ref('')
@@ -270,6 +274,20 @@ async function setTournament(key: ApiKey, enabled: boolean) {
     await fetchApiKeys()
   } catch {
     apiKeyError.value = t('admin.apiKeyTournamentError')
+  }
+}
+
+async function setCampaign(key: ApiKey, campaign: string, enabled: boolean) {
+  apiKeyError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/api_keys/${encodeURIComponent(key.key_id)}/campaign?campaign=${encodeURIComponent(campaign)}&enabled=${enabled}&admin_key=${encodeURIComponent(adminKey.value)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    await fetchApiKeys()
+  } catch {
+    apiKeyError.value = t('admin.apiKeyCampaignError')
   }
 }
 
@@ -479,6 +497,14 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <th class="th-cell">{{ $t('admin.thLastUsed') }}</th>
                 <th class="th-cell">{{ $t('admin.thStatus') }}</th>
                 <th class="th-cell" :title="$t('admin.apiKeyTournamentHint')">{{ $t('admin.thTournament') }}</th>
+                <th
+                  v-for="campaign in CAMPAIGNS"
+                  :key="campaign"
+                  class="th-cell"
+                  :title="$t('admin.apiKeyCampaignHint')"
+                >
+                  {{ $t(`admin.campaign.${campaign}`) }}
+                </th>
                 <th class="th-cell"></th>
               </tr>
             </thead>
@@ -498,6 +524,15 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                     @change="setTournament(key, ($event.target as HTMLInputElement).checked)"
                   />
                 </td>
+                <td v-for="campaign in CAMPAIGNS" :key="campaign" class="td-cell">
+                  <input
+                    type="checkbox"
+                    :checked="key.campaigns?.includes(campaign)"
+                    :disabled="!!key.revoked_at"
+                    :aria-label="$t(`admin.campaign.${campaign}`)"
+                    @change="setCampaign(key, campaign, ($event.target as HTMLInputElement).checked)"
+                  />
+                </td>
                 <td class="td-cell">
                   <button v-if="!key.revoked_at" type="button" class="btn" @click="revokeApiKey(key)">
                     {{ $t('admin.apiKeyRevoke') }}
@@ -505,7 +540,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 </td>
               </tr>
               <tr v-if="apiKeys.length === 0">
-                <td class="td-cell muted" colspan="7">{{ $t('admin.noApiKeys') }}</td>
+                <td class="td-cell muted" :colspan="7 + CAMPAIGNS.length">{{ $t('admin.noApiKeys') }}</td>
               </tr>
             </tbody>
           </table>

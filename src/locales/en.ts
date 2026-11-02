@@ -77,6 +77,11 @@ export default {
     apiKeyRevokeError: 'Failed to revoke API key.',
     apiKeyTournamentError: 'Failed to change tournament mode.',
     apiKeyTournamentHint: 'Enable Tournament mode for this specific key',
+    apiKeyCampaignError: 'Failed to change the campaign.',
+    apiKeyCampaignHint: 'Run this campaign on the cabinet holding this key',
+    campaign: {
+      mac: "McDonald's",
+    },
     thKeyId: 'Key ID',
     thLabel: 'Label',
     thCreated: 'Created',
