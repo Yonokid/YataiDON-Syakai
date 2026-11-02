@@ -81,6 +81,9 @@ export default {
     apiKeyCampaignHint: 'Run this campaign on the cabinet holding this key',
     campaign: {
       mac: "McDonald's",
+      v3c: 'Costume Present',
+      korokoro: 'CoroCoro',
+      chao: 'Ciao',
     },
     thKeyId: 'Key ID',
     thLabel: 'Label',
