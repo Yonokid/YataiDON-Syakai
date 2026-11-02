@@ -34,8 +34,26 @@ const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
 const route = useRoute()
 const { t } = useI18n()
 
+const jumpingHash = ref<string | null>(null)
+const jumpError = ref('')
 const jumpingReplayId = ref<number | null>(null)
 const replayJumpError = ref('')
+
+async function sendToGame(hash: string) {
+  jumpingHash.value = hash
+  jumpError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/request_song_jump?access_code=${encodeURIComponent(accessCode.value ?? '')}&hash=${encodeURIComponent(hash)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+  } catch {
+    jumpError.value = t('diffChart.jumpError')
+  } finally {
+    jumpingHash.value = null
+  }
+}
 
 async function sendReplayToGame(scoreId: number) {
   jumpingReplayId.value = scoreId
@@ -121,6 +139,15 @@ watch(
           </button>
         </router-link>
       </div>
+      <button
+        type="button"
+        class="btn"
+        :disabled="jumpingHash !== null"
+        @click="sendToGame(currentSong.hash)"
+      >
+        {{ jumpingHash !== null ? $t('common.sending') : $t('common.sendToGame') }}
+      </button>
+      <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
     </template>
     <p v-else-if="songsStatus === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
