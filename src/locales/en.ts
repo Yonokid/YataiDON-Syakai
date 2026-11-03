@@ -85,6 +85,7 @@ export default {
       korokoro: 'CoroCoro',
       chao: 'Ciao',
       mario: 'Mario Kart Bonus',
+      kinotake: 'Kinotake Battle',
     },
     thKeyId: 'Key ID',
     thLabel: 'Label',

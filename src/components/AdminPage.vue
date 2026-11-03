@@ -215,7 +215,7 @@ interface ApiKey {
 }
 
 // campaigns the backend knows (KNOWN_CAMPAIGNS in hiroba lib/security.py)
-const CAMPAIGNS = ['mac', 'v3c', 'korokoro', 'chao', 'mario'] as const
+const CAMPAIGNS = ['mac', 'v3c', 'korokoro', 'chao', 'mario', 'kinotake'] as const
 
 const apiKeys = ref<ApiKey[]>([])
 const apiKeyLabel = ref('')
