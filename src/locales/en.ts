@@ -84,6 +84,7 @@ export default {
       v3c: 'Costume Present',
       korokoro: 'CoroCoro',
       chao: 'Ciao',
+      mario: 'Mario Kart Bonus',
     },
     thKeyId: 'Key ID',
     thLabel: 'Label',
