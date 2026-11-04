@@ -225,6 +225,7 @@ export default {
     puchiNone: 'None',
     savePuchi: 'Save Puchichara',
     puchiSaveError: 'Could not save puchichara. Please try again.',
+    previewError: 'Could not load the preview.',
     loginOnPhone: 'Log in on phone',
     tapToReveal: 'Tap to reveal',
     qrHint:

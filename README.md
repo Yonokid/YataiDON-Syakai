@@ -18,6 +18,7 @@ bun run dev
 
 `public/costumes/` is gitignored.
 `costume_names.json`, `costume_icon/`, `costume_head_icon/`, `costume_body_icon/`, `acce/` are optionally required.
+The Chara3D preview also needs `head/`, `body/`, `cos/`, `animations.glb` and `face/face_000000.png`. All of these come from `Skins/PyTaikoGreen/Models` in YataiDON.
 
 ## Scripts
 

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import QRCode from 'qrcode'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import type { UserData } from '../types'
 import Nameplate from './Nameplate.vue'
+
+// Keeps three.js out of the main bundle
+const Chara3DViewer = defineAsyncComponent(() => import('./Chara3DViewer.vue'))
 
 interface CostumeEntry {
   icon: string
@@ -371,111 +374,125 @@ async function saveUsername() {
       <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
     </div>
 
-    <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">{{ $t('user.donColors') }}</span>
-      <div class="flex gap-4">
-        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-          <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
-          {{ $t('user.body') }}
-        </label>
-        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-          <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
-          {{ $t('user.face') }}
-        </label>
-        <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-          <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
-          {{ $t('user.accent') }}
-        </label>
-      </div>
-      <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">{{ $t('user.saveColors') }}</button>
-      <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
-    </div>
-
-    <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">{{ $t('user.costume') }}</span>
-      <label class="flex items-center gap-2 text-sm">
-        <input v-model="isCostumeMode" type="checkbox" />
-        {{ $t('user.fullCostume') }}
-      </label>
-
-      <div v-if="isCostumeMode" class="flex flex-col items-center gap-1">
-        <span class="muted text-xs">{{ costumeNames?.costume[cosIndex]?.name }}</span>
-        <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-          <button
-            v-for="o in costumeOptionsList"
-            :key="o.id"
-            type="button"
-            :title="o.name"
-            class="rounded-md border p-1"
-            :class="cosIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-            @click="cosIndex = o.id"
-          >
-            <img :src="iconUrl('costume', o.id)" alt="" class="h-12 w-12" />
-          </button>
+    <div class="flex w-full flex-col-reverse gap-4 sm:flex-row sm:items-start">
+      <div class="flex min-w-0 flex-1 flex-col items-center gap-4">
+        <div class="flex flex-col items-center gap-2">
+          <span class="muted text-sm">{{ $t('user.donColors') }}</span>
+          <div class="flex gap-4">
+            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+              <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
+              {{ $t('user.body') }}
+            </label>
+            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+              <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
+              {{ $t('user.face') }}
+            </label>
+            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+              <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
+              {{ $t('user.accent') }}
+            </label>
+          </div>
+          <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">{{ $t('user.saveColors') }}</button>
+          <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
         </div>
-      </div>
-      <div v-else class="flex w-full flex-col gap-4">
-        <div class="flex flex-col items-center gap-1">
-          <span class="muted text-xs">{{ $t('user.head') }} — {{ costumeNames?.head[headIndex]?.name }}</span>
+
+        <div class="flex w-full flex-col items-center gap-2">
+          <span class="muted text-sm">{{ $t('user.costume') }}</span>
+          <label class="flex items-center gap-2 text-sm">
+            <input v-model="isCostumeMode" type="checkbox" />
+            {{ $t('user.fullCostume') }}
+          </label>
+
+          <div v-if="isCostumeMode" class="flex flex-col items-center gap-1">
+            <span class="muted text-xs">{{ costumeNames?.costume[cosIndex]?.name }}</span>
+            <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+              <button
+                v-for="o in costumeOptionsList"
+                :key="o.id"
+                type="button"
+                :title="o.name"
+                class="rounded-md border p-1"
+                :class="cosIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                @click="cosIndex = o.id"
+              >
+                <img :src="iconUrl('costume', o.id)" alt="" class="h-12 w-12" />
+              </button>
+            </div>
+          </div>
+          <div v-else class="flex w-full flex-col gap-4">
+            <div class="flex flex-col items-center gap-1">
+              <span class="muted text-xs">{{ $t('user.head') }} — {{ costumeNames?.head[headIndex]?.name }}</span>
+              <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+                <button
+                  v-for="o in headOptions"
+                  :key="o.id"
+                  type="button"
+                  :title="o.name"
+                  class="rounded-md border p-1"
+                  :class="headIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                  @click="headIndex = o.id"
+                >
+                  <img :src="iconUrl('head', o.id)" alt="" class="h-12 w-12" />
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span class="muted text-xs">{{ $t('user.body') }} — {{ costumeNames?.body[bodyIndex]?.name }}</span>
+              <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+                <button
+                  v-for="o in bodyOptions"
+                  :key="o.id"
+                  type="button"
+                  :title="o.name"
+                  class="rounded-md border p-1"
+                  :class="bodyIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                  @click="bodyIndex = o.id"
+                >
+                  <img :src="iconUrl('body', o.id)" alt="" class="h-12 w-12" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">{{ $t('user.saveCostume') }}</button>
+          <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
+        </div>
+
+        <div v-if="ownedPuchis.length" class="flex w-full flex-col items-center gap-2">
+          <span class="muted text-sm">{{ $t('user.puchichara') }}</span>
           <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
             <button
-              v-for="o in headOptions"
-              :key="o.id"
+              v-for="id in [-1, ...ownedPuchis]"
+              :key="id"
               type="button"
-              :title="o.name"
-              class="rounded-md border p-1"
-              :class="headIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-              @click="headIndex = o.id"
+              class="flex items-center justify-center rounded-md border p-1"
+              :class="puchiIndex === id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+              @click="puchiIndex = id"
             >
-              <img :src="iconUrl('head', o.id)" alt="" class="h-12 w-12" />
+              <!-- sheets are two frames stacked vertically; show the top one -->
+              <img
+                v-if="id >= 0"
+                :src="puchiUrl(id)"
+                alt=""
+                class="h-12 w-12 object-cover object-top"
+              />
+              <span v-else class="muted flex h-12 w-12 items-center justify-center text-xs">{{ $t('user.puchiNone') }}</span>
             </button>
           </div>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <span class="muted text-xs">{{ $t('user.body') }} — {{ costumeNames?.body[bodyIndex]?.name }}</span>
-          <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-            <button
-              v-for="o in bodyOptions"
-              :key="o.id"
-              type="button"
-              :title="o.name"
-              class="rounded-md border p-1"
-              :class="bodyIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-              @click="bodyIndex = o.id"
-            >
-              <img :src="iconUrl('body', o.id)" alt="" class="h-12 w-12" />
-            </button>
-          </div>
+          <button type="button" class="btn" :disabled="isSavingPuchi" @click="savePuchi">{{ $t('user.savePuchi') }}</button>
+          <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
         </div>
       </div>
-
-      <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">{{ $t('user.saveCostume') }}</button>
-      <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
-    </div>
-
-    <div v-if="ownedPuchis.length" class="flex w-full flex-col items-center gap-2">
-      <span class="muted text-sm">{{ $t('user.puchichara') }}</span>
-      <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-        <button
-          v-for="id in [-1, ...ownedPuchis]"
-          :key="id"
-          type="button"
-          class="flex items-center justify-center rounded-md border p-1"
-          :class="puchiIndex === id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-          @click="puchiIndex = id"
-        >
-          <!-- sheets are two frames stacked vertically; show the top one -->
-          <img
-            v-if="id >= 0"
-            :src="puchiUrl(id)"
-            alt=""
-            class="h-12 w-12 object-cover object-top"
-          />
-          <span v-else class="muted flex h-12 w-12 items-center justify-center text-xs">{{ $t('user.puchiNone') }}</span>
-        </button>
+      <div class="w-full shrink-0 sm:sticky sm:top-4 sm:w-72">
+        <Chara3DViewer
+          :is-costume="isCostumeMode"
+          :head="headIndex"
+          :body="bodyIndex"
+          :cos="cosIndex"
+          :colors="[charaColor1, charaColor2, charaColor3]"
+          :puchi="puchiIndex"
+        />
       </div>
-      <button type="button" class="btn" :disabled="isSavingPuchi" @click="savePuchi">{{ $t('user.savePuchi') }}</button>
-      <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-2">
