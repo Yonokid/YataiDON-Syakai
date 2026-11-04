@@ -231,6 +231,10 @@ export default {
       "Scan with your phone's camera to log in instantly. This is sensitive!",
     logout: 'Log out',
     usernameSaveError: 'Could not save username. Please try again.',
+    forceUnlock: 'Unlock everything',
+    forceUnlockHint:
+      "Lets you pick any title, costume or puchichara. Other players only see what you've earned, in replays and on your page; anything else shows as the default. Unlocks nothing and earns nothing.",
+    forceUnlockError: 'Could not save this setting. Please try again.',
     setTitle: 'Change title',
     titlePreset: 'Unlocked',
     titleCustom: 'Custom',

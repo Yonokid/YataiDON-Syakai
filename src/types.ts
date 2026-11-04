@@ -27,6 +27,8 @@ export interface UserData {
   username: string
   title: string
   nameplate_color: NameplateColor
+  force_unlock: boolean
+  owned_cosmetics: { costume: number[]; head: number[]; body: number[] }
   unlocked_titles: UnlockedTitle[]
   import_requested: boolean
   import_completed: boolean

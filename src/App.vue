@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { accessCode, currentUser, login, logout } from './stores/auth'
+import type { UserData } from './types'
 
 function handleLogout() {
   logout()
@@ -41,6 +42,7 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
     <router-view v-slot="{ Component, route }">
       <component
         :is="Component"
+        :key="String(currentUser?.force_unlock)"
         v-bind="
           route.name === 'home' || route.name === 'scores' || route.name === 'user'
             ? { user: currentUser, accessCode }
@@ -67,6 +69,7 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
           }) => currentUser && Object.assign(currentUser, c)
         "
         @puchi-updated="(v: number | null) => currentUser && (currentUser.puchichara = v)"
+        @force-unlock-updated="(u: UserData) => login(accessCode!, u)"
         @import-requested="() => currentUser && (currentUser.import_requested = true)"
       />
     </router-view>

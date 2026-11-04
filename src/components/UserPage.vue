@@ -36,6 +36,7 @@ const emit = defineEmits<{
   ]
   'puchi-updated': [puchichara: number | null]
   'import-requested': []
+  'force-unlock-updated': [user: UserData]
 }>()
 const { t } = useI18n()
 
@@ -140,6 +141,7 @@ function costumeOptions(kind: 'head' | 'body' | 'costume') {
   if (!entries) return []
   return Object.entries(entries)
     .map(([id, entry]) => ({ id: Number(id), ...entry }))
+    .filter((o) => props.user.force_unlock || props.user.owned_cosmetics[kind].includes(o.id))
     .sort((a, b) => a.id - b.id)
 }
 
@@ -186,7 +188,10 @@ function puchiUrl(id: number) {
   return `${import.meta.env.BASE_URL}costumes/acce/${id}.png`
 }
 
-const ownedPuchis = computed(() => props.user.owned_puchichara ?? [])
+// Sheets are Models/acce/<id>.png, ids 0-212
+const ownedPuchis = computed(() =>
+  props.user.force_unlock ? Array.from({ length: 213 }, (_, id) => id) : (props.user.owned_puchichara ?? []),
+)
 const puchiIndex = ref(props.user.puchichara ?? -1)
 const isSavingPuchi = ref(false)
 const puchiSaveError = ref('')
@@ -208,6 +213,29 @@ async function savePuchi() {
     puchiSaveError.value = t('user.puchiSaveError')
   } finally {
     isSavingPuchi.value = false
+  }
+}
+
+const forceUnlock = ref(props.user.force_unlock)
+const isSavingForceUnlock = ref(false)
+const forceUnlockError = ref('')
+
+async function saveForceUnlock() {
+  isSavingForceUnlock.value = true
+  forceUnlockError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_force_unlock?access_code=${encodeURIComponent(props.accessCode)}`,
+      { method: 'POST', body: new URLSearchParams({ enabled: String(forceUnlock.value) }) },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const fresh = await fetch(`${API_BASE_URL}/user?access_code=${encodeURIComponent(props.accessCode)}`)
+    if (!fresh.ok) throw new Error(`Unexpected status ${fresh.status}`)
+    emit('force-unlock-updated', await fresh.json())
+  } catch {
+    forceUnlock.value = props.user.force_unlock
+    forceUnlockError.value = t('user.forceUnlockError')
+    isSavingForceUnlock.value = false
   }
 }
 
@@ -275,6 +303,15 @@ async function saveUsername() {
     </div>
 
     <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
+
+    <div class="flex flex-col items-center gap-1 text-center">
+      <label class="flex cursor-pointer items-center gap-2 text-sm">
+        <input v-model="forceUnlock" type="checkbox" :disabled="isSavingForceUnlock" @change="saveForceUnlock" />
+        {{ $t('user.forceUnlock') }}
+      </label>
+      <p class="muted text-xs">{{ $t('user.forceUnlockHint') }}</p>
+      <p v-if="forceUnlockError" class="error-text text-sm">{{ forceUnlockError }}</p>
+    </div>
 
     <div
       class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
