@@ -233,7 +233,7 @@ export default {
     usernameSaveError: 'Could not save username. Please try again.',
     forceUnlock: 'Unlock everything',
     forceUnlockHint:
-      "Lets you pick any title, costume or puchichara. Other players only see what you've earned, in replays and on your page; anything else shows as the default. Unlocks nothing and earns nothing.",
+      "Lets you pick anything you want. This will only appear in game for you and not for other players. Things will only stay unlocked with the checkmark enabled",
     forceUnlockError: 'Could not save this setting. Please try again.',
     setTitle: 'Change title',
     titlePreset: 'Unlocked',
