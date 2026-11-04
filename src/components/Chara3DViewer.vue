@@ -198,6 +198,14 @@ function loadRig() {
   return rig
 }
 
+// The game samples these textures with point filtering and no mipmaps. Some are tiny colour keys
+// (128x8) with red and blue texels side by side, which linear filtering smears into a gradient.
+function pointSampled<T extends THREE.Texture>(texture: T) {
+  texture.minFilter = texture.magFilter = THREE.NearestFilter
+  texture.generateMipmaps = false
+  return texture
+}
+
 async function loadFaceTextures() {
   const image = await new THREE.ImageBitmapLoader().loadAsync(`${BASE}/face/face_000000.png`)
   // Frames are square and stacked vertically
@@ -206,7 +214,7 @@ async function loadFaceTextures() {
     const crop = document.createElement('canvas')
     crop.width = crop.height = size
     crop.getContext('2d')!.drawImage(image, 0, -frame * size)
-    const texture = new THREE.CanvasTexture(crop)
+    const texture = pointSampled(new THREE.CanvasTexture(crop))
     texture.flipY = false
     return texture
   })
@@ -246,7 +254,7 @@ function makeRecolor(map: THREE.Texture): Recolor {
   recolorCanvas.height = image.height
   const ctx = recolorCanvas.getContext('2d', { willReadFrequently: true })!
   ctx.drawImage(image, 0, 0)
-  const texture = new THREE.CanvasTexture(recolorCanvas)
+  const texture = pointSampled(new THREE.CanvasTexture(recolorCanvas))
   texture.flipY = false
   texture.wrapS = map.wrapS
   texture.wrapT = map.wrapT
@@ -293,7 +301,10 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
     const isCutout = name.includes('_color_s_cus_') && !name.includes('_a_ab')
     const isBlend = !isFace && (name.includes('_a_ab') || (src.transparent && !isCutout))
     let map = src.map
-    if (map) map.colorSpace = THREE.NoColorSpace // the game draws texels unconverted
+    if (map) {
+      map.colorSpace = THREE.NoColorSpace // the game draws texels unconverted
+      pointSampled(map)
+    }
 
     if (shaderType === 'taikoEffectChangeColors' && map) {
       const recolor = makeRecolor(map)

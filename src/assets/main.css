@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* public/costumes holds ~190 MB of .glb files. It's gitignored but uploaded by `vercel deploy`,
+   and with no .git/.gitignore there Tailwind scans them as text and the build runs out of memory. */
+@source not "../../public";
 
 @layer components {
   .th-cell,
