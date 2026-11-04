@@ -35,6 +35,9 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
       <router-link to="/titles" custom v-slot="{ navigate, isActive }">
         <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.titles') }}</button>
       </router-link>
+      <router-link to="/cosmetics" custom v-slot="{ navigate, isActive }">
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.cosmetics') }}</button>
+      </router-link>
     </nav>
   </header>
 
@@ -48,7 +51,7 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
             ? { user: currentUser, accessCode }
             : route.name === 'charts'
               ? { scores: currentUser?.scores, accessCode }
-              : route.name === 'titles'
+              : route.name === 'titles' || route.name === 'cosmetics'
                 ? { accessCode }
                 : {}
         "

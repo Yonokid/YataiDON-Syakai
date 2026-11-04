@@ -10,6 +10,7 @@ import ScoresPage from '../components/ScoresPage.vue'
 import SongLeaderboardPage from '../components/SongLeaderboardPage.vue'
 import SongPage from '../components/SongPage.vue'
 import TitlesPage from '../components/TitlesPage.vue'
+import CosmeticsPage from '../components/CosmeticsPage.vue'
 import UserPage from '../components/UserPage.vue'
 import { accessCode, currentUser, restoreSession } from '../stores/auth'
 
@@ -27,6 +28,7 @@ const router = createRouter({
     { path: '/songs', name: 'songs', component: SongLeaderboardPage },
     { path: '/songs/:hash', name: 'song', component: SongPage },
     { path: '/titles', name: 'titles', component: TitlesPage },
+    { path: '/cosmetics', name: 'cosmetics', component: CosmeticsPage },
   ],
 })
 
