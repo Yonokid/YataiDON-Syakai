@@ -43,5 +43,5 @@ export interface UserData {
   owned_puchichara: number[]
   don_points: number
   don_medals: number
-  scores: Score[]
+  scores: (Score & { rating: number })[]
 }

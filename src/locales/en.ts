@@ -170,6 +170,7 @@ export default {
   scores: {
     searchPlaceholder: 'Search songs…',
     noResults: 'No matching scores.',
+    bestSongsTitle: 'Best 50 Songs',
     statsTitle: 'Crown Statistics',
     allVersions: 'All Versions',
     allDifficulties: 'All Difficulties',
