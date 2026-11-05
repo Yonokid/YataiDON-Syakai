@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useSongDisplay } from '../composables/useSongDisplay'
 import type { Score } from '../types'
 
 interface ChartSong {
@@ -33,6 +34,7 @@ const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
 
 const props = defineProps<{ scores: Score[]; accessCode: string }>()
 const { t } = useI18n()
+const { songTitle: localizedTitle } = useSongDisplay()
 
 const jumpingHash = ref<string | null>(null)
 const jumpError = ref('')
@@ -81,8 +83,7 @@ function crownClass(hash: string | null) {
 }
 
 function songTitle(song: ChartSong) {
-  if (!song.title) return t('diffChart.unknownSong')
-  return song.title.en ?? Object.values(song.title)[0] ?? t('diffChart.unknownSong')
+  return song.title ? localizedTitle(song.title) : t('diffChart.unknownSong')
 }
 </script>
 

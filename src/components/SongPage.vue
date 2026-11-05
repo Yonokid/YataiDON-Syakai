@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
-import { useSongDisplay } from '../composables/useSongDisplay'
+import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import { accessCode } from '../stores/auth'
 
 interface Song {
@@ -80,9 +80,9 @@ const { songTitle, difficultyLabel } = useSongDisplay()
 const currentSong = computed(() => songs.value.find((s) => s.hash === route.params.hash))
 const variants = computed(() => {
   if (!currentSong.value) return []
-  const title = songTitle(currentSong.value.title)
+  const key = songGroupKey(currentSong.value.title)
   return songs.value
-    .filter((s) => songTitle(s.title) === title)
+    .filter((s) => songGroupKey(s.title) === key)
     .sort((a, b) => a.difficulty - b.difficulty)
 })
 

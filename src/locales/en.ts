@@ -8,6 +8,7 @@ export default {
     songs: 'Song Leaderboards',
     titles: 'Titles',
     cosmetics: 'Cosmetics',
+    songLanguage: 'Song name language',
   },
   common: {
     loading: 'Loading…',

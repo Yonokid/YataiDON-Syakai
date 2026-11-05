@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SONG_LANGUAGES, songLanguage } from './composables/useSongDisplay'
 import { accessCode, currentUser, login, logout } from './stores/auth'
 import type { UserData } from './types'
 
@@ -38,6 +39,9 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
       <router-link to="/cosmetics" custom v-slot="{ navigate, isActive }">
         <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.cosmetics') }}</button>
       </router-link>
+      <select v-model="songLanguage" class="field text-sm" :aria-label="$t('nav.songLanguage')" :title="$t('nav.songLanguage')">
+        <option v-for="lang in SONG_LANGUAGES" :key="lang.code" :value="lang.code">{{ lang.label }}</option>
+      </select>
     </nav>
   </header>
 
