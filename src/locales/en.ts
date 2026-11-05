@@ -45,6 +45,8 @@ export default {
     valid: 'Access code verified',
     invalid: 'Access code not found',
     error: 'Could not reach server',
+    download: 'Download YataiDON',
+    setupGuide: 'Setup guide',
   },
   admin: {
     title: 'Admin',

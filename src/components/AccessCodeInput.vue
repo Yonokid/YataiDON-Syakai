@@ -116,5 +116,13 @@ watch(rememberMe, (remember) => {
         <span class="text-red-600 dark:text-red-400">{{ $t('accessCode.error') }}</span>
       </template>
     </span>
+    <div class="mt-4 flex gap-4 text-sm">
+      <a href="https://github.com/Yonokid/YataiDON/releases" target="_blank" rel="noopener" class="underline">
+        {{ $t('accessCode.download') }}
+      </a>
+      <a href="https://guide.tjadataba.se/yataidon/" target="_blank" rel="noopener" class="underline">
+        {{ $t('accessCode.setupGuide') }}
+      </a>
+    </div>
   </div>
 </template>
