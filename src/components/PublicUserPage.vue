@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
 import { accessCode } from '../stores/auth'
-import type { Score } from '../types'
+import type { UserData } from '../types'
+import BestSongs from './BestSongs.vue'
 import Nameplate, { type NameplateColor } from './Nameplate.vue'
+
+const Chara3DViewer = defineAsyncComponent(() => import('./Chara3DViewer.vue'))
 
 interface PublicUser {
   id: number
@@ -16,7 +19,12 @@ interface PublicUser {
   chara_color_1: string
   chara_color_2: string
   chara_color_3: string
-  scores: Score[]
+  chara_head_index: number
+  chara_body_index: number
+  chara_cos_index: number
+  chara_is_costume: boolean
+  puchichara: number | null
+  scores: UserData['scores']
 }
 
 const API_BASE_URL = import.meta.env.NETWORK_URL
@@ -92,6 +100,18 @@ watch(() => route.params.id, (id) => load(id as string))
     <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <template v-else-if="user">
       <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
+      <div class="w-56">
+        <Chara3DViewer
+          :is-costume="user.chara_is_costume"
+          :head="user.chara_head_index"
+          :body="user.chara_body_index"
+          :cos="user.chara_cos_index"
+          :colors="[user.chara_color_1, user.chara_color_2, user.chara_color_3]"
+          :puchi="user.puchichara ?? -1"
+        />
+      </div>
+
+      <BestSongs :scores="user.scores" />
 
       <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
       <div v-else class="w-full overflow-x-auto">
