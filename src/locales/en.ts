@@ -220,6 +220,8 @@ export default {
     countShown: '{shown} / {total} shown, {unlocked} unlocked',
   },
   user: {
+    donPoints: 'Don Points',
+    donMedals: 'Don Medals',
     setUsername: 'Change username',
     newUsernamePlaceholder: 'New username',
     importCompleted: 'Pre-existing scores imported.',

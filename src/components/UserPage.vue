@@ -307,6 +307,17 @@ async function saveUsername() {
 
     <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
 
+    <dl class="flex gap-8 text-center">
+      <div>
+        <dt class="muted text-sm">{{ $t('user.donPoints') }}</dt>
+        <dd class="text-xl font-semibold">{{ user.don_points.toLocaleString() }}</dd>
+      </div>
+      <div>
+        <dt class="muted text-sm">{{ $t('user.donMedals') }}</dt>
+        <dd class="text-xl font-semibold">{{ user.don_medals.toLocaleString() }}</dd>
+      </div>
+    </dl>
+
     <div class="flex flex-col items-center gap-1 text-center">
       <label class="flex cursor-pointer items-center gap-2 text-sm">
         <input v-model="forceUnlock" type="checkbox" :disabled="isSavingForceUnlock" @change="saveForceUnlock" />
