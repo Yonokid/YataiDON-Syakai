@@ -533,6 +533,9 @@ async function saveUsername() {
           {{ $t('user.tapToReveal') }}
         </span>
       </button>
+      <p class="min-h-5 text-sm">
+        <template v-if="qrRevealed && qrDataUrl">{{ accessCode }}</template>
+      </p>
       <p class="muted max-w-xs text-center text-xs">
         {{ $t('user.qrHint') }}
       </p>
