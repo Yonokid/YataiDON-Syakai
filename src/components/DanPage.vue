@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useSongDisplay } from '../composables/useSongDisplay'
+import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import danData from '../data/dan_courses.json'
 
 type ExamValue = number[] | (number[] | null)[]
@@ -19,6 +19,13 @@ interface DanChart {
   difficulty: number
 }
 
+interface DanSong {
+  hash: string
+  title: Record<string, string>
+  subtitle?: Record<string, string>
+  difficulty: number
+}
+
 interface DanCourse {
   path: string
   title: string
@@ -28,9 +35,11 @@ interface DanCourse {
   gen3?: boolean
 }
 
+const API_BASE_URL = import.meta.env.NETWORK_URL
+
 const courses = danData as unknown as DanCourse[]
 const { t } = useI18n()
-const { difficultyLabel } = useSongDisplay()
+const { songTitle, difficultyLabel } = useSongDisplay()
 
 const EXAM_LABEL_KEYS: Record<string, string> = {
   gauge: 'dans.examTypes.gauge',
@@ -56,6 +65,49 @@ function courseIndex(path: string) {
 
 const versions = [...new Set(courses.map((course) => versionOf(course.path)))]
 
+const songs = ref<DanSong[]>([])
+
+// Dan data only carries the English title, so match it against the song catalog's
+// English title (group key) to recover its hash and localized titles.
+function normalizeTitle(title: string) {
+  return title
+    .normalize('NFKC')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
+const songsByTitle = computed(() => {
+  const map = new Map<string, DanSong[]>()
+  for (const song of songs.value) {
+    const key = normalizeTitle(songGroupKey(song.title))
+    const list = map.get(key)
+    if (list) list.push(song)
+    else map.set(key, [song])
+  }
+  return map
+})
+
+function chartSong(chart: DanChart) {
+  const matches = songsByTitle.value.get(normalizeTitle(chart.title))
+  if (!matches?.length) return undefined
+  const atDifficulty = matches.filter((song) => song.difficulty === chart.difficulty)
+  const pool = atDifficulty.length ? atDifficulty : matches
+  if (pool.length === 1) return pool[0]
+  const subtitle = normalizeTitle(chart.subtitle ?? '')
+  return pool.find((song) => subtitle && normalizeTitle(songGroupKey(song.subtitle ?? {})) === subtitle) ?? pool[0]
+}
+
+function chartTitle(chart: DanChart) {
+  const song = chartSong(chart)
+  return song ? songTitle(song.title) : chart.title
+}
+
+function chartHash(chart: DanChart) {
+  return chartSong(chart)?.hash ?? ''
+}
+
 const filteredCourses = computed(() => {
   const term = search.value.trim().toLowerCase()
   return courses.filter((course) => {
@@ -65,11 +117,22 @@ const filteredCourses = computed(() => {
       course.title.toLowerCase().includes(term) ||
       course.charts.some(
         (chart) =>
-          chart.title.toLowerCase().includes(term) ||
+          chartTitle(chart).toLowerCase().includes(term) ||
           (chart.subtitle ?? '').toLowerCase().includes(term),
       )
     )
   })
+})
+
+onMounted(async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/songs`)
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const data: { songs: DanSong[] } = await response.json()
+    songs.value = data.songs
+  } catch {
+    // Keep the static English titles when the catalog is unavailable.
+  }
 })
 
 const groupedCourses = computed(() => {
@@ -153,7 +216,10 @@ function examValue(exam: DanExam) {
                 <h3 class="mb-1 text-sm font-medium">{{ $t('dans.songs') }}</h3>
                 <ol class="ml-4 list-decimal text-sm">
                   <li v-for="(chart, index) in course.charts" :key="index" class="mb-1">
-                    <span>{{ chart.title || $t('common.untitled') }}</span>
+                    <router-link v-if="chartHash(chart)" :to="`/songs/${chartHash(chart)}`" class="row-link">
+                      {{ chartTitle(chart) || $t('common.untitled') }}
+                    </router-link>
+                    <span v-else>{{ chartTitle(chart) || $t('common.untitled') }}</span>
                     <span v-if="chart.subtitle" class="muted"> — {{ chart.subtitle }}</span>
                     <span class="muted ml-1 text-xs">({{ difficultyLabel(chart.difficulty) }})</span>
                   </li>
