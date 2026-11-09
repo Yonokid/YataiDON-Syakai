@@ -404,7 +404,7 @@ function cancelChangeAccessCode() {
 async function saveChangeAccessCode() {
   if (!changingAccessCode.value) return
   const newCode = changeAccessCodeNew.value.trim()
-  if (!newCode || !/^\d{24}$/.test(newCode)) {
+  if (!newCode || !/^\d{20}$/.test(newCode)) {
     changeAccessCodeError.value = t('admin.changeAccessCodeError')
     return
   }
@@ -734,7 +734,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           <p class="muted text-sm">{{ $t('admin.changeAccessCodeConfirm', { username: changingAccessCode.username, oldCode: changingAccessCode.access_code }) }}</p>
           <label class="flex flex-col gap-1 text-sm">
             {{ $t('admin.changeAccessCodeLabel') }}
-            <input v-model="changeAccessCodeNew" type="text" maxlength="24" class="field" placeholder="24-digit number" />
+            <input v-model="changeAccessCodeNew" type="text" maxlength="20" class="field" placeholder="20-digit number" />
           </label>
           <p v-if="changeAccessCodeError" class="error-text text-sm">{{ changeAccessCodeError }}</p>
           <div class="flex justify-end gap-2">
