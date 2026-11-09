@@ -14,24 +14,45 @@ const props = withDefaults(
 
 const plateUrl = computed(() => `${import.meta.env.BASE_URL}nameplates/${props.color}.png`)
 
-// The client's dan_emblem sheet is 2 columns x 13 rows of 64x32 frames; frame = dan index.
-const hasDan = computed(() => typeof props.dan === 'number' && props.dan >= 0 && props.dan <= 24)
-const danEmblemStyle = computed(() => {
-  if (!hasDan.value) return undefined
-  const frame = props.dan as number
-  const sheet = props.gold ? 'dan_emblem_gold' : 'dan_emblem'
-  return {
-    backgroundImage: `url(${import.meta.env.BASE_URL}nameplates/${sheet}.png)`,
-    backgroundPosition: `${(frame % 2) * 100}% ${(Math.floor(frame / 2) / 12) * 100}%`,
-  }
-})
+// Same order as the client's dan ranks (0 = 初級 … 24 = 達人).
+const DAN_NAMES = [
+  '初級',
+  '十級',
+  '九級',
+  '八級',
+  '七級',
+  '六級',
+  '五級',
+  '四級',
+  '三級',
+  '二級',
+  '一級',
+  '初段',
+  '二段',
+  '三段',
+  '四段',
+  '五段',
+  '六段',
+  '七段',
+  '八段',
+  '九段',
+  '十段',
+  '玄人',
+  '名人',
+  '超人',
+  '達人',
+]
+
+const hasDan = computed(() => typeof props.dan === 'number' && props.dan >= 0 && props.dan < DAN_NAMES.length)
+const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : ''))
 </script>
 
 <template>
   <div class="nameplate">
     <div class="nameplate-frame" :style="{ backgroundImage: `url(${plateUrl})` }">
-      <div v-if="hasDan" class="nameplate-dan" aria-hidden="true" />
-      <div v-if="hasDan" class="nameplate-dan-emblem" :style="danEmblemStyle" aria-hidden="true" />
+      <div v-if="hasDan" class="nameplate-dan">
+        <span class="nameplate-dan-label" :class="{ 'nameplate-dan-gold': gold }">{{ danName }}</span>
+      </div>
       <div class="nameplate-half">
         <span class="nameplate-title">{{ title }}</span>
       </div>
@@ -74,16 +95,20 @@ const danEmblemStyle = computed(() => {
   height: 45.3%;
   width: 32%;
   background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.nameplate-dan-emblem {
-  position: absolute;
-  left: 15.7%;
-  top: 46.9%;
-  height: 50%;
-  aspect-ratio: 2;
-  background-repeat: no-repeat;
-  background-size: 200% 1300%;
+.nameplate-dan-label {
+  font-size: clamp(0.85rem, 2.9vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+
+.nameplate-dan-gold {
+  color: #efcf39;
 }
 
 .nameplate-half {
