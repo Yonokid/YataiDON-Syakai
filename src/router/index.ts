@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import AccessCodeInput from '../components/AccessCodeInput.vue'
 import AdminPage from '../components/AdminPage.vue'
+import DanPage from '../components/DanPage.vue'
 import DiffChartPage from '../components/DiffChartPage.vue'
 import HomePage from '../components/HomePage.vue'
 import LeaderboardPage from '../components/LeaderboardPage.vue'
@@ -21,6 +22,7 @@ const router = createRouter({
     { path: '/admin', name: 'admin', component: AdminPage },
     { path: '/', name: 'home', component: HomePage },
     { path: '/scores', name: 'scores', component: ScoresPage },
+    { path: '/dans', name: 'dans', component: DanPage },
     { path: '/user', name: 'user', component: UserPage },
     { path: '/u/:id', name: 'public-user', component: PublicUserPage },
     { path: '/charts', name: 'charts', component: DiffChartPage },

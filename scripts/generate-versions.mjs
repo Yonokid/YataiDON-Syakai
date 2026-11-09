@@ -8,7 +8,7 @@ import {
     writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, dirname } from "node:path";
+import { join, dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_URL = "https://ese.tjadataba.se/Yonokid/ESE-Version-Sorting.git";
@@ -20,10 +20,9 @@ if (tmp) {
     });
     root = tmp;
 }
-const OUT = join(
-    dirname(fileURLToPath(import.meta.url)),
-    "../src/data/versions.json",
-);
+const DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), "../src/data");
+const OUT = join(DATA_DIR, "versions.json");
+const DAN_OUT = join(DATA_DIR, "dan_courses.json");
 const CATEGORIES = ["Arcade", "Console"];
 
 function findSongLists(dir) {
@@ -32,6 +31,16 @@ function findSongLists(dir) {
         const full = join(dir, entry);
         if (statSync(full).isDirectory()) files.push(...findSongLists(full));
         else if (entry === "song_list.txt") files.push(full);
+    }
+    return files;
+}
+
+function findDanFiles(dir) {
+    const files = [];
+    for (const entry of readdirSync(dir)) {
+        const full = join(dir, entry);
+        if (statSync(full).isDirectory()) files.push(...findDanFiles(full));
+        else if (entry === "dan.json") files.push(full);
     }
     return files;
 }
@@ -62,6 +71,16 @@ for (const category of CATEGORIES) {
     }
 }
 
+const danCourses = CATEGORIES.flatMap((category) => findDanFiles(join(root, category)))
+    .map((file) => ({
+        ...JSON.parse(readFileSync(file, "utf-8")),
+        path: relative(root, file).split("\\").join("/"),
+    }))
+    .sort((a, b) => a.path.localeCompare(b.path));
+
 if (tmp) rmSync(tmp, { recursive: true, force: true });
 writeFileSync(OUT, JSON.stringify(versions));
-console.log(`Wrote ${Object.keys(versions).length} versions to ${OUT}`);
+writeFileSync(DAN_OUT, JSON.stringify(danCourses));
+console.log(
+    `Wrote ${Object.keys(versions).length} versions to ${OUT} and ${danCourses.length} dan courses to ${DAN_OUT}`,
+);

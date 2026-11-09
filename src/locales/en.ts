@@ -2,6 +2,7 @@ export default {
   nav: {
     home: 'Home',
     scores: 'Scores',
+    dans: 'Dan Courses',
     user: 'User',
     charts: 'Difficulty Charts',
     leaderboard: 'Leaderboard',
@@ -194,6 +195,27 @@ export default {
   song: {
     backToSongs: '← Back to songs',
     songNotFound: 'Song not found.',
+  },
+  dans: {
+    title: 'Dan Courses',
+    searchPlaceholder: 'Search dan or song…',
+    allVersions: 'All versions',
+    noCourses: 'No dan courses found.',
+    countShown: '{shown} / {total} courses',
+    songCount: '{n} songs',
+    songs: 'Songs',
+    exams: 'Exams',
+    gen3: 'Gen3',
+    examTypes: {
+      gauge: 'Gauge',
+      judgeperfect: 'Perfect',
+      judgegood: 'Good',
+      judgebad: 'Bad',
+      hit: 'Hits',
+      combo: 'Combo',
+      score: 'Score',
+      renda: 'Drumroll',
+    },
   },
   titles: {
     title: 'Titles',

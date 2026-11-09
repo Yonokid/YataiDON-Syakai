@@ -21,6 +21,9 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
       <router-link to="/scores" custom v-slot="{ navigate, isActive }">
         <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.scores') }}</button>
       </router-link>
+      <router-link to="/dans" custom v-slot="{ navigate, isActive }">
+        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.dans') }}</button>
+      </router-link>
       <router-link to="/user" custom v-slot="{ navigate, isActive }">
         <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.user') }}</button>
       </router-link>
