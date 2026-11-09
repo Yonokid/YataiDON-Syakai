@@ -46,8 +46,8 @@ const search = ref('')
 const selectedVersion = ref('all')
 
 function versionOf(path: string) {
-  const [category, version] = path.split('/')
-  return category && version ? `${category}/${version}` : path
+  const version = path.split('/')[1]
+  return version ? version.replace(/^\d+\s+/, '') : path
 }
 
 function courseIndex(path: string) {
@@ -118,7 +118,7 @@ function examValue(exam: DanExam) {
         <select v-model="selectedVersion" class="field" :aria-label="$t('dans.allVersions')">
           <option value="all">{{ $t('dans.allVersions') }}</option>
           <option v-for="version in versions" :key="version" :value="version">
-            {{ version.replace('/', ' - ') }}
+            {{ version }}
           </option>
         </select>
       </div>
@@ -130,7 +130,7 @@ function examValue(exam: DanExam) {
 
       <div v-else class="flex w-full flex-col gap-4">
         <section v-for="group in groupedCourses" :key="group.version" class="flex flex-col gap-2">
-          <h2 class="text-left text-sm font-semibold">{{ group.version.replace('/', ' - ') }}</h2>
+          <h2 class="text-left text-sm font-semibold">{{ group.version }}</h2>
 
           <details
             v-for="course in group.items"
