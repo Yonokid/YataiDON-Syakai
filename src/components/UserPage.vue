@@ -305,7 +305,13 @@ async function saveUsername() {
       <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
     </div>
 
-    <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
+    <Nameplate
+      :username="user.username"
+      :title="user.title"
+      :color="user.nameplate_color"
+      :dan="user.dan"
+      :gold="user.gold"
+    />
 
     <dl class="flex gap-8 text-center">
       <div>

@@ -16,6 +16,8 @@ interface PublicUser {
   username: string
   title: string
   nameplate_color: NameplateColor
+  dan: number | null
+  gold: boolean
   chara_color_1: string
   chara_color_2: string
   chara_color_3: string
@@ -99,7 +101,13 @@ watch(() => route.params.id, (id) => load(id as string))
     <p v-else-if="status === 'not-found'" class="error-text">{{ $t('publicUser.userNotFound') }}</p>
     <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <template v-else-if="user">
-      <Nameplate :username="user.username" :title="user.title" :color="user.nameplate_color" />
+      <Nameplate
+        :username="user.username"
+        :title="user.title"
+        :color="user.nameplate_color"
+        :dan="user.dan"
+        :gold="user.gold"
+      />
       <div class="w-56">
         <Chara3DViewer
           :is-costume="user.chara_is_costume"
