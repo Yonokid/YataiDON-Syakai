@@ -140,10 +140,14 @@ const LOG_ENDPOINTS: Record<string, string> = {
   'POST /online/finish': 'Online: finished',
 }
 
+const LOG_LEVELS = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+
 const logs = ref<AdminLog[]>([])
 const logsLoading = ref(false)
 const logsError = ref('')
 const logsLive = ref(false)
+const levelFilter = ref('')
+const endpointFilter = ref('')
 let logsSocket: WebSocket | null = null
 let logsReconnectTimer: ReturnType<typeof setTimeout> | undefined
 
@@ -159,13 +163,26 @@ function parseAccessLog(message: string) {
   return { method, path: url.split('?')[0] ?? url, status: Number(status) }
 }
 
-const parsedLogs = computed(() =>
-  logs.value.map((entry) => ({ ...entry, access: parseAccessLog(entry.message) })),
+function logEndpointKey(method: string, path: string) {
+  return `${method} ${path.replace(/^(\/admin\/api_keys\/)[^/]+/, '$1:id')}`
+}
+
+const filteredLogs = computed(() =>
+  [...logs.value]
+    .reverse()
+    .map((entry) => ({ ...entry, access: parseAccessLog(entry.message) }))
+    .filter((entry) => {
+      if (levelFilter.value && entry.level !== levelFilter.value) return false
+      if (!endpointFilter.value) return true
+      return (
+        entry.access !== null &&
+        logEndpointKey(entry.access.method, entry.access.path) === endpointFilter.value
+      )
+    }),
 )
 
 function logLabel(method: string, path: string) {
-  const normalized = path.replace(/^(\/admin\/api_keys\/)[^/]+/, '$1:id')
-  return LOG_ENDPOINTS[`${method} ${normalized}`] ?? `${method} ${path}`
+  return LOG_ENDPOINTS[logEndpointKey(method, path)] ?? `${method} ${path}`
 }
 
 function logTime(iso: string) {
@@ -761,7 +778,17 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             {{ logsLive ? $t('admin.logLive') : $t('admin.logDisconnected') }}
           </span>
           <button type="button" class="btn" @click="clearLogs">{{ $t('admin.logClear') }}</button>
-          <span class="text-xs muted">{{ $t('admin.logCount', { count: logs.length }) }}</span>
+          <span class="text-xs muted">{{ $t('admin.logCount', { count: filteredLogs.length }) }}</span>
+        </div>
+        <div class="flex w-full flex-wrap items-center gap-2">
+          <select v-model="levelFilter" class="field text-sm" :aria-label="$t('admin.logLevel')">
+            <option value="">{{ $t('admin.logAllLevels') }}</option>
+            <option v-for="level in LOG_LEVELS" :key="level" :value="level">{{ level }}</option>
+          </select>
+          <select v-model="endpointFilter" class="field text-sm" :aria-label="$t('admin.logEndpoint')">
+            <option value="">{{ $t('admin.logAllEndpoints') }}</option>
+            <option v-for="(label, key) in LOG_ENDPOINTS" :key="key" :value="key">{{ label }}</option>
+          </select>
         </div>
         <p v-if="logsError" class="error-text text-sm">{{ logsError }}</p>
         <p v-if="logsLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
@@ -776,7 +803,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(entry, index) in parsedLogs" :key="index" class="text-sm">
+              <tr v-for="(entry, index) in filteredLogs" :key="index" class="text-sm">
                 <td class="td-cell whitespace-nowrap" :title="entry.time">{{ logTime(entry.time) }}</td>
                 <td class="td-cell">
                   <span :class="logLevelClass(entry.level)">{{ entry.level }}</span>
@@ -796,8 +823,10 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                   </span>
                 </td>
               </tr>
-              <tr v-if="logs.length === 0">
-                <td class="td-cell muted" colspan="4">{{ $t('admin.noLogs') }}</td>
+              <tr v-if="filteredLogs.length === 0">
+                <td class="td-cell muted" colspan="4">
+                  {{ logs.length === 0 ? $t('admin.noLogs') : $t('admin.noMatchingLogs') }}
+                </td>
               </tr>
             </tbody>
           </table>
