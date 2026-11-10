@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
@@ -65,9 +65,122 @@ const saveError = ref('')
 type Tab = 'users' | 'titles' | 'merge' | 'keys' | 'log'
 const activeTab = ref<Tab>('users')
 
-const logs = ref<{ time: string; level: string; message: string }[]>([])
+interface AdminLog {
+  time: string
+  level: string
+  message: string
+}
+
+// Friendly names for the backend endpoints, keyed by "METHOD path". `:id` stands in
+// for the API key id in the dynamic admin routes.
+const LOG_ENDPOINTS: Record<string, string> = {
+  'GET /': 'Health check',
+  'GET /health': 'Health check',
+  'GET /online_users': 'Online users',
+  'GET /leaderboard': 'Leaderboard',
+  'GET /songs': 'Song list',
+  'GET /most_played_songs': 'Most played songs',
+  'GET /song_leaderboard': 'Song leaderboard',
+  'GET /song_ranking': 'Song ranking',
+  'POST /gacha': 'Gacha roll',
+  'GET /kinotake': 'Kinotake status',
+  'POST /kinotake': 'Kinotake play',
+  'GET /rewards': 'Rewards',
+  'GET /cosmetics': 'Cosmetics',
+  'POST /campaign_costume': 'Campaign costume',
+  'POST /don_points': 'Don points',
+  'POST /register_user': 'User registered',
+  'GET /user': 'User profile',
+  'GET /recent_scores': 'Recent scores',
+  'GET /public_user': 'Public profile',
+  'POST /update_username': 'Username updated',
+  'POST /update_title': 'Title updated',
+  'POST /update_chara_colors': 'Chara colors updated',
+  'POST /update_costume': 'Costume updated',
+  'POST /update_force_unlock': 'Force unlock updated',
+  'POST /update_puchichara': 'Puchichara updated',
+  'POST /request_score_import': 'Score import requested',
+  'POST /clear_import_flag': 'Import flag cleared',
+  'POST /request_song_jump': 'Song jump requested',
+  'GET /poll_song_jump': 'Song jump polled',
+  'POST /request_replay_jump': 'Replay jump requested',
+  'GET /poll_replay_jump': 'Replay jump polled',
+  'GET /poll_jump': 'Jump polled',
+  'GET /ai_battle': 'AI battle data',
+  'POST /ai_battle': 'AI battle played',
+  'GET /admin/users': 'Admin: users',
+  'POST /admin/update_user': 'Admin: user updated',
+  'POST /admin/delete_user': 'Admin: user deleted',
+  'POST /admin/merge_users': 'Admin: users merged',
+  'POST /admin/change_access_code': 'Admin: access code changed',
+  'POST /admin/api_keys': 'Admin: API key created',
+  'GET /admin/api_keys': 'Admin: API keys',
+  'DELETE /admin/api_keys/:id': 'Admin: API key deleted',
+  'POST /admin/api_keys/:id/revoke': 'Admin: API key revoked',
+  'POST /admin/api_keys/:id/tournament': 'Admin: key tournament mode',
+  'POST /admin/api_keys/:id/campaign': 'Admin: key campaign',
+  'GET /admin/logs': 'Admin: logs',
+  'POST /admin/logs/clear': 'Admin: logs cleared',
+  'GET /titles': 'Titles',
+  'GET /admin/titles': 'Admin: titles',
+  'POST /admin/update_title': 'Admin: title updated',
+  'POST /medals': 'Medals',
+  'GET /reward_shop': 'Reward shop',
+  'POST /reward_shop/buy': 'Reward bought',
+  'POST /submit_score': 'Score submitted',
+  'POST /submit_dan': 'Dan submitted',
+  'POST /revive_result': 'Revive result',
+  'GET /replay': 'Replay',
+  'GET /admin/suspicious_scores': 'Admin: suspicious scores',
+  'POST /admin/review_score': 'Admin: score reviewed',
+  'POST /online/queue': 'Online: queued',
+  'POST /online/state': 'Online: state',
+  'POST /online/sync': 'Online: synced',
+  'POST /online/leave': 'Online: left',
+  'POST /online/finish': 'Online: finished',
+}
+
+const logs = ref<AdminLog[]>([])
 const logsLoading = ref(false)
 const logsError = ref('')
+
+const ACCESS_LOG_RE = /^\S+ - "(\S+) (\S+) HTTP\/[\d.]+" (\d{3})/
+
+function parseAccessLog(message: string) {
+  const match = message.match(ACCESS_LOG_RE)
+  if (!match) return null
+  const method = match[1]
+  const url = match[2]
+  const status = match[3]
+  if (!method || !url || !status) return null
+  return { method, path: url.split('?')[0] ?? url, status: Number(status) }
+}
+
+const parsedLogs = computed(() =>
+  logs.value.map((entry) => ({ ...entry, access: parseAccessLog(entry.message) })),
+)
+
+function logLabel(method: string, path: string) {
+  const normalized = path.replace(/^(\/admin\/api_keys\/)[^/]+/, '$1:id')
+  return LOG_ENDPOINTS[`${method} ${normalized}`] ?? `${method} ${path}`
+}
+
+function logTime(iso: string) {
+  return new Date(iso).toLocaleTimeString()
+}
+
+function logLevelClass(level: string) {
+  if (level === 'ERROR' || level === 'CRITICAL') return 'text-red-600 dark:text-red-400'
+  if (level === 'WARNING') return 'text-amber-600 dark:text-amber-400'
+  return 'muted'
+}
+
+function logStatusClass(status: number) {
+  if (status >= 500) return 'text-red-600 dark:text-red-400'
+  if (status >= 400) return 'text-amber-600 dark:text-amber-400'
+  return 'text-green-600 dark:text-green-400'
+}
+
 const mergeTargetCode = ref('')
 const mergeSourceCode = ref('')
 const isMerging = ref(false)
@@ -622,17 +735,33 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               <tr>
                 <th class="th-cell">{{ $t('admin.logTime') }}</th>
                 <th class="th-cell">{{ $t('admin.logLevel') }}</th>
-                <th class="th-cell">{{ $t('admin.logMessage') }}</th>
+                <th class="th-cell">{{ $t('admin.logEvent') }}</th>
+                <th class="th-cell">{{ $t('admin.logStatus') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(entry, index) in logs" :key="index" class="text-sm">
-                <td class="td-cell">{{ entry.time }}</td>
-                <td class="td-cell">{{ entry.level }}</td>
-                <td class="td-cell break-all">{{ entry.message }}</td>
+              <tr v-for="(entry, index) in parsedLogs" :key="index" class="text-sm">
+                <td class="td-cell whitespace-nowrap" :title="entry.time">{{ logTime(entry.time) }}</td>
+                <td class="td-cell">
+                  <span :class="logLevelClass(entry.level)">{{ entry.level }}</span>
+                </td>
+                <td class="td-cell">
+                  <template v-if="entry.access">
+                    <div>{{ logLabel(entry.access.method, entry.access.path) }}</div>
+                    <div class="font-mono text-xs muted">
+                      {{ entry.access.method }} {{ entry.access.path }}
+                    </div>
+                  </template>
+                  <span v-else class="break-all">{{ entry.message }}</span>
+                </td>
+                <td class="td-cell">
+                  <span v-if="entry.access" :class="logStatusClass(entry.access.status)">
+                    {{ entry.access.status }}
+                  </span>
+                </td>
               </tr>
               <tr v-if="logs.length === 0">
-                <td class="td-cell muted" colspan="3">{{ $t('admin.noLogs') }}</td>
+                <td class="td-cell muted" colspan="4">{{ $t('admin.noLogs') }}</td>
               </tr>
             </tbody>
           </table>
