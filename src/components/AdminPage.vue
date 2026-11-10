@@ -53,7 +53,8 @@ const authError = ref('')
 
 const users = ref<AdminUser[]>([])
 // Kept across searches so log links still resolve users filtered out of the table.
-const userIdByAccessCode = ref(new Map<string, number>())
+const userByAccessCode = ref(new Map<string, { id: number; username: string }>())
+const songTitles = ref(new Map<string, Record<string, string>>())
 const query = ref('')
 const isLoading = ref(false)
 const loadError = ref('')
@@ -194,6 +195,20 @@ function logLabel(method: string, path: string) {
   return LOG_ENDPOINTS[logEndpointKey(method, path)] ?? `${method} ${path}`
 }
 
+function logSongName(hash: string) {
+  const title = songTitles.value.get(hash)
+  return title ? songTitle(title) : hash
+}
+
+function logUsername(accessCode: string) {
+  return userByAccessCode.value.get(accessCode)?.username ?? accessCode
+}
+
+function logUserPath(accessCode: string) {
+  const user = userByAccessCode.value.get(accessCode)
+  return user ? `/u/${user.id}` : ''
+}
+
 function logTime(iso: string) {
   return new Date(iso).toLocaleTimeString()
 }
@@ -237,7 +252,7 @@ async function fetchUsers() {
     const data = await response.json()
     users.value = data.users
     for (const user of data.users as AdminUser[]) {
-      userIdByAccessCode.value.set(user.access_code, user.id)
+      userByAccessCode.value.set(user.access_code, { id: user.id, username: user.username })
     }
     unlocked.value = true
     localStorage.setItem(STORAGE_KEY, adminKey.value)
@@ -470,8 +485,20 @@ function closeLogs() {
   logsLive.value = false
 }
 
+async function fetchSongTitles() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/songs`)
+    if (!response.ok) return
+    const data = (await response.json()) as { songs: { hash: string; title: Record<string, string> }[] }
+    songTitles.value = new Map(data.songs.map((song) => [song.hash, song.title]))
+  } catch {
+    // leave raw hashes if the song list is unavailable
+  }
+}
+
 function connectLogs() {
   closeLogs()
+  if (songTitles.value.size === 0) fetchSongTitles()
   logsError.value = ''
   logs.value = []
   logsLoading.value = true
@@ -834,15 +861,21 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                         <template v-for="([key, value], paramIndex) in entry.access.params" :key="paramIndex">
                           <dt class="muted">{{ key }}</dt>
                           <dd class="break-all">
-                            <router-link v-if="key === 'hash'" :to="`/songs/${value}`" class="row-link">
-                              {{ value }}
-                            </router-link>
                             <router-link
-                              v-else-if="key.endsWith('access_code') && userIdByAccessCode.get(value)"
-                              :to="`/u/${userIdByAccessCode.get(value)}`"
+                              v-if="key === 'hash'"
+                              :to="`/songs/${value}`"
+                              :title="value"
                               class="row-link"
                             >
-                              {{ value }}
+                              {{ logSongName(value) }}
+                            </router-link>
+                            <router-link
+                              v-else-if="key.endsWith('access_code') && userByAccessCode.get(value)"
+                              :to="logUserPath(value)"
+                              :title="value"
+                              class="row-link"
+                            >
+                              {{ logUsername(value) }}
                             </router-link>
                             <template v-else>{{ value }}</template>
                           </dd>
