@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useSongDisplay } from '../composables/useSongDisplay'
 
 interface AdminUser {
+  id: number
   access_code: string
   username: string
   title: string | null
@@ -51,6 +52,8 @@ const unlocked = ref(false)
 const authError = ref('')
 
 const users = ref<AdminUser[]>([])
+// Kept across searches so log links still resolve users filtered out of the table.
+const userIdByAccessCode = ref(new Map<string, number>())
 const query = ref('')
 const isLoading = ref(false)
 const loadError = ref('')
@@ -233,6 +236,9 @@ async function fetchUsers() {
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
     const data = await response.json()
     users.value = data.users
+    for (const user of data.users as AdminUser[]) {
+      userIdByAccessCode.value.set(user.access_code, user.id)
+    }
     unlocked.value = true
     localStorage.setItem(STORAGE_KEY, adminKey.value)
     fetchSuspiciousScores()
@@ -827,7 +833,19 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                       <dl class="mt-1 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 font-mono">
                         <template v-for="([key, value], paramIndex) in entry.access.params" :key="paramIndex">
                           <dt class="muted">{{ key }}</dt>
-                          <dd class="break-all">{{ value }}</dd>
+                          <dd class="break-all">
+                            <router-link v-if="key === 'hash'" :to="`/songs/${value}`" class="row-link">
+                              {{ value }}
+                            </router-link>
+                            <router-link
+                              v-else-if="key.endsWith('access_code') && userIdByAccessCode.get(value)"
+                              :to="`/u/${userIdByAccessCode.get(value)}`"
+                              class="row-link"
+                            >
+                              {{ value }}
+                            </router-link>
+                            <template v-else>{{ value }}</template>
+                          </dd>
                         </template>
                       </dl>
                     </details>
