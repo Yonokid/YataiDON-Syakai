@@ -267,6 +267,20 @@ async function revokeApiKey(key: ApiKey) {
   }
 }
 
+async function deleteApiKey(key: ApiKey) {
+  if (!confirm(t('admin.apiKeyDeleteConfirm', { keyId: key.key_id }))) return
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/api_keys/${encodeURIComponent(key.key_id)}?admin_key=${encodeURIComponent(adminKey.value)}`,
+      { method: 'DELETE' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    await fetchApiKeys()
+  } catch {
+    apiKeyError.value = t('admin.apiKeyDeleteError')
+  }
+}
+
 async function setTournament(key: ApiKey, enabled: boolean) {
   apiKeyError.value = ''
   try {
@@ -580,6 +594,9 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <td class="td-cell">
                   <button v-if="!key.revoked_at" type="button" class="btn" @click="revokeApiKey(key)">
                     {{ $t('admin.apiKeyRevoke') }}
+                  </button>
+                  <button v-else type="button" class="btn" @click="deleteApiKey(key)">
+                    {{ $t('admin.apiKeyDelete') }}
                   </button>
                 </td>
               </tr>
