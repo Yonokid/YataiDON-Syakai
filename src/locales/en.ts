@@ -158,6 +158,7 @@ export default {
     logAllLevels: 'All levels',
     logAllEndpoints: 'All endpoints',
     logEndpoint: 'Endpoint',
+    logParameters: 'Parameters',
     logCount: '{count} entries',
     logTime: 'Time',
     logLevel: 'Level',

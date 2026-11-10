@@ -160,7 +160,13 @@ function parseAccessLog(message: string) {
   const url = match[2]
   const status = match[3]
   if (!method || !url || !status) return null
-  return { method, path: url.split('?')[0] ?? url, status: Number(status) }
+  const query = url.includes('?') ? url.slice(url.indexOf('?') + 1) : ''
+  return {
+    method,
+    path: url.split('?')[0] ?? url,
+    status: Number(status),
+    params: [...new URLSearchParams(query)],
+  }
 }
 
 function logEndpointKey(method: string, path: string) {
@@ -814,6 +820,17 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                     <div class="font-mono text-xs muted">
                       {{ entry.access.method }} {{ entry.access.path }}
                     </div>
+                    <details v-if="entry.access.params.length" class="mt-1 text-xs">
+                      <summary class="cursor-pointer muted">
+                        {{ $t('admin.logParameters') }} ({{ entry.access.params.length }})
+                      </summary>
+                      <dl class="mt-1 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 font-mono">
+                        <template v-for="([key, value], paramIndex) in entry.access.params" :key="paramIndex">
+                          <dt class="muted">{{ key }}</dt>
+                          <dd class="break-all">{{ value }}</dd>
+                        </template>
+                      </dl>
+                    </details>
                   </template>
                   <span v-else class="break-all">{{ entry.message }}</span>
                 </td>
