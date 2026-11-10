@@ -628,7 +628,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             <tbody>
               <tr v-for="(entry, index) in logs" :key="index" class="text-sm">
                 <td class="td-cell">{{ entry.time }}</td>
-                <td class="td-cell">{{ $t(`admin.logLevel.${entry.level}`) }}</td>
+                <td class="td-cell">{{ entry.level }}</td>
                 <td class="td-cell break-all">{{ entry.message }}</td>
               </tr>
               <tr v-if="logs.length === 0">
