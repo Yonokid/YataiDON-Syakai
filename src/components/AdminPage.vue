@@ -70,6 +70,7 @@ type Tab = 'users' | 'titles' | 'merge' | 'keys' | 'log'
 const activeTab = ref<Tab>('users')
 
 interface AdminLog {
+  seq: number
   time: string
   level: string
   message: string
@@ -842,7 +843,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(entry, index) in filteredLogs" :key="index" class="text-sm">
+              <tr v-for="entry in filteredLogs" :key="entry.seq" class="text-sm">
                 <td class="td-cell whitespace-nowrap" :title="entry.time">{{ logTime(entry.time) }}</td>
                 <td class="td-cell">
                   <span :class="logLevelClass(entry.level)">{{ entry.level }}</span>
