@@ -62,8 +62,12 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
-type Tab = 'users' | 'titles' | 'merge' | 'keys'
+type Tab = 'users' | 'titles' | 'merge' | 'keys' | 'log'
 const activeTab = ref<Tab>('users')
+
+const logs = ref<{ time: string; level: string; message: string }[]>([])
+const logsLoading = ref(false)
+const logsError = ref('')
 const mergeTargetCode = ref('')
 const mergeSourceCode = ref('')
 const isMerging = ref(false)
@@ -295,6 +299,42 @@ function switchTab(tab: Tab) {
   activeTab.value = tab
   if (tab === 'keys') fetchApiKeys()
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
+  if (tab === 'log') fetchLogs()
+}
+
+async function fetchLogs() {
+  logsLoading.value = true
+  logsError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/logs?admin_key=${encodeURIComponent(adminKey.value)}`,
+    )
+    if (response.status === 401) {
+      unlocked.value = false
+      authError.value = t('admin.invalidKey')
+      return
+    }
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const data = await response.json()
+    logs.value = data.logs
+  } catch {
+    logsError.value = t('admin.logsLoadError')
+  } finally {
+    logsLoading.value = false
+  }
+}
+
+async function clearLogs() {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/logs/clear?admin_key=${encodeURIComponent(adminKey.value)}`,
+      { method: 'POST' },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    logs.value = []
+  } catch {
+    logsError.value = t('admin.logsClearError')
+  }
 }
 
 onMounted(() => {
@@ -432,6 +472,7 @@ function logout() {
   unlocked.value = false
   users.value = []
   suspiciousScores.value = []
+  logs.value = []
   newApiKey.value = ''
   localStorage.removeItem(STORAGE_KEY)
 }
@@ -472,6 +513,9 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           </button>
           <button type="button" class="btn" :disabled="activeTab === 'keys'" @click="switchTab('keys')">
             {{ $t('admin.tabApiKeys') }}
+          </button>
+          <button type="button" class="btn" :disabled="activeTab === 'log'" @click="switchTab('log')">
+            {{ $t('admin.tabLog') }}
           </button>
         </div>
         <button type="button" class="btn" @click="logout">{{ $t('admin.lock') }}</button>
@@ -541,6 +585,37 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               </tr>
               <tr v-if="apiKeys.length === 0">
                 <td class="td-cell muted" :colspan="7 + CAMPAIGNS.length">{{ $t('admin.noApiKeys') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+
+      <template v-else-if="activeTab === 'log'">
+        <div class="flex w-full items-center justify-between gap-2">
+          <button type="button" class="btn" @click="fetchLogs">{{ $t('admin.logRefresh') }}</button>
+          <button type="button" class="btn" @click="clearLogs">{{ $t('admin.logClear') }}</button>
+          <span class="text-xs muted">{{ $t('admin.logCount', { count: logs.length }) }}</span>
+        </div>
+        <p v-if="logsError" class="error-text text-sm">{{ logsError }}</p>
+        <p v-if="logsLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
+        <div v-else class="w-full overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr>
+                <th class="th-cell">{{ $t('admin.logTime') }}</th>
+                <th class="th-cell">{{ $t('admin.logLevel') }}</th>
+                <th class="th-cell">{{ $t('admin.logMessage') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(entry, index) in logs" :key="index" class="text-sm">
+                <td class="td-cell">{{ entry.time }}</td>
+                <td class="td-cell">{{ $t(`admin.logLevel.${entry.level}`) }}</td>
+                <td class="td-cell break-all">{{ entry.message }}</td>
+              </tr>
+              <tr v-if="logs.length === 0">
+                <td class="td-cell muted" colspan="3">{{ $t('admin.noLogs') }}</td>
               </tr>
             </tbody>
           </table>
