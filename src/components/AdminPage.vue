@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
@@ -143,6 +143,9 @@ const LOG_ENDPOINTS: Record<string, string> = {
 const logs = ref<AdminLog[]>([])
 const logsLoading = ref(false)
 const logsError = ref('')
+const logsLive = ref(false)
+let logsSocket: WebSocket | null = null
+let logsReconnectTimer: ReturnType<typeof setTimeout> | undefined
 
 const ACCESS_LOG_RE = /^\S+ - "(\S+) (\S+) HTTP\/[\d.]+" (\d{3})/
 
@@ -423,31 +426,52 @@ async function setCampaign(key: ApiKey, campaign: string, enabled: boolean) {
 }
 
 function switchTab(tab: Tab) {
+  if (tab !== 'log') closeLogs()
   activeTab.value = tab
   if (tab === 'keys') fetchApiKeys()
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
-  if (tab === 'log') fetchLogs()
+  if (tab === 'log') connectLogs()
 }
 
-async function fetchLogs() {
-  logsLoading.value = true
+function closeLogs() {
+  clearTimeout(logsReconnectTimer)
+  logsReconnectTimer = undefined
+  logsSocket?.close()
+  logsSocket = null
+  logsLive.value = false
+}
+
+function connectLogs() {
+  closeLogs()
   logsError.value = ''
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/admin/logs?admin_key=${encodeURIComponent(adminKey.value)}`,
-    )
-    if (response.status === 401) {
+  logs.value = []
+  logsLoading.value = true
+  const socket = new WebSocket(
+    `${API_BASE_URL.replace(/^http/, 'ws')}/admin/logs/ws?admin_key=${encodeURIComponent(adminKey.value)}`,
+  )
+  logsSocket = socket
+  socket.onopen = () => {
+    logsLoading.value = false
+    logsLive.value = true
+  }
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data) as { logs: AdminLog[] }
+    logs.value = [...logs.value, ...data.logs].slice(-500)
+  }
+  socket.onerror = () => {
+    logsError.value = t('admin.logsLoadError')
+  }
+  socket.onclose = (event) => {
+    if (logsSocket !== socket) return
+    logsLive.value = false
+    logsLoading.value = false
+    if (event.code === 1008) {
       unlocked.value = false
       authError.value = t('admin.invalidKey')
+      closeLogs()
       return
     }
-    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
-    const data = await response.json()
-    logs.value = data.logs
-  } catch {
-    logsError.value = t('admin.logsLoadError')
-  } finally {
-    logsLoading.value = false
+    logsReconnectTimer = setTimeout(connectLogs, 3000)
   }
 }
 
@@ -470,6 +494,8 @@ onMounted(() => {
     fetchSuspiciousScores()
   }
 })
+
+onUnmounted(closeLogs)
 
 function startEdit(user: AdminUser) {
   editing.value = user
@@ -596,6 +622,7 @@ async function saveChangeAccessCode() {
 }
 
 function logout() {
+  closeLogs()
   unlocked.value = false
   users.value = []
   suspiciousScores.value = []
@@ -723,7 +750,16 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
 
       <template v-else-if="activeTab === 'log'">
         <div class="flex w-full items-center justify-between gap-2">
-          <button type="button" class="btn" @click="fetchLogs">{{ $t('admin.logRefresh') }}</button>
+          <span
+            class="flex items-center gap-1.5 text-xs"
+            :class="logsLive ? 'text-green-600 dark:text-green-400' : 'muted'"
+          >
+            <span
+              class="h-2 w-2 rounded-full"
+              :class="logsLive ? 'bg-green-500' : 'bg-neutral-400'"
+            ></span>
+            {{ logsLive ? $t('admin.logLive') : $t('admin.logDisconnected') }}
+          </span>
           <button type="button" class="btn" @click="clearLogs">{{ $t('admin.logClear') }}</button>
           <span class="text-xs muted">{{ $t('admin.logCount', { count: logs.length }) }}</span>
         </div>
