@@ -306,5 +306,11 @@ export default {
     titleCustom: 'Custom',
     customTitlePlaceholder: 'Custom title',
     titleSaveError: 'Could not save title. That title may already belong to the game.',
+    appearance: 'Skin and language',
+    skinPlaceholder: 'Skin name, e.g. PyTaikoGreen',
+    cabinetDefault: "The cabinet's default",
+    appearanceHint:
+      "Applied when you play on a cabinet that has the skin installed, then put back to the cabinet's own setting after your credit.",
+    appearanceSaveError: 'Could not save skin and language. Please try again.',
   },
 }

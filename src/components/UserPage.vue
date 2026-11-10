@@ -283,6 +283,40 @@ async function saveUsername() {
     isSaving.value = false
   }
 }
+
+const SKIN_LANGUAGES = [
+  { code: 'en', label: 'English' },
+  { code: 'ja', label: '日本語' },
+  { code: 'zh', label: '中文' },
+  { code: 'ko', label: '한국어' },
+]
+
+const userSkin = ref(props.user.settings?.skin ?? '')
+const userLanguage = ref(props.user.settings?.language ?? '')
+const isSavingAppearance = ref(false)
+const appearanceSaveError = ref('')
+
+async function saveAppearance() {
+  isSavingAppearance.value = true
+  appearanceSaveError.value = ''
+  const settings: [string, string][] = [
+    ['skin', userSkin.value.trim()],
+    ['language', userLanguage.value],
+  ]
+  try {
+    for (const [key, value] of settings) {
+      const response = await fetch(
+        `${API_BASE_URL}/update_settings?access_code=${encodeURIComponent(props.accessCode)}`,
+        { method: 'POST', body: new URLSearchParams({ key, value }) },
+      )
+      if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    }
+  } catch {
+    appearanceSaveError.value = t('user.appearanceSaveError')
+  } finally {
+    isSavingAppearance.value = false
+  }
+}
 </script>
 
 <template>
@@ -372,6 +406,29 @@ async function saveUsername() {
         </button>
       </form>
       <p v-if="titleSaveError" class="error-text text-sm">{{ titleSaveError }}</p>
+    </div>
+
+    <div
+      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
+    >
+      <p>{{ $t('user.appearance') }}</p>
+      <form class="flex flex-wrap items-center justify-center gap-2" @submit.prevent="saveAppearance">
+        <input
+          v-model="userSkin"
+          type="text"
+          maxlength="64"
+          :placeholder="$t('user.skinPlaceholder')"
+          :disabled="isSavingAppearance"
+          class="field"
+        />
+        <select v-model="userLanguage" :disabled="isSavingAppearance" class="field">
+          <option value="">{{ $t('user.cabinetDefault') }}</option>
+          <option v-for="l in SKIN_LANGUAGES" :key="l.code" :value="l.code">{{ l.label }}</option>
+        </select>
+        <button type="submit" class="btn" :disabled="isSavingAppearance">{{ $t('common.save') }}</button>
+      </form>
+      <p class="muted text-xs">{{ $t('user.appearanceHint') }}</p>
+      <p v-if="appearanceSaveError" class="error-text text-sm">{{ appearanceSaveError }}</p>
     </div>
 
     <div class="flex flex-col items-center gap-1">
