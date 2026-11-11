@@ -312,7 +312,7 @@ export default {
     skinPlaceholder: 'Skin name, e.g. PyTaikoGreen',
     cabinetDefault: "Default",
     appearanceHint:
-      "Applied when you play on a cabinet that has the skin installed, then put back to the cabinet's own setting after your credit.",
+      "Applied when playing on a machine using guest mode",
     appearanceSaveError: 'Could not save skin and language. Please try again.',
     modifiers: 'Modifiers',
     modifierAuto: 'Auto',
@@ -327,14 +327,14 @@ export default {
     neiro: 'Sound',
     neiroNone: 'No sound',
     modifiersHint:
-      'Saved with your account and loaded whenever you play online. Changing them in game updates this.',
+      '',
     modifiersSaveError: 'Could not save the modifiers. Please try again.',
     favorites: 'Favorites',
     noFavorites: 'No favorites yet.',
     favoriteSearch: 'Search songs to favorite',
     unknownSong: 'Unknown song',
     favoritesHint:
-      'On cabinets set up for guests these replace the cabinet’s own Favorites list; otherwise the cabinet keeps its own.',
+      'Only used on machines running guest mode; will replace Favorite boxes with your own favorites',
     favoritesSaveError: 'Could not save the favorites. Please try again.',
   },
 }
