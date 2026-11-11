@@ -303,6 +303,9 @@ export default {
     forceUnlockHint:
       "Lets you pick anything you want. This will only appear in game for you and not for other players. Things will only stay unlocked with the checkmark enabled",
     forceUnlockError: 'Could not save this setting. Please try again.',
+    nameplateBg: 'Nameplate background',
+    nameplateBgDefault: 'Default',
+    nameplateBgError: 'Could not save nameplate background. Please try again.',
     setTitle: 'Change title',
     titlePreset: 'Unlocked',
     titleCustom: 'Custom',

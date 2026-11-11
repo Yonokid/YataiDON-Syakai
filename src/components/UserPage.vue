@@ -244,6 +244,29 @@ async function saveForceUnlock() {
   }
 }
 
+const NAMEPLATE_BGS = ['red', 'blue', 'wood', 'purple', 'gold']
+const isSavingNameplateBg = ref(false)
+const nameplateBgError = ref('')
+
+async function saveNameplateBg(bg: number) {
+  isSavingNameplateBg.value = true
+  nameplateBgError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_nameplate_bg?access_code=${encodeURIComponent(props.accessCode)}`,
+      { method: 'POST', body: new URLSearchParams({ nameplate_bg: String(bg) }) },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const fresh = await fetch(`${API_BASE_URL}/user?access_code=${encodeURIComponent(props.accessCode)}`)
+    if (!fresh.ok) throw new Error(`Unexpected status ${fresh.status}`)
+    emit('force-unlock-updated', await fresh.json())
+  } catch {
+    nameplateBgError.value = t('user.nameplateBgError')
+  } finally {
+    isSavingNameplateBg.value = false
+  }
+}
+
 async function requestScoreImport() {
   if (!confirm(t('user.importConfirm'))) return
 
@@ -522,6 +545,30 @@ fetch(`${API_BASE_URL}/songs`)
       </label>
       <p class="muted text-xs">{{ $t('user.forceUnlockHint') }}</p>
       <p v-if="forceUnlockError" class="error-text text-sm">{{ forceUnlockError }}</p>
+      <div v-if="user.force_unlock" class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <span>{{ $t('user.nameplateBg') }}:</span>
+        <button
+          type="button"
+          class="btn"
+          :class="{ 'font-bold underline': user.nameplate_bg === null }"
+          :disabled="isSavingNameplateBg"
+          @click="saveNameplateBg(-1)"
+        >
+          {{ $t('user.nameplateBgDefault') }}
+        </button>
+        <button
+          v-for="(c, i) in NAMEPLATE_BGS"
+          :key="c"
+          type="button"
+          class="btn"
+          :class="{ 'font-bold underline': user.nameplate_bg === i }"
+          :disabled="isSavingNameplateBg"
+          @click="saveNameplateBg(i)"
+        >
+          {{ c }}
+        </button>
+      </div>
+      <p v-if="nameplateBgError" class="error-text text-sm">{{ nameplateBgError }}</p>
     </div>
 
     <div
