@@ -46,5 +46,7 @@ export interface UserData {
   don_points: number
   don_medals: number
   settings: Record<string, string>
+  favorites: string[]
+  recent: string[]
   scores: (Score & { rating: number })[]
 }
