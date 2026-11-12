@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import danData from '../data/dan_courses.json'
+import { accessCode } from '../stores/auth'
 import DifficultyBadge from './DifficultyBadge.vue'
 
 type ExamValue = number[] | (number[] | null)[]
@@ -125,6 +126,29 @@ const filteredCourses = computed(() => {
   })
 })
 
+const clears = ref<Record<string, number>>({})
+
+// clear_mark art: 0 = passed, 1 = rainbow (odai_result 6), the game's dan select rule
+function clearMark(course: DanCourse) {
+  const best = clears.value[course.path]
+  return best ? (best >= 6 ? 1 : 0) : null
+}
+
+watch(
+  accessCode,
+  async (code) => {
+    clears.value = {}
+    if (!code) return
+    try {
+      const response = await fetch(`${API_BASE_URL}/dan_clears?access_code=${encodeURIComponent(code)}`)
+      if (response.ok) clears.value = (await response.json()).clears
+    } catch {
+      // Marks are optional.
+    }
+  },
+  { immediate: true },
+)
+
 onMounted(async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/songs`)
@@ -215,6 +239,12 @@ function examValue(exam: DanExam) {
                   <img :src="`/dan/frame/${course.color}.png`" alt="" class="absolute inset-0 h-full w-full" />
                   <span class="dan-name relative px-3 text-center text-sm leading-tight font-bold">{{ course.title }}</span>
                 </span>
+                <img
+                  v-if="clearMark(course) !== null"
+                  :src="`/dan/clear_mark/${clearMark(course)}.png`"
+                  alt=""
+                  class="h-10 w-auto"
+                />
                 <span class="muted text-xs">#{{ courseIndex(course.path) }}</span>
                 <span class="muted text-xs">{{ t('dans.songCount', { n: course.charts.length }) }}</span>
                 <span v-if="course.gen3" class="rounded-full bg-neutral-200 px-2 py-0.5 text-xs dark:bg-neutral-700">
