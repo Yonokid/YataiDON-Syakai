@@ -45,7 +45,7 @@ html {
 
   .th-cell,
   .td-cell {
-    @apply border-b border-neutral-200 px-3 py-2 text-left dark:border-neutral-800;
+    @apply border-b border-neutral-200 px-2 py-2 sm:px-3 text-left dark:border-neutral-800;
   }
 
   .th-cell {

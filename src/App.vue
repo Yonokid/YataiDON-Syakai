@@ -27,23 +27,23 @@ const links = [
     v-if="currentUser && accessCode"
     class="sticky top-0 z-20 border-b border-neutral-200 bg-neutral-50/85 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/85"
   >
-    <div class="mx-auto flex max-w-6xl items-center gap-3 px-4">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 px-4 sm:flex-nowrap">
       <router-link to="/" class="shrink-0 py-1.5">
         <img src="/logo.png" alt="YataiDON" class="h-10 w-auto" />
       </router-link>
-      <nav class="-mb-px flex min-w-0 flex-1 gap-1 overflow-x-auto" aria-label="Main">
+      <nav class="order-last -mb-px flex w-full min-w-0 gap-1 overflow-x-auto sm:order-none sm:w-auto sm:flex-1" aria-label="Main">
         <router-link
           v-for="[to, key] in links"
           :key="to"
           :to="to"
-          class="shrink-0 border-b-2 border-transparent px-3 py-3.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+          class="shrink-0 border-b-2 border-transparent px-3 py-3 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
           :active-class="to === '/' ? '' : activeCls"
           :exact-active-class="activeCls"
         >
           {{ $t('nav.' + key) }}
         </router-link>
       </nav>
-      <select v-model="songLanguage" class="field shrink-0 text-sm" :aria-label="$t('nav.songLanguage')" :title="$t('nav.songLanguage')">
+      <select v-model="songLanguage" class="field ml-auto shrink-0 text-sm sm:ml-0" :aria-label="$t('nav.songLanguage')" :title="$t('nav.songLanguage')">
         <option v-for="lang in SONG_LANGUAGES" :key="lang.code" :value="lang.code">{{ lang.label }}</option>
       </select>
     </div>

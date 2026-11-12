@@ -66,7 +66,7 @@ const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : 
 <style scoped>
 .nameplate {
   font-family: 'Kanteiryu', 'Noto Sans JP', system-ui, sans-serif;
-  width: min(90vw, 480px);
+  width: min(100%, 480px);
   position: relative;
 }
 

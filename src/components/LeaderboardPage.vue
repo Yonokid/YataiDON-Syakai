@@ -39,7 +39,8 @@ onMounted(async () => {
     <p v-if="status === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <p v-else-if="entries.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
-    <table v-else class="card w-full border-collapse text-sm">
+    <div v-else class="card w-full overflow-x-auto p-0">
+    <table class="w-full border-collapse text-sm">
       <thead>
         <tr>
           <th class="th-cell">{{ $t('common.rank') }}</th>
@@ -61,5 +62,6 @@ onMounted(async () => {
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </template>

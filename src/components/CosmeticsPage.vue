@@ -124,7 +124,7 @@ onMounted(async () => {
 
     <div class="flex w-full flex-col gap-3">
       <div class="flex flex-wrap items-center gap-2">
-        <input v-model="search" type="text" :placeholder="$t('cosmetics.searchPlaceholder')" class="field min-w-48 flex-1" />
+        <input v-model="search" type="text" :placeholder="$t('cosmetics.searchPlaceholder')" class="field min-w-40 flex-1" />
         <SegControl v-model="filter" :options="filterOptions" />
       </div>
       <div class="flex flex-wrap items-center gap-2">

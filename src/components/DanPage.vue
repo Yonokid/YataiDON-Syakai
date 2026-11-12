@@ -178,7 +178,7 @@ function examValue(exam: DanExam) {
 
     <div class="flex w-full flex-col gap-3">
       <div class="flex w-full flex-wrap gap-2">
-        <input v-model="search" type="text" :placeholder="$t('dans.searchPlaceholder')" class="field min-w-56 flex-1" />
+        <input v-model="search" type="text" :placeholder="$t('dans.searchPlaceholder')" class="field min-w-40 flex-1" />
         <select v-model="selectedVersion" class="field" :aria-label="$t('dans.allVersions')">
           <option value="all">{{ $t('dans.allVersions') }}</option>
           <option v-for="version in versions" :key="version" :value="version">

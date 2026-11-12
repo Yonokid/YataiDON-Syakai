@@ -522,7 +522,7 @@ fetch(`${API_BASE_URL}/songs`)
         :dan="user.dan"
         :gold="user.gold"
       />
-      <dl class="flex gap-8">
+      <dl class="flex gap-6 sm:gap-8">
         <div>
           <dt class="muted text-sm">{{ $t('user.donPoints') }}</dt>
           <dd class="text-xl font-semibold">{{ user.don_points.toLocaleString() }}</dd>
@@ -535,7 +535,7 @@ fetch(`${API_BASE_URL}/songs`)
     </section>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
-      <div class="w-full shrink-0 sm:sticky sm:top-20 sm:w-64">
+      <div class="mx-auto w-3/5 max-w-60 shrink-0 sm:sticky sm:top-20 sm:mx-0 sm:w-64 sm:max-w-none">
         <Chara3DViewer
           :is-costume="isCostumeMode"
           :head="headIndex"
