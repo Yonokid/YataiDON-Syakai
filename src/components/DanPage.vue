@@ -209,16 +209,19 @@ function examValue(exam: DanExam) {
             :key="course.path"
             class="card p-3 text-left"
           >
-            <summary class="cursor-pointer">
+            <summary class="dan-summary cursor-pointer list-none">
               <span class="flex flex-wrap items-center gap-2">
-                <img :src="`/dan/frame/${course.color}.png`" alt="" class="h-8 w-auto" />
+                <span class="relative inline-flex h-14 w-[6.5rem] items-center justify-center">
+                  <img :src="`/dan/frame/${course.color}.png`" alt="" class="absolute inset-0 h-full w-full" />
+                  <span class="dan-name relative px-3 text-center text-sm leading-tight font-bold">{{ course.title }}</span>
+                </span>
                 <span class="muted text-xs">#{{ courseIndex(course.path) }}</span>
-                <span class="font-semibold">{{ course.title }}</span>
                 <span class="muted text-xs">{{ t('dans.songCount', { n: course.charts.length }) }}</span>
                 <span v-if="course.gen3" class="rounded-full bg-neutral-200 px-2 py-0.5 text-xs dark:bg-neutral-700">
                   {{ $t('dans.gen3') }}
                 </span>
               </span>
+              <span class="dan-chevron muted block text-center text-xs" aria-hidden="true">▼</span>
             </summary>
 
             <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -252,3 +255,19 @@ function examValue(exam: DanExam) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.dan-summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .dan-chevron {
+  display: inline-block;
+  transform: rotate(180deg);
+  width: 100%;
+}
+.dan-name {
+  color: #fff;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 4px #000;
+}
+</style>
