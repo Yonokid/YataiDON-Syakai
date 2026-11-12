@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
@@ -8,6 +8,18 @@ import { accessCode } from '../stores/auth'
 import type { UserData } from '../types'
 import BestSongs from './BestSongs.vue'
 import Nameplate, { type NameplateColor } from './Nameplate.vue'
+import TabNav from './TabNav.vue'
+import CrownIcon from './CrownIcon.vue'
+import DifficultyBadge from './DifficultyBadge.vue'
+import Pager from './Pager.vue'
+
+const PAGE_SIZE = 10
+const page = ref(1)
+const tab = ref<'best' | 'all'>('best')
+const tabs = computed(() => [
+  { value: 'best' as const, label: t('scores.bestSongsTitle') },
+  { value: 'all' as const, label: t('publicUser.allScores') },
+])
 
 const Chara3DViewer = defineAsyncComponent(() => import('./Chara3DViewer.vue'))
 
@@ -96,33 +108,37 @@ watch(() => route.params.id, (id) => load(id as string))
 </script>
 
 <template>
-  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
+  <div class="flex w-full max-w-3xl flex-col gap-4">
     <p v-if="status === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="status === 'not-found'" class="error-text">{{ $t('publicUser.userNotFound') }}</p>
     <p v-else-if="status === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <template v-else-if="user">
-      <Nameplate
-        :username="user.username"
-        :title="user.title"
-        :color="user.nameplate_color"
-        :dan="user.dan"
-        :gold="user.gold"
-      />
-      <div class="w-56">
-        <Chara3DViewer
-          :is-costume="user.chara_is_costume"
-          :head="user.chara_head_index"
-          :body="user.chara_body_index"
-          :cos="user.chara_cos_index"
-          :colors="[user.chara_color_1, user.chara_color_2, user.chara_color_3]"
-          :puchi="user.puchichara ?? -1"
+      <section class="card flex flex-wrap items-center justify-center gap-6 sm:justify-between">
+        <Nameplate
+          :username="user.username"
+          :title="user.title"
+          :color="user.nameplate_color"
+          :dan="user.dan"
+          :gold="user.gold"
         />
-      </div>
+        <div class="w-48">
+          <Chara3DViewer
+            :is-costume="user.chara_is_costume"
+            :head="user.chara_head_index"
+            :body="user.chara_body_index"
+            :cos="user.chara_cos_index"
+            :colors="[user.chara_color_1, user.chara_color_2, user.chara_color_3]"
+            :puchi="user.puchichara ?? -1"
+          />
+        </div>
+      </section>
 
-      <BestSongs :scores="user.scores" />
+      <TabNav v-model="tab" :tabs="tabs" />
+
+      <div v-show="tab === 'best'" class="w-full"><BestSongs :scores="user.scores" /></div>
 
       <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
-      <div v-else class="w-full overflow-x-auto">
+      <div v-else v-show="tab === 'all'" class="card w-full overflow-x-auto p-0">
         <table class="w-full border-collapse text-sm whitespace-nowrap">
           <thead>
             <tr>
@@ -137,14 +153,14 @@ watch(() => route.params.id, (id) => load(id as string))
             </tr>
           </thead>
           <tbody>
-            <tr v-for="entry in user.scores" :key="`${entry.hash}-${entry.difficulty}`">
+            <tr v-for="entry in user.scores.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)" :key="`${entry.hash}-${entry.difficulty}`">
               <td class="td-cell">
                 <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
               </td>
-              <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+              <td class="td-cell"><DifficultyBadge :difficulty="entry.difficulty" /></td>
               <td class="td-cell">{{ entry.level }}</td>
               <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
-              <td class="td-cell">{{ entry.crown }}</td>
+              <td class="td-cell"><CrownIcon :crown="entry.crown" /></td>
               <td class="td-cell">{{ entry.rank }}</td>
               <td class="td-cell">{{ entry.max_combo }}</td>
               <td class="td-cell">
@@ -169,6 +185,7 @@ watch(() => route.params.id, (id) => load(id as string))
           </tbody>
         </table>
       </div>
+      <Pager v-if="user" v-show="tab === 'all'" v-model="page" :total="user.scores.length" :page-size="PAGE_SIZE" />
       <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
       <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
     </template>

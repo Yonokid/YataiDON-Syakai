@@ -5,6 +5,8 @@ import { useRoute } from 'vue-router'
 
 import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import { accessCode } from '../stores/auth'
+import CrownIcon from './CrownIcon.vue'
+import DifficultyBadge from './DifficultyBadge.vue'
 
 interface Song {
   hash: string
@@ -28,8 +30,8 @@ interface ScoreEntry {
 const API_BASE_URL = import.meta.env.NETWORK_URL
 
 const tabBase =
-  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
-const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
+  'btn'
+const tabActive = 'border-don text-don'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -119,14 +121,16 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full max-w-lg flex-col items-center gap-2">
-    <router-link to="/songs" class="self-start px-2 py-1 text-sm hover:underline">{{ $t('song.backToSongs') }}</router-link>
+  <div class="flex w-full max-w-2xl flex-col gap-4">
+    <router-link to="/songs" class="muted self-start text-sm hover:underline">{{ $t('song.backToSongs') }}</router-link>
 
-    <template v-if="currentSong">
-      <h2 class="text-lg font-bold">{{ songTitle(currentSong.title) }}</h2>
-      <p class="-mt-1 font-mono text-xs text-neutral-500 dark:text-neutral-400">{{ currentSong.hash }}</p>
+    <section v-if="currentSong" class="card flex flex-col gap-3">
+      <div>
+      <h2 class="text-2xl font-bold tracking-tight">{{ songTitle(currentSong.title) }}</h2>
+      <p class="font-mono text-xs break-all text-neutral-500 dark:text-neutral-400">{{ currentSong.hash }}</p>
+      </div>
 
-      <div class="flex flex-wrap justify-center gap-2">
+      <div class="flex flex-wrap gap-2">
         <router-link
           v-for="variant in variants"
           :key="variant.hash"
@@ -135,20 +139,20 @@ watch(
           v-slot="{ navigate, isActive }"
         >
           <button type="button" :class="[tabBase, isActive && tabActive]" @click="navigate">
-            {{ difficultyLabel(variant.difficulty) }} ★{{ variant.level }}
+            <span class="inline-flex items-center gap-1.5"><DifficultyBadge :difficulty="variant.difficulty" /><span>★{{ variant.level }}</span></span>
           </button>
         </router-link>
       </div>
       <button
         type="button"
-        class="btn"
+        class="btn btn-primary self-start"
         :disabled="jumpingHash !== null"
         @click="sendToGame(currentSong.hash)"
       >
         {{ jumpingHash !== null ? $t('common.sending') : $t('common.sendToGame') }}
       </button>
       <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
-    </template>
+    </section>
     <p v-else-if="songsStatus === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <p v-else class="error-text">{{ $t('song.songNotFound') }}</p>
@@ -156,7 +160,8 @@ watch(
     <p v-if="entriesStatus === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="entriesStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <p v-else-if="entries.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
-    <table v-else class="w-full border-collapse text-sm">
+    <div v-else class="card w-full overflow-x-auto p-0">
+    <table class="w-full border-collapse text-sm">
       <thead>
         <tr>
           <th class="th-cell">{{ $t('common.rank') }}</th>
@@ -172,7 +177,7 @@ watch(
           <td class="td-cell">{{ index + 1 }}</td>
           <td class="td-cell"><router-link :to="`/u/${entry.id}`" class="row-link">{{ entry.username }}</router-link></td>
           <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
-          <td class="td-cell">{{ entry.crown }}</td>
+          <td class="td-cell"><CrownIcon :crown="entry.crown" /></td>
           <td class="td-cell">{{ entry.max_combo }}</td>
           <td class="td-cell">
             <button
@@ -187,6 +192,7 @@ watch(
         </tr>
       </tbody>
     </table>
+    </div>
     <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
   </div>
 </template>

@@ -1,24 +1,83 @@
 @import "tailwindcss";
-/* public/costumes holds ~190 MB of .glb files. It's gitignored but uploaded by `vercel deploy`,
-   and with no .git/.gitignore there Tailwind scans them as text and the build runs out of memory. */
 @source not "../../public";
 
+@font-face {
+  font-family: 'Kanteiryu';
+  src: url('/fonts/kanteiryu.woff2') format('woff2');
+  font-display: swap;
+}
+
+@theme {
+  --radius-card: 0.2rem;
+  --radius-control: 0.2rem;
+  --radius-chip: 0.375rem;
+  --color-neutral-50: #faf7f2;
+  --color-neutral-100: #f3eee5;
+  --color-neutral-200: #e7dfd1;
+  --color-neutral-300: #d3c8b6;
+  --color-neutral-400: #a99d8a;
+  --color-neutral-500: #7d7365;
+  --color-neutral-600: #5f564a;
+  --color-neutral-700: #453e35;
+  --color-neutral-800: #2c2722;
+  --color-neutral-900: #1d1a17;
+  --color-neutral-950: #12100e;
+  --color-don: #05b367;
+  --color-don-dark: #c8372b;
+  --color-katsu: #2f9fd8;
+  --font-sans: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @layer components {
+  .card {
+    @apply rounded-card border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900;
+  }
+
   .th-cell,
   .td-cell {
-    @apply border-b border-neutral-200 px-2 py-1.5 text-left dark:border-neutral-800;
+    @apply border-b border-neutral-200 px-3 py-2 text-left dark:border-neutral-800;
+  }
+
+  .th-cell {
+    @apply text-xs font-semibold tracking-wide text-neutral-500 uppercase dark:text-neutral-400;
+  }
+
+  .td-cell {
+    @apply tabular-nums;
+  }
+
+  tbody tr {
+    @apply transition-colors duration-100 hover:bg-neutral-100/70 dark:hover:bg-neutral-800/50;
   }
 
   .row-link {
-    @apply text-blue-600 hover:underline dark:text-blue-400;
+    @apply font-medium text-katsu hover:underline;
   }
 
   .btn {
-    @apply cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:hover:bg-neutral-800;
+    @apply cursor-pointer rounded-control border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium transition-[transform,background-color] duration-100 ease-out select-none hover:bg-neutral-100 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700;
+  }
+
+  .btn-primary {
+    @apply border-don bg-don text-white hover:border-don-dark hover:bg-don-dark dark:border-don dark:bg-don dark:hover:bg-don-dark;
+  }
+
+  .btn-danger {
+    @apply border-red-300 text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950;
   }
 
   .field {
-    @apply rounded-md border border-neutral-300 px-2 py-1.5 dark:border-neutral-700 dark:bg-neutral-900;
+    @apply rounded-control border border-neutral-300 bg-white px-2.5 py-1.5 transition-colors outline-none focus:border-don focus:ring-2 focus:ring-don/25 dark:border-neutral-700 dark:bg-neutral-900;
   }
 
   .muted {

@@ -77,7 +77,7 @@ watch(rememberMe, (remember) => {
 </script>
 
 <template>
-  <div class="flex max-w-sm flex-col items-center gap-2">
+  <div class="card flex w-full max-w-sm flex-col items-center gap-3 p-6 sm:p-8">
     <label for="access-code" class="text-sm font-medium">{{ $t('accessCode.label') }}</label>
     <input
       id="access-code"
@@ -90,7 +90,7 @@ watch(rememberMe, (remember) => {
       :placeholder="'X'.repeat(ACCESS_CODE_LENGTH)"
       :value="accessCode"
       @input="handleInput"
-      class="w-full rounded-md border border-neutral-300 px-4 py-2 text-center font-mono text-lg tracking-widest uppercase dark:border-neutral-700 dark:bg-neutral-900"
+      class="field w-full px-4 py-2.5 text-center font-mono text-lg tracking-widest uppercase"
     />
     <span
       class="text-sm text-neutral-500 dark:text-neutral-400"
@@ -116,11 +116,11 @@ watch(rememberMe, (remember) => {
         <span class="text-red-600 dark:text-red-400">{{ $t('accessCode.error') }}</span>
       </template>
     </span>
-    <div class="mt-4 flex gap-4 text-sm">
-      <a href="https://github.com/Yonokid/YataiDON/releases" target="_blank" rel="noopener" class="underline">
+    <div class="mt-2 flex gap-4 text-sm">
+      <a href="https://github.com/Yonokid/YataiDON/releases" target="_blank" rel="noopener" class="row-link">
         {{ $t('accessCode.download') }}
       </a>
-      <a href="https://guide.tjadataba.se/yataidon/" target="_blank" rel="noopener" class="underline">
+      <a href="https://guide.tjadataba.se/yataidon/" target="_blank" rel="noopener" class="row-link">
         {{ $t('accessCode.setupGuide') }}
       </a>
     </div>

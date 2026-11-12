@@ -3,6 +3,8 @@ import { onMounted, ref } from 'vue'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
 import type { Score, UserData } from '../types'
+import CrownIcon from './CrownIcon.vue'
+import DifficultyBadge from './DifficultyBadge.vue'
 
 const API_BASE_URL = import.meta.env.NETWORK_URL
 
@@ -45,45 +47,57 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex w-full max-w-lg flex-col items-center gap-4">
-    <h1 class="text-xl font-bold">{{ $t('home.welcome', { username: user.username }) }}</h1>
-
-    <p>
-      <span v-if="onlineCount !== null">{{ $t('home.usersOnline', onlineCount) }}</span>
-      <span v-else class="muted">{{ $t('home.onlineUnavailable') }}</span>
-    </p>
-
-    <div class="flex w-full flex-col items-center gap-1">
-      <span class="muted text-sm">{{ $t('home.globalLeaderboard') }}</span>
-      <p v-if="rank !== null">
-        {{ $t('home.rankRating', { rank, rating: rating!.toFixed(2) }) }}
-      </p>
-      <p v-else class="muted">{{ $t('home.notRankedYet') }}</p>
+  <div class="flex w-full max-w-3xl flex-col gap-4">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight">{{ $t('home.welcome', { username: user.username }) }}</h1>
     </div>
 
-    <div class="flex w-full flex-col items-center gap-1">
-      <span class="muted text-sm">{{ $t('home.recentScores') }}</span>
-      <p v-if="recentScores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
-      <table v-else class="w-full border-collapse text-sm">
-        <thead>
-          <tr>
-            <th class="th-cell">{{ $t('common.song') }}</th>
-            <th class="th-cell">{{ $t('common.difficulty') }}</th>
-            <th class="th-cell">{{ $t('common.score') }}</th>
-            <th class="th-cell">{{ $t('common.crown') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="entry in recentScores" :key="`${entry.hash}-${entry.difficulty}`">
-            <td class="td-cell">
-              <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
-            </td>
-            <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
-            <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
-            <td class="td-cell">{{ entry.crown }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <section class="card flex flex-col gap-4">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div>
+          <p class="muted text-xs font-semibold tracking-wide uppercase">{{ $t('home.globalLeaderboard') }}</p>
+          <p v-if="rank !== null" class="text-3xl font-bold text-don tabular-nums">#{{ rank }}</p>
+          <p v-else class="muted mt-1 text-sm">{{ $t('home.notRankedYet') }}</p>
+        </div>
+        <div v-if="rank !== null">
+          <p class="muted text-xs font-semibold tracking-wide uppercase">{{ $t('leaderboard.thRating') }}</p>
+          <p class="text-3xl font-bold tabular-nums">{{ rating!.toFixed(2) }}</p>
+        </div>
+        <div>
+          <p class="muted text-xs font-semibold tracking-wide uppercase">{{ $t('home.online') }}</p>
+          <p v-if="onlineCount !== null" class="text-3xl font-bold tabular-nums">
+            <span class="mr-1.5 inline-block size-2.5 rounded-full bg-green-500 align-middle"></span>{{ onlineCount }}
+          </p>
+          <p v-else class="muted mt-1 text-sm">{{ $t('home.onlineUnavailable') }}</p>
+        </div>
+      </div>
+
+      <div class="border-t border-neutral-200 pt-3 dark:border-neutral-800">
+        <p class="muted mb-1 text-xs font-semibold tracking-wide uppercase">{{ $t('home.recentScores') }}</p>
+        <p v-if="recentScores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
+        <div v-else class="overflow-x-auto">
+          <table class="w-full border-collapse text-sm">
+            <thead>
+              <tr>
+                <th class="th-cell">{{ $t('common.song') }}</th>
+                <th class="th-cell">{{ $t('common.difficulty') }}</th>
+                <th class="th-cell">{{ $t('common.score') }}</th>
+                <th class="th-cell">{{ $t('common.crown') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="entry in recentScores" :key="`${entry.hash}-${entry.difficulty}`">
+                <td class="td-cell max-w-56 truncate">
+                  <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
+                </td>
+                <td class="td-cell"><DifficultyBadge :difficulty="entry.difficulty" /></td>
+                <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
+                <td class="td-cell"><CrownIcon :crown="entry.crown" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 </template>

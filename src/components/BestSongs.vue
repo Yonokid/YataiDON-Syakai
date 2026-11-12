@@ -3,6 +3,9 @@ import { computed } from 'vue'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
 import type { UserData } from '../types'
+import CrownIcon from './CrownIcon.vue'
+import DifficultyBadge from './DifficultyBadge.vue'
+import RatingFormula from './RatingFormula.vue'
 
 const DIFFICULTY_ONI = 3
 const DIFFICULTY_URA = 4
@@ -25,7 +28,8 @@ const playerRating = computed(() => bestSongs.value.reduce((sum, s) => sum + s.r
   <section v-if="bestSongs.length > 0" class="flex w-full flex-col gap-2">
     <h2 class="text-lg font-bold">{{ $t('scores.bestSongsTitle') }}</h2>
     <p class="muted">{{ $t('leaderboard.subtitle') }}: {{ playerRating.toFixed(2) }}</p>
-    <div class="max-h-96 w-full overflow-auto">
+    <RatingFormula />
+    <div class="card w-full overflow-x-auto p-0">
       <table class="w-full border-collapse text-xs whitespace-nowrap">
         <thead>
           <tr>
@@ -44,10 +48,10 @@ const playerRating = computed(() => bestSongs.value.reduce((sum, s) => sum + s.r
             <td class="td-cell">
               <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
             </td>
-            <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+            <td class="td-cell"><DifficultyBadge :difficulty="entry.difficulty" /></td>
             <td class="td-cell">{{ entry.level }}</td>
             <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
-            <td class="td-cell">{{ entry.crown }}</td>
+            <td class="td-cell"><CrownIcon :crown="entry.crown" /></td>
             <td class="td-cell">{{ entry.rating.toFixed(2) }}</td>
           </tr>
         </tbody>

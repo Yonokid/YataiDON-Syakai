@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import danData from '../data/dan_courses.json'
+import DifficultyBadge from './DifficultyBadge.vue'
 
 type ExamValue = number[] | (number[] | null)[]
 
@@ -172,11 +173,11 @@ function examValue(exam: DanExam) {
 </script>
 
 <template>
-  <div class="flex w-full max-w-3xl flex-col items-center gap-3">
-    <h1 class="text-xl font-bold">{{ $t('dans.title') }}</h1>
+  <div class="flex w-full max-w-3xl flex-col gap-4">
+    <h1 class="text-2xl font-bold tracking-tight">{{ $t('dans.title') }}</h1>
 
-    <div class="flex w-full flex-col items-center gap-3">
-      <div class="flex w-full flex-wrap justify-center gap-2">
+    <div class="flex w-full flex-col gap-3">
+      <div class="flex w-full flex-wrap gap-2">
         <input v-model="search" type="text" :placeholder="$t('dans.searchPlaceholder')" class="field min-w-56 flex-1" />
         <select v-model="selectedVersion" class="field" :aria-label="$t('dans.allVersions')">
           <option value="all">{{ $t('dans.allVersions') }}</option>
@@ -193,12 +194,12 @@ function examValue(exam: DanExam) {
 
       <div v-else class="flex w-full flex-col gap-4">
         <section v-for="group in groupedCourses" :key="group.version" class="flex flex-col gap-2">
-          <h2 class="text-left text-sm font-semibold">{{ group.version }}</h2>
+          <h2 class="muted text-xs font-semibold tracking-wide uppercase">{{ group.version }}</h2>
 
           <details
             v-for="course in group.items"
             :key="course.path"
-            class="rounded-md border border-neutral-300 p-3 text-left dark:border-neutral-700"
+            class="card p-3 text-left"
           >
             <summary class="cursor-pointer">
               <span class="flex flex-wrap items-center gap-2">
@@ -221,7 +222,7 @@ function examValue(exam: DanExam) {
                     </router-link>
                     <span v-else>{{ chartTitle(chart) || $t('common.untitled') }}</span>
                     <span v-if="chart.subtitle" class="muted"> — {{ chart.subtitle }}</span>
-                    <span class="muted ml-1 text-xs">({{ difficultyLabel(chart.difficulty) }})</span>
+                    <DifficultyBadge :difficulty="chart.difficulty" class="muted ml-1 text-xs" />
                   </li>
                 </ol>
               </div>

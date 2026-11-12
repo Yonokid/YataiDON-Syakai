@@ -1,54 +1,55 @@
 <script setup lang="ts">
 import { SONG_LANGUAGES, songLanguage } from './composables/useSongDisplay'
 import { accessCode, currentUser, login, logout } from './stores/auth'
+import type { NameplateColor } from './components/Nameplate.vue'
 import type { UserData } from './types'
 
 function handleLogout() {
   logout()
 }
 
-const navBase =
-  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
-const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
+const activeCls = '!border-don !text-neutral-900 dark:!text-neutral-100'
+const links = [
+  ['/', 'home'],
+  ['/scores', 'scores'],
+  ['/dans', 'dans'],
+  ['/user', 'user'],
+  ['/charts', 'charts'],
+  ['/leaderboard', 'leaderboard'],
+  ['/songs', 'songs'],
+  ['/titles', 'titles'],
+  ['/cosmetics', 'cosmetics'],
+] as const
 </script>
 
 <template>
-  <header>
-    <nav v-if="currentUser && accessCode" class="flex flex-wrap justify-center gap-2 py-3">
-      <router-link to="/" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.home') }}</button>
+  <header
+    v-if="currentUser && accessCode"
+    class="sticky top-0 z-20 border-b border-neutral-200 bg-neutral-50/85 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/85"
+  >
+    <div class="mx-auto flex max-w-6xl items-center gap-3 px-4">
+      <router-link to="/" class="shrink-0 py-1.5">
+        <img src="/logo.png" alt="YataiDON" class="h-10 w-auto" />
       </router-link>
-      <router-link to="/scores" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.scores') }}</button>
-      </router-link>
-      <router-link to="/dans" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.dans') }}</button>
-      </router-link>
-      <router-link to="/user" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.user') }}</button>
-      </router-link>
-      <router-link to="/charts" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.charts') }}</button>
-      </router-link>
-      <router-link to="/leaderboard" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.leaderboard') }}</button>
-      </router-link>
-      <router-link to="/songs" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.songs') }}</button>
-      </router-link>
-      <router-link to="/titles" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.titles') }}</button>
-      </router-link>
-      <router-link to="/cosmetics" custom v-slot="{ navigate, isActive }">
-        <button type="button" :class="[navBase, isActive && navActive]" @click="navigate">{{ $t('nav.cosmetics') }}</button>
-      </router-link>
-      <select v-model="songLanguage" class="field text-sm" :aria-label="$t('nav.songLanguage')" :title="$t('nav.songLanguage')">
+      <nav class="-mb-px flex min-w-0 flex-1 gap-1 overflow-x-auto" aria-label="Main">
+        <router-link
+          v-for="[to, key] in links"
+          :key="to"
+          :to="to"
+          class="shrink-0 border-b-2 border-transparent px-3 py-3.5 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+          :active-class="to === '/' ? '' : activeCls"
+          :exact-active-class="activeCls"
+        >
+          {{ $t('nav.' + key) }}
+        </router-link>
+      </nav>
+      <select v-model="songLanguage" class="field shrink-0 text-sm" :aria-label="$t('nav.songLanguage')" :title="$t('nav.songLanguage')">
         <option v-for="lang in SONG_LANGUAGES" :key="lang.code" :value="lang.code">{{ lang.label }}</option>
       </select>
-    </nav>
+    </div>
   </header>
 
-  <main class="flex min-h-[80vh] items-center justify-center p-4">
+  <main class="mx-auto flex min-h-[80vh] max-w-6xl justify-center p-4 pt-8 sm:p-8">
     <router-view v-slot="{ Component, route }">
       <component
         :is="Component"
@@ -65,7 +66,13 @@ const navActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
         @verified="login"
         @logout="handleLogout"
         @username-updated="(v: string) => currentUser && (currentUser.username = v)"
-        @title-updated="(v: string) => currentUser && (currentUser.title = v)"
+        @title-updated="
+          (v: { title: string; nameplate_color?: NameplateColor }) => {
+            if (!currentUser) return
+            currentUser.title = v.title
+            if (v.nameplate_color) currentUser.nameplate_color = v.nameplate_color
+          }
+        "
         @chara-colors-updated="
           (c: { chara_color_1: string; chara_color_2: string; chara_color_3: string }) =>
             currentUser && Object.assign(currentUser, c)

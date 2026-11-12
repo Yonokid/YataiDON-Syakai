@@ -504,7 +504,7 @@ watch(
 <template>
   <div
     ref="box"
-    class="relative aspect-[3/4] w-full overflow-hidden rounded-md border border-neutral-300 bg-gradient-to-b from-white to-sky-200 dark:border-neutral-700"
+    class="relative aspect-[3/4] w-full overflow-hidden rounded-control border border-neutral-300 bg-gradient-to-b from-white to-sky-200 dark:border-neutral-700"
   >
     <canvas ref="canvas" class="block h-full w-full" />
     <div

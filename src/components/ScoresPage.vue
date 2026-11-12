@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
 import versionHashes from '../data/versions.json'
 import type { UserData } from '../types'
 import BestSongs from './BestSongs.vue'
+import TabNav from './TabNav.vue'
+import CrownIcon from './CrownIcon.vue'
+import DifficultyBadge from './DifficultyBadge.vue'
+import Pager from './Pager.vue'
+import CrownGauge from './CrownGauge.vue'
 
 interface CatalogSong {
   hash: string
@@ -15,6 +20,13 @@ interface CatalogSong {
   level: number
   genre: string
 }
+
+const tab = ref<'all' | 'best' | 'stats'>('all')
+const tabs = computed(() => [
+  { value: 'all' as const, label: t('scores.tabAll') },
+  { value: 'best' as const, label: t('scores.bestSongsTitle') },
+  { value: 'stats' as const, label: t('scores.statsTitle') },
+])
 
 const API_BASE_URL = import.meta.env.NETWORK_URL
 const CROWN_TIERS = [
@@ -38,11 +50,17 @@ const jumpingReplayId = ref<number | null>(null)
 const replayJumpError = ref('')
 const search = ref('')
 
+const PAGE_SIZE = 10
+const page = ref(1)
+watch(search, () => (page.value = 1))
+
 const filteredScores = computed(() => {
   const q = search.value.trim().toLowerCase()
   if (!q) return props.user.scores
   return props.user.scores.filter((entry) => songTitle(entry.title).toLowerCase().includes(q))
 })
+
+const pagedScores = computed(() => filteredScores.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
 
 async function sendToGame(hash: string) {
   jumpingHash.value = hash
@@ -202,12 +220,14 @@ const genreSections = computed(() => {
 </script>
 
 <template>
-  <div class="flex w-full max-w-3xl flex-col gap-6">
-    <section class="flex w-full flex-col gap-2">
+  <div class="flex w-full max-w-3xl flex-col gap-4">
+    <TabNav v-model="tab" :tabs="tabs" />
+
+    <section v-show="tab === 'all'" class="flex w-full flex-col gap-2">
       <input v-model="search" type="text" :placeholder="$t('scores.searchPlaceholder')" class="field w-full" />
       <p v-if="user.scores.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
       <p v-else-if="filteredScores.length === 0" class="muted">{{ $t('scores.noResults') }}</p>
-      <div v-else class="max-h-96 w-full overflow-auto">
+      <div v-else class="card w-full overflow-x-auto p-0">
         <table class="w-full border-collapse text-xs whitespace-nowrap">
           <thead>
             <tr>
@@ -222,14 +242,14 @@ const genreSections = computed(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="entry in filteredScores" :key="`${entry.hash}-${entry.difficulty}`">
+            <tr v-for="entry in pagedScores" :key="`${entry.hash}-${entry.difficulty}`">
               <td class="td-cell">
                 <router-link :to="`/songs/${entry.hash}`" class="row-link">{{ songTitle(entry.title) }}</router-link>
               </td>
-              <td class="td-cell">{{ difficultyLabel(entry.difficulty) }}</td>
+              <td class="td-cell"><DifficultyBadge :difficulty="entry.difficulty" /></td>
               <td class="td-cell">{{ entry.level }}</td>
               <td class="td-cell">{{ entry.score.toLocaleString() }}</td>
-              <td class="td-cell">{{ entry.crown }}</td>
+              <td class="td-cell"><CrownIcon :crown="entry.crown" /></td>
               <td class="td-cell">{{ entry.rank }}</td>
               <td class="td-cell">{{ entry.max_combo }}</td>
               <td class="td-cell">
@@ -254,13 +274,14 @@ const genreSections = computed(() => {
           </tbody>
         </table>
       </div>
+      <Pager v-model="page" :total="filteredScores.length" :page-size="PAGE_SIZE" />
       <p v-if="jumpError" class="error-text text-sm">{{ jumpError }}</p>
       <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
     </section>
 
-    <BestSongs :scores="user.scores" />
+    <div v-show="tab === 'best'"><BestSongs :scores="user.scores" /></div>
 
-    <section class="flex w-full flex-col gap-2">
+    <section v-show="tab === 'stats'" class="card flex w-full flex-col gap-2">
       <h2 class="text-lg font-bold">{{ $t('scores.statsTitle') }}</h2>
       <div class="flex flex-wrap gap-2">
         <select v-model="selectedVersion" class="field">
@@ -275,25 +296,13 @@ const genreSections = computed(() => {
       </div>
       <p v-if="catalogStatus === 'loading'">{{ $t('common.loading') }}</p>
       <p v-else-if="catalogStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
-      <table v-else class="w-full max-w-md border-collapse text-sm">
-        <thead>
-          <tr>
-            <th class="th-cell">{{ $t('common.crown') }}</th>
-            <th class="th-cell w-full">{{ $t('scores.obtainedOfPossible') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="stat in crownStats" :key="stat.labelKey">
-            <td class="td-cell whitespace-nowrap">{{ $t(stat.labelKey) }}</td>
-            <td class="td-cell">
-              <div class="flex items-center gap-2">
-                <progress class="h-2 w-full" :value="stat.obtained" :max="stat.possible || 1"></progress>
-                <span class="whitespace-nowrap text-xs">{{ stat.obtained }} / {{ stat.possible }}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <CrownGauge
+        v-else
+        :possible="crownStats[0]!.possible"
+        :clear="crownStats[0]!.obtained"
+        :fc="crownStats[1]!.obtained"
+        :dfc="crownStats[2]!.obtained"
+      />
 
       <p v-if="selectedVersion === 'all'" class="muted">{{ $t('scores.selectVersionForBreakdown') }}</p>
       <template v-else>
@@ -321,13 +330,14 @@ const genreSections = computed(() => {
                       v-for="badge in row.badges"
                       :key="badge.difficulty"
                       type="button"
-                      class="rounded px-1.5 py-0.5 text-xs"
+                      class="rounded-chip px-1.5 py-0.5 text-xs"
                       :class="row.rowCrown === null ? crownClass(badge.crown) : ''"
                       :disabled="jumpingHash === badge.hash"
                       :title="$t('common.sendToGame')"
                       @click="sendToGame(badge.hash)"
                     >
-                      {{ jumpingHash === badge.hash ? $t('common.sending') : difficultyLabel(badge.difficulty) }}
+                      <template v-if="jumpingHash === badge.hash">{{ $t('common.sending') }}</template>
+                      <DifficultyBadge v-else :difficulty="badge.difficulty" />
                     </button>
                   </span>
                 </td>

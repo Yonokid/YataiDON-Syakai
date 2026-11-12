@@ -65,6 +65,7 @@ const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : 
 
 <style scoped>
 .nameplate {
+  font-family: 'Kanteiryu', 'Noto Sans JP', system-ui, sans-serif;
   width: min(90vw, 480px);
   position: relative;
 }
@@ -92,7 +93,7 @@ const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : 
   position: absolute;
   left: 0;
   top: 46.9%;
-  height: 45.3%;
+  height: 49.5%;
   width: 32%;
   background: #000;
   display: flex;
@@ -121,6 +122,14 @@ const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : 
 
 .nameplate-name-dan {
   padding-left: 30%;
+}
+
+.nameplate-title,
+.nameplate-username {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .nameplate-title {

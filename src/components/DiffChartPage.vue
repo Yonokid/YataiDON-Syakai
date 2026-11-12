@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
 import type { Score } from '../types'
+import DifficultyBadge from './DifficultyBadge.vue'
 
 interface ChartSong {
   order: number
@@ -29,8 +30,8 @@ const CROWN_CLASSES = ['crown-none', 'crown-clear', 'crown-fc', 'crown-dfc']
 const API_BASE_URL = import.meta.env.NETWORK_URL
 
 const tabBase =
-  'cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800'
-const tabActive = 'border-neutral-900 font-semibold dark:border-neutral-100'
+  'btn'
+const tabActive = 'border-don text-don'
 
 const props = defineProps<{ scores: Score[]; accessCode: string }>()
 const { t } = useI18n()
@@ -101,8 +102,8 @@ function songTitle(song: ChartSong) {
       </button>
     </div>
 
-    <div v-for="section in sections" :key="section.order" class="flex flex-col gap-2">
-      <h2 class="text-lg font-bold">{{ section.name }}</h2>
+    <div v-for="section in sections" :key="section.order" class="card flex flex-col gap-2 overflow-x-auto">
+      <h2 class="text-lg font-bold tracking-tight">{{ section.name }}</h2>
       <table class="w-full border-collapse text-sm">
         <thead>
           <tr>
@@ -121,7 +122,7 @@ function songTitle(song: ChartSong) {
               <router-link v-if="song.hash" :to="`/songs/${song.hash}`" class="row-link">{{ songTitle(song) }}</router-link>
               <template v-else>{{ songTitle(song) }}</template>
             </td>
-            <td class="td-cell">{{ song.difficulty }}</td>
+            <td class="td-cell"><DifficultyBadge :difficulty="song.difficulty" /></td>
             <td class="td-cell">
               <button
                 v-if="song.hash"

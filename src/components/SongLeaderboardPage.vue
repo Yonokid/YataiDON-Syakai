@@ -76,25 +76,25 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex w-full max-w-lg flex-col items-center gap-3">
-    <h1 class="text-xl font-bold">{{ $t('songLeaderboard.title') }}</h1>
+  <div class="flex w-full max-w-2xl flex-col gap-4">
+    <h1 class="text-2xl font-bold tracking-tight">{{ $t('songLeaderboard.title') }}</h1>
 
-    <div v-if="mostPlayedStatus === 'loaded' && mostPlayed.length" class="flex w-full flex-col gap-1">
-      <h2 class="text-sm font-semibold">{{ $t('songLeaderboard.mostPlayed') }}</h2>
+    <div v-if="mostPlayedStatus === 'loaded' && mostPlayed.length" class="card flex w-full flex-col gap-1">
+      <h2 class="muted text-xs font-semibold tracking-wide uppercase">{{ $t('songLeaderboard.mostPlayed') }}</h2>
       <ol class="flex w-full flex-col gap-1">
         <li v-for="(song, i) in mostPlayed" :key="song.hash">
           <router-link
             :to="`/songs/${song.hash}`"
-            class="flex w-full items-center justify-between rounded-md px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            class="flex w-full items-center justify-between rounded-control px-3 py-2 text-left transition-colors duration-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
           >
-            <span>{{ i + 1 }}. {{ songTitle(song.title) }}</span>
-            <span class="muted text-xs">{{ song.play_count }} {{ $t('songLeaderboard.plays') }}</span>
+            <span class="min-w-0 truncate">{{ i + 1 }}. {{ songTitle(song.title) }}</span>
+            <span class="muted shrink-0 pl-2 text-xs tabular-nums">{{ song.play_count }} {{ $t('songLeaderboard.plays') }}</span>
           </router-link>
         </li>
       </ol>
     </div>
 
-    <div class="flex w-full flex-col items-center gap-3">
+    <div class="flex w-full flex-col gap-3">
       <input v-model="search" type="text" :placeholder="$t('songLeaderboard.searchPlaceholder')" class="field w-full" />
       <p v-if="songsStatus === 'loading'">{{ $t('common.loading') }}</p>
       <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
@@ -103,7 +103,7 @@ onMounted(async () => {
         <li v-for="group in filteredGroups" :key="songGroupKey(group.title)">
           <router-link
             :to="`/songs/${group.variants[0]!.hash}`"
-            class="block w-full rounded-md px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            class="block w-full rounded-control px-3 py-2 text-left transition-colors duration-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
           >
             {{ songTitle(group.title) }}
           </router-link>

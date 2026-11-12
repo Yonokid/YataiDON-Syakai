@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSongDisplay } from '../composables/useSongDisplay'
+import TabNav from './TabNav.vue'
+import SegControl from './SegControl.vue'
 
 interface AdminUser {
   id: number
@@ -66,7 +68,7 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
-type Tab = 'users' | 'titles' | 'merge' | 'keys' | 'log'
+type Tab = 'users' | 'review' | 'titles' | 'merge' | 'keys' | 'log'
 const activeTab = ref<Tab>('users')
 
 interface AdminLog {
@@ -156,7 +158,7 @@ const endpointFilter = ref('')
 let logsSocket: WebSocket | null = null
 let logsReconnectTimer: ReturnType<typeof setTimeout> | undefined
 
-const ACCESS_LOG_RE = /^\S+ - "(\S+) (\S+) HTTP\/[\d.]+" (\d{3})/
+const ACCESS_LOG_RE = /^\S+ - "(\S+) (\S+) HTTP\/[\d.]+" (\d{3})(?:.*\[key=([^\]]+)\])?/
 
 function parseAccessLog(message: string) {
   const match = message.match(ACCESS_LOG_RE)
@@ -170,8 +172,13 @@ function parseAccessLog(message: string) {
     method,
     path: url.split('?')[0] ?? url,
     status: Number(status),
+    keyId: match[4] ?? null,
     params: [...new URLSearchParams(query)],
   }
+}
+
+function logKeyName(keyId: string) {
+  return apiKeys.value.find((k) => k.key_id === keyId)?.label || keyId
 }
 
 function logEndpointKey(method: string, path: string) {
@@ -470,12 +477,31 @@ async function setCampaign(key: ApiKey, campaign: string, enabled: boolean) {
   }
 }
 
+const adminTabs = computed(() => [
+  { value: 'users' as const, label: t('admin.tabUsers') },
+  {
+    value: 'review' as const,
+    label:
+      suspiciousTab.value === 'pending' && suspiciousScores.value.length
+        ? `${t('admin.tabReview')} (${suspiciousScores.value.length})`
+        : t('admin.tabReview'),
+  },
+  { value: 'titles' as const, label: t('admin.tabTitles') },
+  { value: 'merge' as const, label: t('admin.tabMerge') },
+  { value: 'keys' as const, label: t('admin.tabApiKeys') },
+  { value: 'log' as const, label: t('admin.tabLog') },
+])
+
 function switchTab(tab: Tab) {
   if (tab !== 'log') closeLogs()
   activeTab.value = tab
   if (tab === 'keys') fetchApiKeys()
+  if (tab === 'review') fetchSuspiciousScores()
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
-  if (tab === 'log') connectLogs()
+  if (tab === 'log') {
+    if (apiKeys.value.length === 0) fetchApiKeys()
+    connectLogs()
+  }
 }
 
 function closeLogs() {
@@ -552,7 +578,29 @@ onMounted(() => {
   }
 })
 
-onUnmounted(closeLogs)
+onUnmounted(() => {
+  closeLogs()
+  clearTimeout(searchTimer)
+  clearTimeout(copiedTimer)
+})
+
+let searchTimer: ReturnType<typeof setTimeout> | undefined
+watch(query, () => {
+  if (!unlocked.value) return
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(fetchUsers, 300)
+})
+
+const titleSearch = ref('')
+const visibleTitles = computed(() => {
+  const term = titleSearch.value.trim().toLowerCase()
+  if (!term) return titles.value
+  return titles.value.filter((x) =>
+    [String(x.number), x.name, x.color, x.unlock_condition_ja, x.unlock_condition_en].some((v) =>
+      v?.toLowerCase().includes(term),
+    ),
+  )
+})
 
 function startEdit(user: AdminUser) {
   editing.value = user
@@ -592,9 +640,19 @@ async function saveEdit() {
   }
 }
 
+const copied = ref('')
+let copiedTimer: ReturnType<typeof setTimeout> | undefined
+
+async function copyText(text: string) {
+  await navigator.clipboard.writeText(text)
+  copied.value = text
+  clearTimeout(copiedTimer)
+  copiedTimer = setTimeout(() => (copied.value = ''), 1500)
+}
+
 async function copyAccessCode(user: AdminUser) {
   try {
-    await navigator.clipboard.writeText(user.access_code)
+    await copyText(user.access_code)
     loadError.value = ''
   } catch {
     loadError.value = t('admin.copyCodeError')
@@ -688,6 +746,11 @@ function logout() {
   localStorage.removeItem(STORAGE_KEY)
 }
 
+const suspiciousOptions = computed(() => [
+  { value: 'pending' as const, label: t('admin.suspiciousTabPending') },
+  { value: 'import_warning' as const, label: t('admin.suspiciousTabImportWarning') },
+])
+
 function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
   suspiciousTab.value = tab
   fetchSuspiciousScores()
@@ -695,54 +758,50 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
 </script>
 
 <template>
-  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
-    <h1 class="text-xl font-bold">{{ $t('admin.title') }}</h1>
+  <div class="flex w-full max-w-6xl flex-col gap-4">
+    <h1 class="text-2xl font-bold tracking-tight">{{ $t('admin.title') }}</h1>
 
-    <form v-if="!unlocked" class="flex flex-col items-center gap-2" @submit.prevent="fetchUsers">
+    <form v-if="!unlocked" class="card flex w-full max-w-sm flex-col gap-3 self-center" @submit.prevent="fetchUsers">
       <input
         v-model="adminKey"
         type="password"
         :placeholder="$t('admin.adminKeyPlaceholder')"
         class="field"
+        autofocus
+        autocomplete="current-password"
         :disabled="isLoading"
       />
-      <button type="submit" class="btn" :disabled="isLoading || !adminKey">{{ $t('admin.unlock') }}</button>
+      <button type="submit" class="btn btn-primary" :disabled="isLoading || !adminKey">{{ $t('admin.unlock') }}</button>
       <p v-if="authError" class="error-text text-sm">{{ authError }}</p>
     </form>
 
     <template v-else>
       <div class="flex w-full flex-wrap items-center justify-between gap-2">
-        <div class="flex gap-2">
-          <button type="button" class="btn" :disabled="activeTab === 'users'" @click="switchTab('users')">
-            {{ $t('admin.tabUsers') }}
-          </button>
-          <button type="button" class="btn" :disabled="activeTab === 'titles'" @click="switchTab('titles')">
-            {{ $t('admin.tabTitles') }}
-          </button>
-          <button type="button" class="btn" :disabled="activeTab === 'merge'" @click="switchTab('merge')">
-            {{ $t('admin.tabMerge') }}
-          </button>
-          <button type="button" class="btn" :disabled="activeTab === 'keys'" @click="switchTab('keys')">
-            {{ $t('admin.tabApiKeys') }}
-          </button>
-          <button type="button" class="btn" :disabled="activeTab === 'log'" @click="switchTab('log')">
-            {{ $t('admin.tabLog') }}
-          </button>
-        </div>
+        <TabNav
+          :model-value="activeTab"
+          :tabs="adminTabs"
+          class="min-w-0 flex-1"
+          @update:model-value="switchTab"
+        />
         <button type="button" class="btn" @click="logout">{{ $t('admin.lock') }}</button>
       </div>
 
       <template v-if="activeTab === 'keys'">
-        <form class="flex gap-2" @submit.prevent="createApiKey">
+        <form class="flex flex-wrap gap-2" @submit.prevent="createApiKey">
           <input v-model="apiKeyLabel" type="text" :placeholder="$t('admin.apiKeyLabelPlaceholder')" class="field" />
-          <button type="submit" class="btn">{{ $t('admin.apiKeyCreate') }}</button>
+          <button type="submit" class="btn btn-primary">{{ $t('admin.apiKeyCreate') }}</button>
         </form>
         <p v-if="apiKeyError" class="error-text text-sm">{{ apiKeyError }}</p>
-        <div v-if="newApiKey" class="w-full text-sm">
+        <div v-if="newApiKey" class="card flex w-full flex-col gap-2 border-green-500/50 text-sm">
           <p>{{ $t('admin.apiKeyCreated') }}</p>
-          <code class="break-all">{{ newApiKey }}</code>
+          <div class="flex flex-wrap items-center gap-2">
+            <code class="min-w-0 flex-1 break-all">{{ newApiKey }}</code>
+            <button type="button" class="btn" @click="copyText(newApiKey)">
+              {{ copied === newApiKey ? $t('admin.copied') : $t('admin.copyCode') }}
+            </button>
+          </div>
         </div>
-        <div class="w-full overflow-x-auto">
+        <div class="card w-full overflow-x-auto p-0">
           <table class="w-full text-sm">
             <thead>
               <tr>
@@ -764,12 +823,19 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="key in apiKeys" :key="key.key_id">
+              <tr v-for="key in apiKeys" :key="key.key_id" :class="key.revoked_at && 'opacity-50'">
                 <td class="td-cell">{{ key.key_id }}</td>
                 <td class="td-cell">{{ key.label }}</td>
                 <td class="td-cell">{{ new Date(key.created_at).toLocaleString() }}</td>
                 <td class="td-cell">{{ key.last_used ? new Date(key.last_used).toLocaleString() : $t('admin.neverUsed') }}</td>
-                <td class="td-cell">{{ key.revoked_at ? $t('admin.apiKeyRevoked') : $t('admin.apiKeyActive') }}</td>
+                <td class="td-cell">
+                  <span
+                    class="rounded-full px-2 py-0.5 text-xs font-medium"
+                    :class="key.revoked_at ? 'bg-red-600/10 text-red-700 dark:text-red-400' : 'bg-green-600/10 text-green-700 dark:text-green-400'"
+                  >
+                    {{ key.revoked_at ? $t('admin.apiKeyRevoked') : $t('admin.apiKeyActive') }}
+                  </span>
+                </td>
                 <td class="td-cell">
                   <input
                     type="checkbox"
@@ -789,10 +855,10 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                   />
                 </td>
                 <td class="td-cell">
-                  <button v-if="!key.revoked_at" type="button" class="btn" @click="revokeApiKey(key)">
+                  <button v-if="!key.revoked_at" type="button" class="btn btn-danger" @click="revokeApiKey(key)">
                     {{ $t('admin.apiKeyRevoke') }}
                   </button>
-                  <button v-else type="button" class="btn" @click="deleteApiKey(key)">
+                  <button v-else type="button" class="btn btn-danger" @click="deleteApiKey(key)">
                     {{ $t('admin.apiKeyDelete') }}
                   </button>
                 </td>
@@ -806,21 +872,14 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
       </template>
 
       <template v-else-if="activeTab === 'log'">
-        <div class="flex w-full items-center justify-between gap-2">
+        <div class="flex w-full flex-wrap items-center gap-2">
           <span
             class="flex items-center gap-1.5 text-xs"
             :class="logsLive ? 'text-green-600 dark:text-green-400' : 'muted'"
           >
-            <span
-              class="h-2 w-2 rounded-full"
-              :class="logsLive ? 'bg-green-500' : 'bg-neutral-400'"
-            ></span>
+            <span class="h-2 w-2 rounded-full" :class="logsLive ? 'bg-green-500' : 'bg-neutral-400'"></span>
             {{ logsLive ? $t('admin.logLive') : $t('admin.logDisconnected') }}
           </span>
-          <button type="button" class="btn" @click="clearLogs">{{ $t('admin.logClear') }}</button>
-          <span class="text-xs muted">{{ $t('admin.logCount', { count: filteredLogs.length }) }}</span>
-        </div>
-        <div class="flex w-full flex-wrap items-center gap-2">
           <select v-model="levelFilter" class="field text-sm" :aria-label="$t('admin.logLevel')">
             <option value="">{{ $t('admin.logAllLevels') }}</option>
             <option v-for="level in LOG_LEVELS" :key="level" :value="level">{{ level }}</option>
@@ -829,10 +888,12 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             <option value="">{{ $t('admin.logAllEndpoints') }}</option>
             <option v-for="(label, key) in LOG_ENDPOINTS" :key="key" :value="key">{{ label }}</option>
           </select>
+          <span class="muted ml-auto text-xs">{{ $t('admin.logCount', { count: filteredLogs.length }) }}</span>
+          <button type="button" class="btn btn-danger" @click="clearLogs">{{ $t('admin.logClear') }}</button>
         </div>
         <p v-if="logsError" class="error-text text-sm">{{ logsError }}</p>
         <p v-if="logsLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
-        <div v-else class="w-full overflow-x-auto">
+        <div v-else class="card w-full overflow-x-auto p-0">
           <table class="w-full text-sm">
             <thead>
               <tr>
@@ -853,6 +914,9 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                     <div>{{ logLabel(entry.access.method, entry.access.path) }}</div>
                     <div class="font-mono text-xs muted">
                       {{ entry.access.method }} {{ entry.access.path }}
+                    </div>
+                    <div v-if="entry.access.keyId" class="text-xs muted" :title="entry.access.keyId">
+                      {{ $t('admin.logApiKey') }}: {{ logKeyName(entry.access.keyId) }}
                     </div>
                     <details v-if="entry.access.params.length" class="mt-1 text-xs">
                       <summary class="cursor-pointer muted">
@@ -903,7 +967,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
       </template>
 
       <template v-else-if="activeTab === 'merge'">
-        <form class="flex w-full max-w-sm flex-col gap-3" @submit.prevent="mergeUsers">
+        <form class="card flex w-full max-w-sm flex-col gap-3" @submit.prevent="mergeUsers">
           <label class="flex flex-col gap-1 text-sm">
             {{ $t('admin.mergeTargetLabel') }}
             <input v-model="mergeTargetCode" type="text" class="field" />
@@ -916,7 +980,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           <p v-if="mergeSuccess" class="text-sm">{{ $t('admin.mergeSuccess') }}</p>
           <button
             type="submit"
-            class="btn"
+            class="btn btn-primary self-start"
             :disabled="isMerging || !mergeTargetCode.trim() || !mergeSourceCode.trim() || mergeTargetCode.trim() === mergeSourceCode.trim()"
           >
             {{ $t('admin.mergeButton') }}
@@ -925,10 +989,11 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
       </template>
 
       <template v-else-if="activeTab === 'titles'">
+        <input v-model="titleSearch" type="search" :placeholder="$t('admin.searchTitles')" class="field w-full max-w-sm" />
         <p v-if="titlesError" class="error-text text-sm">{{ titlesError }}</p>
         <p v-if="titlesLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
 
-        <div v-else class="w-full overflow-x-auto">
+        <div v-else class="card w-full overflow-x-auto p-0">
           <table class="w-full text-sm">
             <thead>
               <tr>
@@ -942,7 +1007,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="title in titles" :key="title.number">
+              <tr v-for="title in visibleTitles" :key="title.number">
                 <td class="td-cell">{{ title.number }}</td>
                 <td class="td-cell">{{ title.name }}</td>
                 <td class="td-cell">{{ title.color ?? $t('admin.dash') }}</td>
@@ -953,7 +1018,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                   <button type="button" class="btn" @click="startEditTitle(title)">{{ $t('admin.edit') }}</button>
                 </td>
               </tr>
-              <tr v-if="titles.length === 0">
+              <tr v-if="visibleTitles.length === 0">
                 <td class="td-cell muted" colspan="7">{{ $t('admin.noTitlesFound') }}</td>
               </tr>
             </tbody>
@@ -962,11 +1027,12 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
 
         <div
           v-if="editingTitle"
-          class="fixed inset-0 flex items-center justify-center bg-black/40 p-4"
+          class="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
           @click.self="cancelEditTitle"
         >
           <form
-            class="flex w-full max-w-sm flex-col gap-3 rounded-md border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+            class="card flex w-full max-w-sm flex-col gap-3"
+            @keydown.esc="cancelEditTitle"
             @submit.prevent="saveEditTitle"
           >
             <h2 class="font-semibold">{{ $t('admin.editTitle', { number: editingTitle.number }) }}</h2>
@@ -996,133 +1062,24 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             <p v-if="saveTitleError" class="error-text text-sm">{{ saveTitleError }}</p>
             <div class="flex justify-end gap-2">
               <button type="button" class="btn" @click="cancelEditTitle">{{ $t('common.cancel') }}</button>
-              <button type="submit" class="btn" :disabled="isSavingTitle">{{ $t('common.save') }}</button>
+              <button type="submit" class="btn btn-primary" :disabled="isSavingTitle">{{ $t('common.save') }}</button>
             </div>
           </form>
         </div>
       </template>
 
-      <template v-else>
-      <form class="flex gap-2" @submit.prevent="fetchUsers">
-        <input v-model="query" type="text" :placeholder="$t('admin.searchPlaceholder')" class="field" />
-        <button type="submit" class="btn" :disabled="isLoading">{{ $t('admin.search') }}</button>
-      </form>
-
-      <p v-if="loadError" class="error-text text-sm">{{ loadError }}</p>
-      <p v-if="isLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
-
-      <div v-else class="w-full overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr>
-              <th class="th-cell">{{ $t('common.username') }}</th>
-              <th class="th-cell">{{ $t('admin.thTitle') }}</th>
-              <th class="th-cell">{{ $t('admin.thDan') }}</th>
-              <th class="th-cell">{{ $t('admin.thGold') }}</th>
-              <th class="th-cell">{{ $t('admin.thScores') }}</th>
-              <th class="th-cell"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in users" :key="user.access_code">
-              <td class="td-cell">{{ user.username }}</td>
-              <td class="td-cell">{{ user.title ?? $t('admin.dash') }}</td>
-              <td class="td-cell">{{ user.dan ?? $t('admin.dash') }}</td>
-              <td class="td-cell">{{ user.gold ? $t('admin.yes') : $t('admin.no') }}</td>
-              <td class="td-cell">{{ user.score_count }}</td>
-              <td class="td-cell">
-                <div class="flex gap-2">
-                  <button type="button" class="btn" @click="copyAccessCode(user)">{{ $t('admin.copyCode') }}</button>
-                  <button type="button" class="btn" @click="startEdit(user)">{{ $t('admin.edit') }}</button>
-                  <button type="button" class="btn" @click="startChangeAccessCode(user)">{{ $t('admin.changeAccessCode') }}</button>
-                  <button type="button" class="btn" @click="deleteUser(user)">{{ $t('admin.delete') }}</button>
-                </div>
-              </td>
-            </tr>
-            <tr v-if="users.length === 0">
-              <td class="td-cell muted" colspan="6">{{ $t('admin.noUsersFound') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div
-        v-if="editing"
-        class="fixed inset-0 flex items-center justify-center bg-black/40 p-4"
-        @click.self="cancelEdit"
-      >
-        <form
-          class="flex w-full max-w-sm flex-col gap-3 rounded-md border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
-          @submit.prevent="saveEdit"
-        >
-          <h2 class="font-semibold">{{ $t('admin.editUser', { username: editing.username }) }}</h2>
-          <label class="flex flex-col gap-1 text-sm">
-            {{ $t('common.username') }}
-            <input v-model="editUsername" type="text" maxlength="32" class="field" />
-          </label>
-          <label class="flex flex-col gap-1 text-sm">
-            {{ $t('admin.thDan') }}
-            <input v-model="editDan" type="number" class="field" />
-          </label>
-          <label class="flex items-center gap-2 text-sm">
-            <input v-model="editGold" type="checkbox" />
-            {{ $t('admin.goldDan') }}
-          </label>
-          <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
-          <div class="flex justify-end gap-2">
-            <button type="button" class="btn" @click="cancelEdit">{{ $t('common.cancel') }}</button>
-            <button type="submit" class="btn" :disabled="isSaving">{{ $t('common.save') }}</button>
-          </div>
-        </form>
-      </div>
-
-      <div
-        v-if="changingAccessCode"
-        class="fixed inset-0 flex items-center justify-center bg-black/40 p-4"
-        @click.self="cancelChangeAccessCode"
-      >
-        <form
-          class="flex w-full max-w-sm flex-col gap-3 rounded-md border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
-          @submit.prevent="saveChangeAccessCode"
-        >
-          <h2 class="font-semibold">{{ $t('admin.changeAccessCode', { username: changingAccessCode.username }) }}</h2>
-          <p class="muted text-sm">{{ $t('admin.changeAccessCodeConfirm', { username: changingAccessCode.username, oldCode: changingAccessCode.access_code }) }}</p>
-          <label class="flex flex-col gap-1 text-sm">
-            {{ $t('admin.changeAccessCodeLabel') }}
-            <input v-model="changeAccessCodeNew" type="text" maxlength="20" class="field" placeholder="20-digit number" />
-          </label>
-          <p v-if="changeAccessCodeError" class="error-text text-sm">{{ changeAccessCodeError }}</p>
-          <div class="flex justify-end gap-2">
-            <button type="button" class="btn" @click="cancelChangeAccessCode">{{ $t('common.cancel') }}</button>
-            <button type="submit" class="btn" :disabled="isChangingAccessCode">{{ $t('common.save') }}</button>
-          </div>
-        </form>
-      </div>
-
-      <h2 class="mt-4 text-lg font-bold">{{ $t('admin.suspiciousTitle') }}</h2>
-      <div class="flex w-full gap-2">
-        <button
-          type="button"
-          class="btn"
-          :disabled="suspiciousTab === 'pending'"
-          @click="switchSuspiciousTab('pending')"
-        >
-          {{ $t('admin.suspiciousTabPending') }}
-        </button>
-        <button
-          type="button"
-          class="btn"
-          :disabled="suspiciousTab === 'import_warning'"
-          @click="switchSuspiciousTab('import_warning')"
-        >
-          {{ $t('admin.suspiciousTabImportWarning') }}
-        </button>
-      </div>
+      <template v-else-if="activeTab === 'review'">
+      <SegControl
+        :model-value="suspiciousTab"
+        :options="suspiciousOptions"
+        class="self-start"
+        @update:model-value="switchSuspiciousTab"
+      />
 
       <p v-if="suspiciousError" class="error-text text-sm">{{ suspiciousError }}</p>
       <p v-if="suspiciousLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
 
-      <div v-else class="w-full overflow-x-auto">
+      <div v-else class="card w-full overflow-x-auto p-0">
         <table class="w-full text-sm">
           <thead>
             <tr>
@@ -1144,10 +1101,10 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               <td class="td-cell">{{ item.reason }}</td>
               <td class="td-cell" v-if="suspiciousTab === 'pending'">
                 <div class="flex gap-2">
-                  <button type="button" class="btn" @click="reviewScore(item, 'approve')">
+                  <button type="button" class="btn btn-primary" @click="reviewScore(item, 'approve')">
                     {{ $t('admin.allow') }}
                   </button>
-                  <button type="button" class="btn" @click="reviewScore(item, 'deny')">
+                  <button type="button" class="btn btn-danger" @click="reviewScore(item, 'deny')">
                     {{ $t('admin.deny') }}
                   </button>
                 </div>
@@ -1158,6 +1115,108 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             </tr>
           </tbody>
         </table>
+      </div>
+      </template>
+
+      <template v-else>
+      <form class="flex gap-2" @submit.prevent="fetchUsers">
+        <input v-model="query" type="search" :placeholder="$t('admin.searchPlaceholder')" class="field w-full max-w-sm" autofocus />
+        <button type="submit" class="btn" :disabled="isLoading">{{ $t('admin.search') }}</button>
+      </form>
+
+      <p v-if="loadError" class="error-text text-sm">{{ loadError }}</p>
+      <p v-if="isLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
+
+      <div v-else class="card w-full overflow-x-auto p-0">
+        <table class="w-full text-sm">
+          <thead>
+            <tr>
+              <th class="th-cell">{{ $t('common.username') }}</th>
+              <th class="th-cell">{{ $t('admin.thTitle') }}</th>
+              <th class="th-cell">{{ $t('admin.thDan') }}</th>
+              <th class="th-cell">{{ $t('admin.thGold') }}</th>
+              <th class="th-cell">{{ $t('admin.thScores') }}</th>
+              <th class="th-cell"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in users" :key="user.access_code">
+              <td class="td-cell">{{ user.username }}</td>
+              <td class="td-cell">{{ user.title ?? $t('admin.dash') }}</td>
+              <td class="td-cell">{{ user.dan ?? $t('admin.dash') }}</td>
+              <td class="td-cell">{{ user.gold ? $t('admin.yes') : $t('admin.no') }}</td>
+              <td class="td-cell">{{ user.score_count }}</td>
+              <td class="td-cell">
+                <div class="flex gap-2">
+                  <button type="button" class="btn" @click="startEdit(user)">{{ $t('admin.edit') }}</button>
+                  <button type="button" class="btn" @click="copyAccessCode(user)">
+                    {{ copied === user.access_code ? $t('admin.copied') : $t('admin.copyCode') }}
+                  </button>
+                  <button type="button" class="btn" @click="startChangeAccessCode(user)">{{ $t('admin.changeAccessCode') }}</button>
+                  <button type="button" class="btn btn-danger" @click="deleteUser(user)">{{ $t('admin.delete') }}</button>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="users.length === 0">
+              <td class="td-cell muted" colspan="6">{{ $t('admin.noUsersFound') }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        v-if="editing"
+        class="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+        @click.self="cancelEdit"
+      >
+        <form
+          class="card flex w-full max-w-sm flex-col gap-3"
+          @keydown.esc="cancelEdit"
+          @submit.prevent="saveEdit"
+        >
+          <h2 class="font-semibold">{{ $t('admin.editUser', { username: editing.username }) }}</h2>
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('common.username') }}
+            <input v-model="editUsername" type="text" maxlength="32" class="field" />
+          </label>
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('admin.thDan') }}
+            <input v-model="editDan" type="number" class="field" />
+          </label>
+          <label class="flex items-center gap-2 text-sm">
+            <input v-model="editGold" type="checkbox" />
+            {{ $t('admin.goldDan') }}
+          </label>
+          <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn" @click="cancelEdit">{{ $t('common.cancel') }}</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSaving">{{ $t('common.save') }}</button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        v-if="changingAccessCode"
+        class="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+        @click.self="cancelChangeAccessCode"
+      >
+        <form
+          class="card flex w-full max-w-sm flex-col gap-3"
+          @keydown.esc="cancelChangeAccessCode"
+          @submit.prevent="saveChangeAccessCode"
+        >
+          <h2 class="font-semibold">{{ $t('admin.changeAccessCode', { username: changingAccessCode.username }) }}</h2>
+          <p class="muted text-sm">{{ $t('admin.changeAccessCodeConfirm', { username: changingAccessCode.username, oldCode: changingAccessCode.access_code }) }}</p>
+          <label class="flex flex-col gap-1 text-sm">
+            {{ $t('admin.changeAccessCodeLabel') }}
+            <input v-model="changeAccessCodeNew" type="text" maxlength="20" class="field" placeholder="20-digit number" />
+          </label>
+          <p v-if="changeAccessCodeError" class="error-text text-sm">{{ changeAccessCodeError }}</p>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn" @click="cancelChangeAccessCode">{{ $t('common.cancel') }}</button>
+            <button type="submit" class="btn btn-primary" :disabled="isChangingAccessCode">{{ $t('common.save') }}</button>
+          </div>
+        </form>
       </div>
       </template>
     </template>

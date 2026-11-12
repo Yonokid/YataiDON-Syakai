@@ -5,9 +5,12 @@ import { useI18n } from 'vue-i18n'
 
 import type { UserData } from '../types'
 import { useSongDisplay } from '../composables/useSongDisplay'
-import Nameplate from './Nameplate.vue'
+import Nameplate, { type NameplateColor } from './Nameplate.vue'
+import TabNav from './TabNav.vue'
 
 // Keeps three.js out of the main bundle
+const tab = ref<'profile' | 'character' | 'play' | 'account'>('profile')
+const TABS = ['profile', 'character', 'play', 'account'] as const
 const Chara3DViewer = defineAsyncComponent(() => import('./Chara3DViewer.vue'))
 
 interface CostumeEntry {
@@ -28,7 +31,7 @@ const props = defineProps<{ user: UserData; accessCode: string }>()
 const emit = defineEmits<{
   logout: []
   'username-updated': [username: string]
-  'title-updated': [title: string]
+  'title-updated': [update: { title: string; nameplate_color?: NameplateColor }]
   'chara-colors-updated': [colors: { chara_color_1: string; chara_color_2: string; chara_color_3: string }]
   'costume-updated': [
     costume: {
@@ -66,6 +69,15 @@ const isPreset = presetTitleNames.value.includes(props.user.title)
 const titleMode = ref<'preset' | 'custom'>(isPreset ? 'preset' : 'custom')
 const presetTitle = ref(isPreset ? props.user.title : DEFAULT_TITLE)
 const customTitle = ref(isPreset ? '' : props.user.title)
+const previewTitle = computed(() =>
+  titleMode.value === 'preset' ? presetTitle.value : customTitle.value.trim() || props.user.title,
+)
+// A forced-unlock frame pick overrides the title's tier, so the preview keeps the saved color then.
+const previewColor = computed(() => {
+  if (props.user.force_unlock && props.user.nameplate_bg !== null) return props.user.nameplate_color
+  if (titleMode.value === 'custom') return 'red'
+  return props.user.unlocked_titles.find((t) => t.name === presetTitle.value)?.nameplate_color ?? 'red'
+})
 const isSavingTitle = ref(false)
 const titleSaveError = ref('')
 
@@ -84,7 +96,8 @@ async function saveTitle() {
       },
     )
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
-    emit('title-updated', title)
+    const data = await response.json().catch(() => ({}))
+    emit('title-updated', { title, nameplate_color: data.nameplate_color })
   } catch {
     titleSaveError.value = t('user.titleSaveError')
   } finally {
@@ -500,344 +513,29 @@ fetch(`${API_BASE_URL}/songs`)
 </script>
 
 <template>
-  <div class="flex w-full max-w-3xl flex-col items-center gap-4">
-    <div
-      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
-    >
-      <p>{{ $t('user.setUsername') }}</p>
-      <form class="flex flex-wrap justify-center gap-2" @submit.prevent="saveUsername">
-        <input
-          v-model="newUsername"
-          type="text"
-          maxlength="32"
-          :placeholder="$t('user.newUsernamePlaceholder')"
-          :disabled="isSaving"
-          class="field"
-        />
-        <button type="submit" class="btn" :disabled="isSaving || !newUsername.trim()">{{ $t('common.save') }}</button>
-      </form>
-      <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
-    </div>
-
-    <Nameplate
-      :username="user.username"
-      :title="user.title"
-      :color="user.nameplate_color"
-      :dan="user.dan"
-      :gold="user.gold"
-    />
-
-    <dl class="flex gap-8 text-center">
-      <div>
-        <dt class="muted text-sm">{{ $t('user.donPoints') }}</dt>
-        <dd class="text-xl font-semibold">{{ user.don_points.toLocaleString() }}</dd>
-      </div>
-      <div>
-        <dt class="muted text-sm">{{ $t('user.donMedals') }}</dt>
-        <dd class="text-xl font-semibold">{{ user.don_medals.toLocaleString() }}</dd>
-      </div>
-    </dl>
-
-    <div class="flex flex-col items-center gap-1 text-center">
-      <label class="flex cursor-pointer items-center gap-2 text-sm">
-        <input v-model="forceUnlock" type="checkbox" :disabled="isSavingForceUnlock" @change="saveForceUnlock" />
-        {{ $t('user.forceUnlock') }}
-      </label>
-      <p class="muted text-xs">{{ $t('user.forceUnlockHint') }}</p>
-      <p v-if="forceUnlockError" class="error-text text-sm">{{ forceUnlockError }}</p>
-      <div v-if="user.force_unlock" class="flex flex-wrap items-center justify-center gap-2 text-sm">
-        <span>{{ $t('user.nameplateBg') }}:</span>
-        <button
-          type="button"
-          class="btn"
-          :class="{ 'font-bold underline': user.nameplate_bg === null }"
-          :disabled="isSavingNameplateBg"
-          @click="saveNameplateBg(-1)"
-        >
-          {{ $t('user.nameplateBgDefault') }}
-        </button>
-        <button
-          v-for="(c, i) in NAMEPLATE_BGS"
-          :key="c"
-          type="button"
-          class="btn"
-          :class="{ 'font-bold underline': user.nameplate_bg === i }"
-          :disabled="isSavingNameplateBg"
-          @click="saveNameplateBg(i)"
-        >
-          {{ c }}
-        </button>
-      </div>
-      <p v-if="nameplateBgError" class="error-text text-sm">{{ nameplateBgError }}</p>
-    </div>
-
-    <div
-      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
-    >
-      <p>{{ $t('user.setTitle') }}</p>
-      <form class="flex flex-wrap items-center justify-center gap-2" @submit.prevent="saveTitle">
-        <label class="flex cursor-pointer items-center gap-1 text-sm">
-          <input v-model="titleMode" type="radio" value="preset" :disabled="isSavingTitle" />
-          {{ $t('user.titlePreset') }}
-        </label>
-        <label class="flex cursor-pointer items-center gap-1 text-sm">
-          <input v-model="titleMode" type="radio" value="custom" :disabled="isSavingTitle" />
-          {{ $t('user.titleCustom') }}
-        </label>
-        <select
-          v-if="titleMode === 'preset'"
-          v-model="presetTitle"
-          :disabled="isSavingTitle"
-          class="field"
-        >
-          <option v-for="name in presetTitleNames" :key="name" :value="name">{{ name }}</option>
-        </select>
-        <input
-          v-if="titleMode === 'custom'"
-          v-model="customTitle"
-          type="text"
-          maxlength="32"
-          :placeholder="$t('user.customTitlePlaceholder')"
-          :disabled="isSavingTitle"
-          class="field"
-        />
-        <button
-          type="submit"
-          class="btn"
-          :disabled="isSavingTitle || (titleMode === 'custom' && !customTitle.trim())"
-        >
-          {{ $t('common.save') }}
-        </button>
-      </form>
-      <p v-if="titleSaveError" class="error-text text-sm">{{ titleSaveError }}</p>
-    </div>
-
-    <div
-      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
-    >
-      <p>{{ $t('user.appearance') }}</p>
-      <form class="flex flex-wrap items-center justify-center gap-2" @submit.prevent="saveAppearance">
-        <input
-          v-model="userSkin"
-          type="text"
-          maxlength="64"
-          :placeholder="$t('user.skinPlaceholder')"
-          :disabled="isSavingAppearance"
-          class="field"
-        />
-        <select v-model="userLanguage" :disabled="isSavingAppearance" class="field">
-          <option value="">{{ $t('user.cabinetDefault') }}</option>
-          <option v-for="l in SKIN_LANGUAGES" :key="l.code" :value="l.code">{{ l.label }}</option>
-        </select>
-        <button type="submit" class="btn" :disabled="isSavingAppearance">{{ $t('common.save') }}</button>
-      </form>
-      <p class="muted text-xs">{{ $t('user.appearanceHint') }}</p>
-      <p v-if="appearanceSaveError" class="error-text text-sm">{{ appearanceSaveError }}</p>
-    </div>
-
-    <div
-      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
-    >
-      <p>{{ $t('user.modifiers') }}</p>
-      <form class="flex flex-wrap items-center justify-center gap-3" @submit.prevent="saveModifiers">
-        <label
-          v-for="modifier in BOOL_MODIFIERS"
-          :key="modifier.key"
-          class="flex cursor-pointer items-center gap-1 text-sm"
-        >
-          <input v-model="mods[modifier.key]" type="checkbox" :disabled="isSavingModifiers" />
-          {{ $t(modifier.label) }}
-        </label>
-        <label class="flex items-center gap-1 text-sm">
-          {{ $t('user.speed') }}
-          <select v-model.number="mods.speed" :disabled="isSavingModifiers" class="field">
-            <option v-for="speed in SPEEDS" :key="speed" :value="speed">{{ (speed / 10).toFixed(1) }}×</option>
-          </select>
-        </label>
-        <label class="flex items-center gap-1 text-sm">
-          {{ $t('user.random') }}
-          <select v-model.number="mods.random" :disabled="isSavingModifiers" class="field">
-            <option :value="0">{{ $t('user.randomOff') }}</option>
-            <option :value="1">{{ $t('user.randomKimagure') }}</option>
-            <option :value="2">{{ $t('user.randomDetarame') }}</option>
-          </select>
-        </label>
-        <label class="flex items-center gap-1 text-sm">
-          {{ $t('user.neiro') }}
-          <select v-model.number="mods.neiro" :disabled="isSavingModifiers" class="field">
-            <option v-for="(name, index) in NEIRO_NAMES" :key="name" :value="index">{{ name }}</option>
-            <option :value="-1">{{ $t('user.neiroNone') }}</option>
-          </select>
-        </label>
-        <button type="submit" class="btn" :disabled="isSavingModifiers">{{ $t('common.save') }}</button>
-      </form>
-      <p class="muted text-xs">{{ $t('user.modifiersHint') }}</p>
-      <p v-if="modifiersSaveError" class="error-text text-sm">{{ modifiersSaveError }}</p>
-    </div>
-
-    <div
-      class="flex w-full flex-col items-center gap-2 rounded-md border border-neutral-300 p-4 text-center dark:border-neutral-700"
-    >
-      <p>{{ $t('user.favorites') }}</p>
-      <ul class="flex w-full flex-col gap-1">
-        <li
-          v-for="entry in favoriteSongs"
-          :key="entry.hash"
-          class="flex items-center justify-between gap-2 text-sm"
-        >
-          <span>{{ entry.song ? songTitle(entry.song.title) : $t('user.unknownSong') }}</span>
-          <button type="button" class="btn" :disabled="isSavingFavorites" @click="removeFavorite(entry.hash)">
-            {{ $t('common.remove') }}
-          </button>
-        </li>
-        <li v-if="favoriteSongs.length === 0" class="muted text-sm">{{ $t('user.noFavorites') }}</li>
-      </ul>
-      <input
-        v-model="favoriteSearch"
-        type="search"
-        :placeholder="$t('user.favoriteSearch')"
-        :disabled="isSavingFavorites"
-        class="field"
+  <div class="flex w-full max-w-4xl flex-col gap-4">
+    <section class="card flex flex-wrap items-center justify-between gap-4">
+      <Nameplate
+        :username="user.username"
+        :title="previewTitle"
+        :color="previewColor"
+        :dan="user.dan"
+        :gold="user.gold"
       />
-      <ul v-if="searchResults.length > 0" class="flex w-full flex-col gap-1">
-        <li v-for="result in searchResults" :key="result.hash" class="flex items-center justify-between gap-2 text-sm">
-          <span>{{ songTitle(result.title) }}</span>
-          <button type="button" class="btn" :disabled="isSavingFavorites" @click="addFavorite(result.hash)">
-            {{ $t('common.add') }}
-          </button>
-        </li>
-      </ul>
-      <p class="muted text-xs">{{ $t('user.favoritesHint') }}</p>
-      <p v-if="favoritesSaveError" class="error-text text-sm">{{ favoritesSaveError }}</p>
-    </div>
-
-    <div class="flex flex-col items-center gap-1">
-      <p v-if="user.import_completed" class="muted text-center text-sm">{{ $t('user.importCompleted') }}</p>
-      <p v-else-if="user.import_requested" class="muted text-center text-sm">
-        {{ $t('user.importRequested') }}
-      </p>
-      <button
-        v-else
-        type="button"
-        class="btn"
-        :disabled="isRequestingImport"
-        @click="requestScoreImport"
-      >
-        {{ $t('user.importButton') }}
-      </button>
-      <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
-    </div>
-
-    <div class="flex w-full flex-col-reverse gap-4 sm:flex-row sm:items-start">
-      <div class="flex min-w-0 flex-1 flex-col items-center gap-4">
-        <div class="flex flex-col items-center gap-2">
-          <span class="muted text-sm">{{ $t('user.donColors') }}</span>
-          <div class="flex gap-4">
-            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-              <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
-              {{ $t('user.body') }}
-            </label>
-            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-              <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
-              {{ $t('user.face') }}
-            </label>
-            <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
-              <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
-              {{ $t('user.accent') }}
-            </label>
-          </div>
-          <button type="button" class="btn" :disabled="isSavingColors" @click="saveCharaColors">{{ $t('user.saveColors') }}</button>
-          <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
+      <dl class="flex gap-8">
+        <div>
+          <dt class="muted text-sm">{{ $t('user.donPoints') }}</dt>
+          <dd class="text-xl font-semibold">{{ user.don_points.toLocaleString() }}</dd>
         </div>
-
-        <div class="flex w-full flex-col items-center gap-2">
-          <span class="muted text-sm">{{ $t('user.costume') }}</span>
-          <label class="flex items-center gap-2 text-sm">
-            <input v-model="isCostumeMode" type="checkbox" />
-            {{ $t('user.fullCostume') }}
-          </label>
-
-          <div v-if="isCostumeMode" class="flex flex-col items-center gap-1">
-            <span class="muted text-xs">{{ costumeNames?.costume[cosIndex]?.name }}</span>
-            <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-              <button
-                v-for="o in costumeOptionsList"
-                :key="o.id"
-                type="button"
-                :title="o.name"
-                class="rounded-md border p-1"
-                :class="cosIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-                @click="cosIndex = o.id"
-              >
-                <img :src="iconUrl('costume', o.id)" alt="" class="h-12 w-12" />
-              </button>
-            </div>
-          </div>
-          <div v-else class="flex w-full flex-col gap-4">
-            <div class="flex flex-col items-center gap-1">
-              <span class="muted text-xs">{{ $t('user.head') }} — {{ costumeNames?.head[headIndex]?.name }}</span>
-              <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-                <button
-                  v-for="o in headOptions"
-                  :key="o.id"
-                  type="button"
-                  :title="o.name"
-                  class="rounded-md border p-1"
-                  :class="headIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-                  @click="headIndex = o.id"
-                >
-                  <img :src="iconUrl('head', o.id)" alt="" class="h-12 w-12" />
-                </button>
-              </div>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-              <span class="muted text-xs">{{ $t('user.body') }} — {{ costumeNames?.body[bodyIndex]?.name }}</span>
-              <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-                <button
-                  v-for="o in bodyOptions"
-                  :key="o.id"
-                  type="button"
-                  :title="o.name"
-                  class="rounded-md border p-1"
-                  :class="bodyIndex === o.id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-                  @click="bodyIndex = o.id"
-                >
-                  <img :src="iconUrl('body', o.id)" alt="" class="h-12 w-12" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button type="button" class="btn" :disabled="isSavingCostume" @click="saveCostume">{{ $t('user.saveCostume') }}</button>
-          <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
+        <div>
+          <dt class="muted text-sm">{{ $t('user.donMedals') }}</dt>
+          <dd class="text-xl font-semibold">{{ user.don_medals.toLocaleString() }}</dd>
         </div>
+      </dl>
+    </section>
 
-        <div v-if="ownedPuchis.length" class="flex w-full flex-col items-center gap-2">
-          <span class="muted text-sm">{{ $t('user.puchichara') }}</span>
-          <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-md border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
-            <button
-              v-for="id in [-1, ...ownedPuchis]"
-              :key="id"
-              type="button"
-              class="flex items-center justify-center rounded-md border p-1"
-              :class="puchiIndex === id ? 'border-neutral-900 bg-neutral-200 dark:border-neutral-100 dark:bg-neutral-700' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
-              @click="puchiIndex = id"
-            >
-              <!-- sheets are two frames stacked vertically; show the top one -->
-              <img
-                v-if="id >= 0"
-                :src="puchiUrl(id)"
-                alt=""
-                class="h-12 w-12 object-cover object-top"
-              />
-              <span v-else class="muted flex h-12 w-12 items-center justify-center text-xs">{{ $t('user.puchiNone') }}</span>
-            </button>
-          </div>
-          <button type="button" class="btn" :disabled="isSavingPuchi" @click="savePuchi">{{ $t('user.savePuchi') }}</button>
-          <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
-        </div>
-      </div>
-      <div class="w-full shrink-0 sm:sticky sm:top-4 sm:w-72">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+      <div class="w-full shrink-0 sm:sticky sm:top-20 sm:w-64">
         <Chara3DViewer
           :is-costume="isCostumeMode"
           :head="headIndex"
@@ -847,34 +545,356 @@ fetch(`${API_BASE_URL}/songs`)
           :puchi="puchiIndex"
         />
       </div>
-    </div>
 
-    <div class="flex flex-col items-center gap-2">
-      <span class="muted text-sm">{{ $t('user.loginOnPhone') }}</span>
-      <button
-        type="button"
-        class="relative h-[220px] w-[220px] overflow-hidden rounded-md border border-neutral-300 dark:border-neutral-700"
-        @click="qrRevealed = !qrRevealed"
-      >
-        <img
-          v-if="qrDataUrl"
-          :src="qrDataUrl"
-          alt="QR login code"
-          class="h-full w-full transition-[filter]"
-          :class="qrRevealed ? '' : 'blur-xl'"
-        />
-        <span
-          v-if="!qrRevealed"
-          class="absolute inset-0 flex items-center justify-center bg-white/40 text-center text-sm font-medium dark:bg-black/40"
-        >
-          {{ $t('user.tapToReveal') }}
-        </span>
-      </button>
-      <p class="muted max-w-xs text-center text-xs">
-        {{ $t('user.qrHint') }}
-      </p>
-    </div>
+      <div class="flex min-w-0 flex-1 flex-col gap-4">
+        <TabNav v-model="tab" :tabs="TABS.map((v) => ({ value: v, label: $t('user.tab_' + v) }))" />
 
-    <button type="button" class="btn" @click="$emit('logout')">{{ $t('user.logout') }}</button>
+        <div v-show="tab === 'profile'" class="flex flex-col gap-4">
+          <div
+            class="card flex w-full flex-col gap-2"
+          >
+            <p>{{ $t('user.setUsername') }}</p>
+            <form class="flex flex-wrap gap-2" @submit.prevent="saveUsername">
+              <input
+                v-model="newUsername"
+                type="text"
+                maxlength="32"
+                :placeholder="$t('user.newUsernamePlaceholder')"
+                :disabled="isSaving"
+                class="field"
+              />
+              <button type="submit" class="btn btn-primary" :disabled="isSaving || !newUsername.trim()">{{ $t('common.save') }}</button>
+            </form>
+            <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
+          </div>
+          <div
+            class="card flex w-full flex-col gap-2"
+          >
+            <p>{{ $t('user.setTitle') }}</p>
+            <form class="flex flex-wrap items-center gap-2" @submit.prevent="saveTitle">
+              <label class="flex cursor-pointer items-center gap-1 text-sm">
+                <input v-model="titleMode" type="radio" value="preset" :disabled="isSavingTitle" />
+                {{ $t('user.titlePreset') }}
+              </label>
+              <label class="flex cursor-pointer items-center gap-1 text-sm">
+                <input v-model="titleMode" type="radio" value="custom" :disabled="isSavingTitle" />
+                {{ $t('user.titleCustom') }}
+              </label>
+              <select
+                v-if="titleMode === 'preset'"
+                v-model="presetTitle"
+                :disabled="isSavingTitle"
+                class="field"
+              >
+                <option v-for="name in presetTitleNames" :key="name" :value="name">{{ name }}</option>
+              </select>
+              <input
+                v-if="titleMode === 'custom'"
+                v-model="customTitle"
+                type="text"
+                maxlength="32"
+                :placeholder="$t('user.customTitlePlaceholder')"
+                :disabled="isSavingTitle"
+                class="field"
+              />
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="isSavingTitle || (titleMode === 'custom' && !customTitle.trim())"
+              >
+                {{ $t('common.save') }}
+              </button>
+            </form>
+            <p v-if="titleSaveError" class="error-text text-sm">{{ titleSaveError }}</p>
+          </div>
+          <div class="card flex flex-col gap-1">
+            <label class="flex cursor-pointer items-center gap-2 text-sm">
+              <input v-model="forceUnlock" type="checkbox" :disabled="isSavingForceUnlock" @change="saveForceUnlock" />
+              {{ $t('user.forceUnlock') }}
+            </label>
+            <p class="muted text-xs">{{ $t('user.forceUnlockHint') }}</p>
+            <p v-if="forceUnlockError" class="error-text text-sm">{{ forceUnlockError }}</p>
+            <div v-if="user.force_unlock" class="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span>{{ $t('user.nameplateBg') }}:</span>
+              <button
+                type="button"
+                class="btn"
+                :class="{ 'font-bold underline': user.nameplate_bg === null }"
+                :disabled="isSavingNameplateBg"
+                @click="saveNameplateBg(-1)"
+              >
+                {{ $t('user.nameplateBgDefault') }}
+              </button>
+              <button
+                v-for="(c, i) in NAMEPLATE_BGS"
+                :key="c"
+                type="button"
+                class="btn"
+                :class="{ 'font-bold underline': user.nameplate_bg === i }"
+                :disabled="isSavingNameplateBg"
+                @click="saveNameplateBg(i)"
+              >
+                {{ c }}
+              </button>
+            </div>
+            <p v-if="nameplateBgError" class="error-text text-sm">{{ nameplateBgError }}</p>
+          </div>
+        </div>
+
+        <div v-show="tab === 'character'" class="flex flex-col gap-4">
+          <div class="card flex flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.donColors') }}</span>
+            <div class="flex flex-wrap gap-4">
+              <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+                <input v-model="charaColor1" type="color" class="h-10 w-10 cursor-pointer" />
+                {{ $t('user.body') }}
+              </label>
+              <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+                <input v-model="charaColor2" type="color" class="h-10 w-10 cursor-pointer" />
+                {{ $t('user.face') }}
+              </label>
+              <label class="flex cursor-pointer flex-col items-center gap-1 text-sm">
+                <input v-model="charaColor3" type="color" class="h-10 w-10 cursor-pointer" />
+                {{ $t('user.accent') }}
+              </label>
+            </div>
+            <button type="button" class="btn btn-primary self-start" :disabled="isSavingColors" @click="saveCharaColors">{{ $t('user.saveColors') }}</button>
+            <p v-if="colorSaveError" class="error-text text-sm">{{ colorSaveError }}</p>
+          </div>
+
+          <div class="card flex w-full flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.costume') }}</span>
+            <label class="flex items-center gap-2 text-sm">
+              <input v-model="isCostumeMode" type="checkbox" />
+              {{ $t('user.fullCostume') }}
+            </label>
+
+            <div v-if="isCostumeMode" class="flex flex-col gap-1">
+              <span class="muted text-xs">{{ costumeNames?.costume[cosIndex]?.name }}</span>
+              <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+                <button
+                  v-for="o in costumeOptionsList"
+                  :key="o.id"
+                  type="button"
+                  :title="o.name"
+                  class="rounded-chip border p-1"
+                  :class="cosIndex === o.id ? 'border-don bg-don/10' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                  @click="cosIndex = o.id"
+                >
+                  <img :src="iconUrl('costume', o.id)" alt="" class="h-12 w-12" />
+                </button>
+              </div>
+            </div>
+            <div v-else class="flex w-full flex-col gap-4">
+              <div class="flex flex-col gap-1">
+                <span class="muted text-xs">{{ $t('user.head') }} — {{ costumeNames?.head[headIndex]?.name }}</span>
+                <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+                  <button
+                    v-for="o in headOptions"
+                    :key="o.id"
+                    type="button"
+                    :title="o.name"
+                    class="rounded-chip border p-1"
+                    :class="headIndex === o.id ? 'border-don bg-don/10' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                    @click="headIndex = o.id"
+                  >
+                    <img :src="iconUrl('head', o.id)" alt="" class="h-12 w-12" />
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col gap-1">
+                <span class="muted text-xs">{{ $t('user.body') }} — {{ costumeNames?.body[bodyIndex]?.name }}</span>
+                <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+                  <button
+                    v-for="o in bodyOptions"
+                    :key="o.id"
+                    type="button"
+                    :title="o.name"
+                    class="rounded-chip border p-1"
+                    :class="bodyIndex === o.id ? 'border-don bg-don/10' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                    @click="bodyIndex = o.id"
+                  >
+                    <img :src="iconUrl('body', o.id)" alt="" class="h-12 w-12" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary self-start" :disabled="isSavingCostume" @click="saveCostume">{{ $t('user.saveCostume') }}</button>
+            <p v-if="costumeSaveError" class="error-text text-sm">{{ costumeSaveError }}</p>
+          </div>
+
+          <div v-if="ownedPuchis.length" class="card flex w-full flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.puchichara') }}</span>
+            <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+              <button
+                v-for="id in [-1, ...ownedPuchis]"
+                :key="id"
+                type="button"
+                class="flex items-center justify-center rounded-chip border p-1"
+                :class="puchiIndex === id ? 'border-don bg-don/10' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                @click="puchiIndex = id"
+              >
+                <!-- sheets are two frames stacked vertically; show the top one -->
+                <img
+                  v-if="id >= 0"
+                  :src="puchiUrl(id)"
+                  alt=""
+                  class="h-12 w-12 object-cover object-top"
+                />
+                <span v-else class="muted flex h-12 w-12 items-center justify-center text-xs">{{ $t('user.puchiNone') }}</span>
+              </button>
+            </div>
+            <button type="button" class="btn btn-primary self-start" :disabled="isSavingPuchi" @click="savePuchi">{{ $t('user.savePuchi') }}</button>
+            <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
+          </div>
+
+        </div>
+
+        <div v-show="tab === 'play'" class="flex flex-col gap-4">
+          <div
+            class="card flex w-full flex-col gap-2"
+          >
+            <p>{{ $t('user.appearance') }}</p>
+            <form class="flex flex-wrap items-center gap-2" @submit.prevent="saveAppearance">
+              <input
+                v-model="userSkin"
+                type="text"
+                maxlength="64"
+                :placeholder="$t('user.skinPlaceholder')"
+                :disabled="isSavingAppearance"
+                class="field"
+              />
+              <select v-model="userLanguage" :disabled="isSavingAppearance" class="field">
+                <option value="">{{ $t('user.cabinetDefault') }}</option>
+                <option v-for="l in SKIN_LANGUAGES" :key="l.code" :value="l.code">{{ l.label }}</option>
+              </select>
+              <button type="submit" class="btn btn-primary" :disabled="isSavingAppearance">{{ $t('common.save') }}</button>
+            </form>
+            <p class="muted text-xs">{{ $t('user.appearanceHint') }}</p>
+            <p v-if="appearanceSaveError" class="error-text text-sm">{{ appearanceSaveError }}</p>
+          </div>
+          <div
+            class="card flex w-full flex-col gap-2"
+          >
+            <p>{{ $t('user.modifiers') }}</p>
+            <form class="flex flex-wrap items-center gap-3" @submit.prevent="saveModifiers">
+              <label
+                v-for="modifier in BOOL_MODIFIERS"
+                :key="modifier.key"
+                class="flex cursor-pointer items-center gap-1 text-sm"
+              >
+                <input v-model="mods[modifier.key]" type="checkbox" :disabled="isSavingModifiers" />
+                {{ $t(modifier.label) }}
+              </label>
+              <label class="flex items-center gap-1 text-sm">
+                {{ $t('user.speed') }}
+                <select v-model.number="mods.speed" :disabled="isSavingModifiers" class="field">
+                  <option v-for="speed in SPEEDS" :key="speed" :value="speed">{{ (speed / 10).toFixed(1) }}×</option>
+                </select>
+              </label>
+              <label class="flex items-center gap-1 text-sm">
+                {{ $t('user.random') }}
+                <select v-model.number="mods.random" :disabled="isSavingModifiers" class="field">
+                  <option :value="0">{{ $t('user.randomOff') }}</option>
+                  <option :value="1">{{ $t('user.randomKimagure') }}</option>
+                  <option :value="2">{{ $t('user.randomDetarame') }}</option>
+                </select>
+              </label>
+              <label class="flex items-center gap-1 text-sm">
+                {{ $t('user.neiro') }}
+                <select v-model.number="mods.neiro" :disabled="isSavingModifiers" class="field">
+                  <option v-for="(name, index) in NEIRO_NAMES" :key="name" :value="index">{{ name }}</option>
+                  <option :value="-1">{{ $t('user.neiroNone') }}</option>
+                </select>
+              </label>
+              <button type="submit" class="btn btn-primary" :disabled="isSavingModifiers">{{ $t('common.save') }}</button>
+            </form>
+            <p class="muted text-xs">{{ $t('user.modifiersHint') }}</p>
+            <p v-if="modifiersSaveError" class="error-text text-sm">{{ modifiersSaveError }}</p>
+          </div>
+          <div
+            class="card flex w-full flex-col gap-2"
+          >
+            <p>{{ $t('user.favorites') }}</p>
+            <ul class="flex w-full flex-col gap-1">
+              <li
+                v-for="entry in favoriteSongs"
+                :key="entry.hash"
+                class="flex items-center justify-between gap-2 text-sm"
+              >
+                <span>{{ entry.song ? songTitle(entry.song.title) : $t('user.unknownSong') }}</span>
+                <button type="button" class="btn" :disabled="isSavingFavorites" @click="removeFavorite(entry.hash)">
+                  {{ $t('common.remove') }}
+                </button>
+              </li>
+              <li v-if="favoriteSongs.length === 0" class="muted text-sm">{{ $t('user.noFavorites') }}</li>
+            </ul>
+            <input
+              v-model="favoriteSearch"
+              type="search"
+              :placeholder="$t('user.favoriteSearch')"
+              :disabled="isSavingFavorites"
+              class="field"
+            />
+            <ul v-if="searchResults.length > 0" class="flex w-full flex-col gap-1">
+              <li v-for="result in searchResults" :key="result.hash" class="flex items-center justify-between gap-2 text-sm">
+                <span>{{ songTitle(result.title) }}</span>
+                <button type="button" class="btn" :disabled="isSavingFavorites" @click="addFavorite(result.hash)">
+                  {{ $t('common.add') }}
+                </button>
+              </li>
+            </ul>
+            <p class="muted text-xs">{{ $t('user.favoritesHint') }}</p>
+            <p v-if="favoritesSaveError" class="error-text text-sm">{{ favoritesSaveError }}</p>
+          </div>
+        </div>
+
+        <div v-show="tab === 'account'" class="flex flex-col gap-4">
+          <div class="card flex flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.loginOnPhone') }}</span>
+            <button
+              type="button"
+              class="relative h-[220px] w-[220px] overflow-hidden rounded-control border border-neutral-300 dark:border-neutral-700"
+              @click="qrRevealed = !qrRevealed"
+            >
+              <img
+                v-if="qrDataUrl"
+                :src="qrDataUrl"
+                alt="QR login code"
+                class="h-full w-full transition-[filter]"
+                :class="qrRevealed ? '' : 'blur-xl'"
+              />
+              <span
+                v-if="!qrRevealed"
+                class="absolute inset-0 flex items-center justify-center bg-white/40 text-center text-sm font-medium dark:bg-black/40"
+              >
+                {{ $t('user.tapToReveal') }}
+              </span>
+            </button>
+            <p class="muted max-w-xs text-xs">
+              {{ $t('user.qrHint') }}
+            </p>
+          </div>
+          <div class="card flex flex-col gap-2">
+            <p v-if="user.import_completed" class="muted text-sm">{{ $t('user.importCompleted') }}</p>
+            <p v-else-if="user.import_requested" class="muted text-sm">
+              {{ $t('user.importRequested') }}
+            </p>
+            <button
+              v-else
+              type="button"
+              class="btn"
+              :disabled="isRequestingImport"
+              @click="requestScoreImport"
+            >
+              {{ $t('user.importButton') }}
+            </button>
+            <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
+          </div>
+          <button type="button" class="btn self-start" @click="$emit('logout')">{{ $t('user.logout') }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

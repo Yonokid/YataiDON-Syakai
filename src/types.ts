@@ -21,6 +21,7 @@ export interface Score {
 interface UnlockedTitle {
   number: number
   name: string
+  nameplate_color?: NameplateColor
 }
 
 export interface UserData {
