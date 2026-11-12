@@ -162,6 +162,7 @@ export default {
     noTitlesFound: 'No titles found.',
     logClear: 'Clear',
     logLive: 'Live',
+    logDate: 'Log date (empty for live)',
     logDisconnected: 'Disconnected',
     logAllLevels: 'All levels',
     logAllEndpoints: 'All endpoints',

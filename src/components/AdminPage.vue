@@ -155,6 +155,7 @@ const logsError = ref('')
 const logsLive = ref(false)
 const levelFilter = ref('')
 const endpointFilter = ref('')
+const historyDate = ref('')
 let logsSocket: WebSocket | null = null
 let logsReconnectTimer: ReturnType<typeof setTimeout> | undefined
 
@@ -500,6 +501,7 @@ function switchTab(tab: Tab) {
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
   if (tab === 'log') {
     if (apiKeys.value.length === 0) fetchApiKeys()
+    historyDate.value = ''
     connectLogs()
   }
 }
@@ -555,6 +557,27 @@ function connectLogs() {
       return
     }
     logsReconnectTimer = setTimeout(connectLogs, 3000)
+  }
+}
+
+async function loadLogHistory() {
+  if (!historyDate.value) {
+    connectLogs()
+    return
+  }
+  closeLogs()
+  logsError.value = ''
+  logsLoading.value = true
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/logs/history?admin_key=${encodeURIComponent(adminKey.value)}&date=${historyDate.value}`,
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    logs.value = ((await response.json()) as { logs: AdminLog[] }).logs
+  } catch {
+    logsError.value = t('admin.logsLoadError')
+  } finally {
+    logsLoading.value = false
   }
 }
 
@@ -888,8 +911,15 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             <option value="">{{ $t('admin.logAllEndpoints') }}</option>
             <option v-for="(label, key) in LOG_ENDPOINTS" :key="key" :value="key">{{ label }}</option>
           </select>
+          <input
+            v-model="historyDate"
+            type="date"
+            class="field text-sm"
+            :aria-label="$t('admin.logDate')"
+            @change="loadLogHistory"
+          />
           <span class="muted ml-auto text-xs">{{ $t('admin.logCount', { count: filteredLogs.length }) }}</span>
-          <button type="button" class="btn btn-danger" @click="clearLogs">{{ $t('admin.logClear') }}</button>
+          <button v-if="!historyDate" type="button" class="btn btn-danger" @click="clearLogs">{{ $t('admin.logClear') }}</button>
         </div>
         <p v-if="logsError" class="error-text text-sm">{{ logsError }}</p>
         <p v-if="logsLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
