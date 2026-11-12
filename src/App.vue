@@ -11,12 +11,12 @@ function handleLogout() {
 const activeCls = '!border-don !text-neutral-900 dark:!text-neutral-100'
 const links = [
   ['/', 'home'],
-  ['/scores', 'scores'],
-  ['/dans', 'dans'],
   ['/user', 'user'],
+  ['/scores', 'scores'],
   ['/charts', 'charts'],
-  ['/leaderboard', 'leaderboard'],
   ['/songs', 'songs'],
+  ['/leaderboard', 'leaderboard'],
+  ['/dans', 'dans'],
   ['/titles', 'titles'],
   ['/cosmetics', 'cosmetics'],
 ] as const
