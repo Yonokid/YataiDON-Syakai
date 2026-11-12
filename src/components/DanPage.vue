@@ -190,6 +190,14 @@ function examValue(exam: DanExam) {
       <p class="muted text-xs">
         {{ t('dans.countShown', { shown: filteredCourses.length, total: courses.length }) }}
       </p>
+      <p class="muted flex items-center gap-3 text-xs">
+        <span class="flex items-center gap-1">
+          <img src="/dan/clear_mark/0.png" alt="" class="h-6 w-auto" />{{ $t('dans.markPassed') }}
+        </span>
+        <span class="flex items-center gap-1">
+          <img src="/dan/clear_mark/1.png" alt="" class="h-6 w-auto" />{{ $t('dans.markPerfect') }}
+        </span>
+      </p>
       <p v-if="filteredCourses.length === 0" class="muted">{{ $t('dans.noCourses') }}</p>
 
       <div v-else class="flex w-full flex-col gap-4">
@@ -203,6 +211,7 @@ function examValue(exam: DanExam) {
           >
             <summary class="cursor-pointer">
               <span class="flex flex-wrap items-center gap-2">
+                <img :src="`/dan/frame/${course.color}.png`" alt="" class="h-8 w-auto" />
                 <span class="muted text-xs">#{{ courseIndex(course.path) }}</span>
                 <span class="font-semibold">{{ course.title }}</span>
                 <span class="muted text-xs">{{ t('dans.songCount', { n: course.charts.length }) }}</span>

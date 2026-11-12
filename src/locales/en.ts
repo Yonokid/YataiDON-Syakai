@@ -249,6 +249,8 @@ export default {
     songs: 'Songs',
     exams: 'Exams',
     gen3: 'Gen3',
+    markPassed: 'Passed',
+    markPerfect: 'Gold clear',
     examTypes: {
       gauge: 'Gauge',
       judgeperfect: 'Perfect',
