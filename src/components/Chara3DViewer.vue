@@ -392,8 +392,7 @@ async function loadCharacter() {
         [`${BASE}/head/${props.head}.glb`, true],
       ]
   try {
-    await loadRig()
-    const loaded = await Promise.all(urls.map(([url, isHead]) => loadPart(url, isHead)))
+    const [, ...loaded] = await Promise.all([loadRig(), ...urls.map(([url, isHead]) => loadPart(url, isHead))])
     if (id !== loadId) {
       loaded.forEach(disposePart)
       return
