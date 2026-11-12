@@ -872,6 +872,9 @@ fetch(`${API_BASE_URL}/songs`)
                 {{ $t('user.tapToReveal') }}
               </span>
             </button>
+            <p class="min-h-5 text-sm">
+              <template v-if="qrRevealed && qrDataUrl">{{ accessCode }}</template>
+            </p>
             <p class="muted max-w-xs text-xs">
               {{ $t('user.qrHint') }}
             </p>
