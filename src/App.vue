@@ -26,6 +26,7 @@ const links = [
   ['/dans', 'dans'],
   ['/titles', 'titles'],
   ['/cosmetics', 'cosmetics'],
+  ['/shop', 'shop'],
 ] as const
 </script>
 
@@ -67,7 +68,7 @@ const links = [
             ? { user: currentUser, accessCode }
             : route.name === 'charts'
               ? { scores: currentUser?.scores, accessCode }
-              : route.name === 'titles' || route.name === 'cosmetics'
+              : route.name === 'titles' || route.name === 'cosmetics' || route.name === 'shop'
                 ? { accessCode }
                 : {}
         "

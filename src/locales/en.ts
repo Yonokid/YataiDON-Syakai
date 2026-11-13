@@ -9,6 +9,7 @@ export default {
     songs: 'Songs',
     titles: 'Titles',
     cosmetics: 'Cosmetics',
+    shop: 'Reward Shop',
     songLanguage: 'Song name language',
   },
   common: {
@@ -402,5 +403,18 @@ export default {
     favoritesHint:
       'Only used on machines running guest mode; will replace Favorite boxes with your own favorites',
     favoritesSaveError: 'Could not save the favorites. Please try again.',
+  },
+  rewardShop: {
+    title: 'Reward Shop',
+    hint: 'Click an item to buy it. Don medals are earned by playing songs on the game.',
+    loadError: 'Could not load the shop. Please try again.',
+    titleTag: 'Title',
+    have: 'you have {medals}',
+    buy: 'Buy',
+    close: 'Close',
+    owned: 'You already own this.',
+    shortage: 'Not enough Don medals.',
+    failed: 'Could not buy this. Please try again.',
+    balance: '{medals} / {max} Don medals',
   },
 }
