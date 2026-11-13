@@ -286,7 +286,7 @@ onBeforeUnmount(() => {
 }
 .check {
   left: 0;
-  top: 82px;
+  top: 64px;
 }
 .cursor {
   width: 100px;
