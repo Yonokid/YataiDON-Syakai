@@ -115,6 +115,8 @@ const LOG_ENDPOINTS: Record<string, string> = {
   'GET /poll_jump': 'Jump polled',
   'GET /ai_battle': 'AI battle data',
   'POST /ai_battle': 'AI battle played',
+  'GET /enso_battle': 'Enso battle data',
+  'POST /enso_battle': 'Enso battle played',
   'GET /admin/users': 'Admin: users',
   'POST /admin/update_user': 'Admin: user updated',
   'POST /admin/delete_user': 'Admin: user deleted',
