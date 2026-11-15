@@ -236,10 +236,9 @@ async function savePuchi() {
   }
 }
 
+// Sheets are Models/paint/<id>.png, ids 1-57; names are optional (the JSON may be cached without them)
 const paintOptions = computed(() =>
-  Object.entries(costumeNames.value?.paint ?? {})
-    .map(([id, entry]) => ({ id: Number(id), ...entry }))
-    .sort((a, b) => a.id - b.id),
+  Array.from({ length: 57 }, (_, i) => ({ id: i + 1, name: costumeNames.value?.paint?.[i + 1]?.name ?? null })),
 )
 function paintUrl(id: number) {
   return `${import.meta.env.BASE_URL}costumes/paint/${id}.png`
@@ -781,7 +780,7 @@ fetch(`${API_BASE_URL}/songs`)
             <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
           </div>
 
-          <div v-if="user.force_unlock && paintOptions.length" class="card flex w-full flex-col gap-2">
+          <div v-if="user.force_unlock" class="card flex w-full flex-col gap-2">
             <span class="muted text-sm">{{ $t('user.makeup') }}</span>
             <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
               <button
