@@ -149,6 +149,8 @@ interface Part {
   skeleton: THREE.Skeleton | null
   recolors: Recolor[]
   faceMaterials: THREE.MeshBasicMaterial[]
+  faceMeshes: THREE.Mesh[]
+  faceScale: number
 }
 interface Rig {
   mixer: THREE.AnimationMixer
@@ -274,8 +276,24 @@ function normalizeFacePlane(mesh: THREE.Mesh, always: boolean) {
   const { min, max } = geometry.boundingBox!
   const size = Math.max(max.x - min.x, max.y - min.y)
   if (size <= 0.0001 || (!always && size <= FACE_PLANE_SIZE * 1.02)) return
+  scaleFacePlane(mesh, FACE_PLANE_SIZE / size)
+}
+
+// Paint sheets draw the bare face at 3/4 size (Chara3D::set_paint), so a painted plane is 4/3 larger
+const PAINT_PLANE_SCALE = 4 / 3
+
+function applyPaintScale(part: Part) {
+  const target = props.paint ? PAINT_PLANE_SCALE : 1
+  if (part.faceScale === target) return
+  part.faceMeshes.forEach((mesh) => scaleFacePlane(mesh, target / part.faceScale))
+  part.faceScale = target
+}
+
+function scaleFacePlane(mesh: THREE.Mesh, factor: number) {
+  const geometry = mesh.geometry
+  geometry.computeBoundingBox()
+  const { min, max } = geometry.boundingBox!
   const center = min.clone().add(max).multiplyScalar(0.5)
-  const factor = FACE_PLANE_SIZE / size
   const position = geometry.attributes.position!
   for (let i = 0; i < position.count; i++) {
     position.setXYZ(
@@ -285,11 +303,13 @@ function normalizeFacePlane(mesh: THREE.Mesh, always: boolean) {
       center.z + (position.getZ(i) - center.z) * factor,
     )
   }
+  position.needsUpdate = true
+  geometry.computeBoundingSphere()
 }
 
 async function loadPart(url: string, isHead: boolean): Promise<Part> {
   const { scene: root } = await loader.loadAsync(url)
-  const part: Part = { root, skeleton: null, recolors: [], faceMaterials: [] }
+  const part: Part = { root, skeleton: null, recolors: [], faceMaterials: [], faceMeshes: [], faceScale: 1 }
 
   const meshes: THREE.Mesh[] = []
   root.traverse((o) => {
@@ -332,6 +352,7 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
     if (isFace) {
       normalizeFacePlane(mesh, isHead)
       part.faceMaterials.push(material)
+      part.faceMeshes.push(mesh)
     }
     mesh.material = material
     mesh.frustumCulled = false
@@ -346,6 +367,7 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
     }
   })
 
+  applyPaintScale(part)
   return part
 }
 
@@ -502,7 +524,10 @@ onBeforeUnmount(() => {
 watch(() => [props.isCostume, props.head, props.body, props.cos], loadCharacter)
 watch(
   () => props.paint,
-  () => loadFaceTextures().catch(() => (failed.value = true)),
+  () => {
+    parts.forEach(applyPaintScale)
+    loadFaceTextures().catch(() => (failed.value = true))
+  },
 )
 watch(
   () => props.colors,
