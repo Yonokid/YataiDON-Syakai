@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import AccessCodeInput from '../components/AccessCodeInput.vue'
 import AdminPage from '../components/AdminPage.vue'
+import EnsoBattlePage from '../components/EnsoBattlePage.vue'
 import DanPage from '../components/DanPage.vue'
 import DiffChartPage from '../components/DiffChartPage.vue'
 import HomePage from '../components/HomePage.vue'
@@ -33,6 +34,7 @@ const router = createRouter({
     { path: '/titles', name: 'titles', component: TitlesPage },
     { path: '/cosmetics', name: 'cosmetics', component: CosmeticsPage },
     { path: '/shop', name: 'shop', component: RewardShopPage },
+    { path: '/battle', name: 'battle', component: EnsoBattlePage },
   ],
 })
 
