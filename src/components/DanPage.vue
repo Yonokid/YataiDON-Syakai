@@ -296,6 +296,7 @@ details[open] .dan-chevron {
   width: 100%;
 }
 .dan-name {
+  font-family: 'Kanteiryu', 'Noto Sans JP', system-ui, sans-serif;
   color: #fff;
   paint-order: stroke fill;
   -webkit-text-stroke: 4px #000;
