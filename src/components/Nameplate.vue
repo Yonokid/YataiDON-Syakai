@@ -140,14 +140,13 @@ const danName = computed(() => (hasDan.value ? DAN_NAMES[props.dan as number] : 
 }
 
 .nameplate-username {
-  font-size: clamp(1.05rem, 3.8vw, 1.6rem);
+  font-size: clamp(1.05rem, 3.8vw, 1.5rem);
   font-weight: 700;
-  color: #2b1a0e;
+  color: #fff;
   line-height: 1;
-  text-shadow:
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-    1px 1px 0 #fff;
+  -webkit-text-stroke: 0.2em #000;
+  paint-order: stroke fill;
+  padding: 0.25em 0.1em;
+  box-sizing: border-box;
 }
 </style>
