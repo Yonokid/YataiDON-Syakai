@@ -5,8 +5,10 @@ import { useRoute } from 'vue-router'
 
 import { songGroupKey, useSongDisplay } from '../composables/useSongDisplay'
 import { accessCode } from '../stores/auth'
+import ChartView from './ChartView.vue'
 import CrownIcon from './CrownIcon.vue'
 import DifficultyBadge from './DifficultyBadge.vue'
+import TabNav from './TabNav.vue'
 
 interface Song {
   hash: string
@@ -40,6 +42,18 @@ const jumpingHash = ref<string | null>(null)
 const jumpError = ref('')
 const jumpingReplayId = ref<number | null>(null)
 const replayJumpError = ref('')
+const chartScoreId = ref<number | null>(null)
+const tab = ref<'leaderboard' | 'chart'>('leaderboard')
+const tabs = computed(() => [
+  { value: 'leaderboard' as const, label: t('song.tabLeaderboard') },
+  { value: 'chart' as const, label: t('chart.title') },
+])
+const chartEntry = computed(() => entries.value.find((e) => e.score_id === chartScoreId.value))
+
+function showOnChart(scoreId: number) {
+  chartScoreId.value = scoreId
+  tab.value = 'chart'
+}
 
 async function sendToGame(hash: string) {
   jumpingHash.value = hash
@@ -115,7 +129,10 @@ onMounted(async () => {
 
 watch(
   () => route.params.hash,
-  (hash) => loadLeaderboard(hash as string),
+  (hash) => {
+    chartScoreId.value = null
+    loadLeaderboard(hash as string)
+  },
   { immediate: true },
 )
 </script>
@@ -157,6 +174,17 @@ watch(
     <p v-else-if="songsStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <p v-else class="error-text">{{ $t('song.songNotFound') }}</p>
 
+    <TabNav v-if="currentSong" v-model="tab" :tabs="tabs" />
+
+    <template v-if="currentSong && tab === 'chart'">
+      <p v-if="chartEntry" class="flex flex-wrap items-center gap-2 text-sm">
+        {{ $t('chart.showingPlay', { name: chartEntry.username, score: chartEntry.score.toLocaleString() }) }}
+        <button type="button" class="btn" @click="chartScoreId = null">{{ $t('chart.hideJudgments') }}</button>
+      </p>
+      <ChartView :hash="currentSong.hash" :score-id="chartScoreId" />
+    </template>
+
+    <template v-else>
     <p v-if="entriesStatus === 'loading'">{{ $t('common.loading') }}</p>
     <p v-else-if="entriesStatus === 'error'" class="error-text">{{ $t('common.serverError') }}</p>
     <p v-else-if="entries.length === 0" class="muted">{{ $t('common.noScoresYet') }}</p>
@@ -183,6 +211,14 @@ watch(
             <button
               type="button"
               class="btn"
+              :disabled="!entry.has_replay"
+              @click="showOnChart(entry.score_id)"
+            >
+              {{ $t('chart.showJudgments') }}
+            </button>
+            <button
+              type="button"
+              class="btn"
               :disabled="jumpingReplayId === entry.score_id || !entry.has_replay"
               @click="sendReplayToGame(entry.score_id)"
             >
@@ -194,5 +230,6 @@ watch(
     </table>
     </div>
     <p v-if="replayJumpError" class="error-text text-sm">{{ replayJumpError }}</p>
+    </template>
   </div>
 </template>

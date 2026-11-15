@@ -154,6 +154,18 @@ const crownStats = computed(() =>
   }),
 )
 
+const judgeTotals = computed(() => {
+  const s = props.user.scores
+  const sum = (k: 'good' | 'ok' | 'bad' | 'drumroll') => s.reduce((n, e) => n + e[k], 0)
+  return [
+    { labelKey: 'scores.good', value: sum('good') },
+    { labelKey: 'scores.ok', value: sum('ok') },
+    { labelKey: 'scores.bad', value: sum('bad') },
+    { labelKey: 'common.maxCombo', value: Math.max(0, ...s.map((e) => e.max_combo)) },
+    { labelKey: 'scores.drumroll', value: sum('drumroll') },
+  ]
+})
+
 function crownClass(crown: number) {
   return CROWN_CLASSES[crown] ?? CROWN_CLASSES[0]
 }
@@ -280,6 +292,16 @@ const genreSections = computed(() => {
     </section>
 
     <div v-show="tab === 'best'"><BestSongs :scores="user.scores" /></div>
+
+    <section v-show="tab === 'stats'" class="card flex w-full flex-col gap-2">
+      <h2 class="text-lg font-bold">{{ $t('scores.totalsTitle') }}</h2>
+      <dl class="grid grid-cols-2 gap-2 sm:grid-cols-5">
+        <div v-for="stat in judgeTotals" :key="stat.labelKey" class="flex flex-col">
+          <dt class="muted text-xs">{{ $t(stat.labelKey) }}</dt>
+          <dd class="text-lg font-bold">{{ stat.value.toLocaleString() }}</dd>
+        </div>
+      </dl>
+    </section>
 
     <section v-show="tab === 'stats'" class="card flex w-full flex-col gap-2">
       <h2 class="text-lg font-bold">{{ $t('scores.statsTitle') }}</h2>
