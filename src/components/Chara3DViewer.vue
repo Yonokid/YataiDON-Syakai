@@ -12,6 +12,7 @@ const props = defineProps<{
   cos: number
   colors: [string, string, string]
   puchi: number
+  paint?: number
 }>()
 
 const BASE = `${import.meta.env.BASE_URL}costumes`
@@ -206,10 +207,15 @@ function pointSampled<T extends THREE.Texture>(texture: T) {
   return texture
 }
 
+// Makeup (Models/paint/<id>.png) replaces the whole face sheet
 async function loadFaceTextures() {
-  const image = await new THREE.ImageBitmapLoader().loadAsync(`${BASE}/face/face_000000.png`)
+  const sheet = props.paint ? `paint/${props.paint}.png` : 'face/face_000000.png'
+  const image = await new THREE.ImageBitmapLoader().loadAsync(`${BASE}/${sheet}`)
+  if (sheet !== (props.paint ? `paint/${props.paint}.png` : 'face/face_000000.png')) return // superseded
   // Frames are square and stacked vertically
   const size = image.width
+  faceTextures.forEach((t) => t.dispose())
+  currentFace = -1
   faceTextures = Array.from({ length: Math.floor(image.height / size) }, (_, frame) => {
     const crop = document.createElement('canvas')
     crop.width = crop.height = size
@@ -494,6 +500,10 @@ onBeforeUnmount(() => {
 })
 
 watch(() => [props.isCostume, props.head, props.body, props.cos], loadCharacter)
+watch(
+  () => props.paint,
+  () => loadFaceTextures().catch(() => (failed.value = true)),
+)
 watch(
   () => props.colors,
   () => parts.forEach((part) => part.recolors.forEach(applyRecolor)),

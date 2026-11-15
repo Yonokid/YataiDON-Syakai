@@ -136,6 +136,7 @@ onBeforeUnmount(() => document.removeEventListener('click', closeExtras))
           }) => currentUser && Object.assign(currentUser, c)
         "
         @puchi-updated="(v: number | null) => currentUser && (currentUser.puchichara = v)"
+        @paint-updated="(v: number | null) => currentUser && (currentUser.chara_paint = v)"
         @force-unlock-updated="(u: UserData) => login(accessCode!, u)"
         @import-requested="() => currentUser && (currentUser.import_requested = true)"
       />

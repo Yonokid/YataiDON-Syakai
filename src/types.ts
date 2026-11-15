@@ -45,6 +45,7 @@ export interface UserData {
   chara_is_costume: boolean
   puchichara: number | null
   owned_puchichara: number[]
+  chara_paint: number | null
   don_points: number
   don_medals: number
   settings: Record<string, string>

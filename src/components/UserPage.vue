@@ -21,6 +21,7 @@ interface CostumeNames {
   body: Record<string, CostumeEntry>
   head: Record<string, CostumeEntry>
   costume: Record<string, CostumeEntry>
+  paint: Record<string, { icon: string; name: string | null }>
 }
 
 const API_BASE_URL = import.meta.env.NETWORK_URL
@@ -42,6 +43,7 @@ const emit = defineEmits<{
     },
   ]
   'puchi-updated': [puchichara: number | null]
+  'paint-updated': [paint: number | null]
   'import-requested': []
   'force-unlock-updated': [user: UserData]
 }>()
@@ -231,6 +233,35 @@ async function savePuchi() {
     puchiSaveError.value = t('user.puchiSaveError')
   } finally {
     isSavingPuchi.value = false
+  }
+}
+
+const paintOptions = computed(() =>
+  Object.entries(costumeNames.value?.paint ?? {})
+    .map(([id, entry]) => ({ id: Number(id), ...entry }))
+    .sort((a, b) => a.id - b.id),
+)
+function paintUrl(id: number) {
+  return `${import.meta.env.BASE_URL}costumes/paint/${id}.png`
+}
+const paintIndex = ref(props.user.chara_paint ?? 0)
+const isSavingPaint = ref(false)
+const paintSaveError = ref('')
+
+async function savePaint() {
+  isSavingPaint.value = true
+  paintSaveError.value = ''
+  try {
+    const response = await fetch(`${API_BASE_URL}/update_paint?access_code=${encodeURIComponent(props.accessCode)}`, {
+      method: 'POST',
+      body: new URLSearchParams({ paint: String(paintIndex.value) }),
+    })
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    emit('paint-updated', paintIndex.value || null)
+  } catch {
+    paintSaveError.value = t('user.makeupSaveError')
+  } finally {
+    isSavingPaint.value = false
   }
 }
 
@@ -543,6 +574,7 @@ fetch(`${API_BASE_URL}/songs`)
           :cos="cosIndex"
           :colors="[charaColor1, charaColor2, charaColor3]"
           :puchi="puchiIndex"
+          :paint="user.force_unlock ? paintIndex : 0"
         />
       </div>
 
@@ -747,6 +779,32 @@ fetch(`${API_BASE_URL}/songs`)
             </div>
             <button type="button" class="btn btn-primary self-start" :disabled="isSavingPuchi" @click="savePuchi">{{ $t('user.savePuchi') }}</button>
             <p v-if="puchiSaveError" class="error-text text-sm">{{ puchiSaveError }}</p>
+          </div>
+
+          <div v-if="user.force_unlock && paintOptions.length" class="card flex w-full flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.makeup') }}</span>
+            <div class="grid max-h-72 w-full grid-cols-4 gap-2 overflow-y-auto rounded-control border border-neutral-300 p-2 sm:grid-cols-6 dark:border-neutral-700">
+              <button
+                v-for="o in [{ id: 0, name: null }, ...paintOptions]"
+                :key="o.id"
+                type="button"
+                class="flex items-center justify-center rounded-chip border p-1"
+                :class="paintIndex === o.id ? 'border-don bg-don/10' : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800'"
+                :title="o.name ?? undefined"
+                @click="paintIndex = o.id"
+              >
+                <!-- sheets are 12 face frames stacked vertically; show the top one -->
+                <img
+                  v-if="o.id > 0"
+                  :src="paintUrl(o.id)"
+                  alt=""
+                  class="h-12 w-12 object-cover object-top"
+                />
+                <span v-else class="muted flex h-12 w-12 items-center justify-center text-xs">{{ $t('user.puchiNone') }}</span>
+              </button>
+            </div>
+            <button type="button" class="btn btn-primary self-start" :disabled="isSavingPaint" @click="savePaint">{{ $t('user.saveMakeup') }}</button>
+            <p v-if="paintSaveError" class="error-text text-sm">{{ paintSaveError }}</p>
           </div>
 
         </div>
