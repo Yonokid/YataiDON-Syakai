@@ -11,6 +11,7 @@ export default {
     cosmetics: 'Cosmetics',
     shop: 'Reward Shop',
     battle: 'Enso Battle',
+    extras: 'Extras',
     songLanguage: 'Song name language',
   },
   common: {
