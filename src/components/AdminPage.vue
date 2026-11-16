@@ -68,7 +68,7 @@ const editGold = ref(false)
 const isSaving = ref(false)
 const saveError = ref('')
 
-type Tab = 'users' | 'review' | 'titles' | 'merge' | 'keys' | 'log'
+type Tab = 'users' | 'review' | 'titles' | 'merge' | 'keys' | 'log' | 'online'
 const activeTab = ref<Tab>('users')
 
 interface AdminLog {
@@ -493,7 +493,50 @@ const adminTabs = computed(() => [
   { value: 'merge' as const, label: t('admin.tabMerge') },
   { value: 'keys' as const, label: t('admin.tabApiKeys') },
   { value: 'log' as const, label: t('admin.tabLog') },
+  { value: 'online' as const, label: t('admin.tabOnline') },
 ])
+
+const onlineDays = ref('7')
+const onlineSamples = ref<{ ts: string; online: number }[]>([])
+const onlineError = ref('')
+const onlineDayOptions = ['1', '7', '30', '90'].map((days) => ({ value: days, label: `${days}d` }))
+
+async function fetchOnlineHistory() {
+  onlineError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/online_history?admin_key=${encodeURIComponent(adminKey.value)}&days=${onlineDays.value}`,
+    )
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    onlineSamples.value = await response.json()
+  } catch (error) {
+    onlineError.value = String(error)
+  }
+}
+
+function switchOnlineDays(days: string) {
+  onlineDays.value = days
+  fetchOnlineHistory()
+}
+
+const onlineChart = computed(() => {
+  const samples = onlineSamples.value
+  if (samples.length < 2) return null
+  const times = samples.map((sample) => Date.parse(sample.ts))
+  const start = times[0]!
+  const span = times[times.length - 1]! - start || 1
+  const peak = Math.max(1, ...samples.map((sample) => sample.online))
+  const points = samples
+    .map((sample, i) => `${(((times[i]! - start) / span) * 1000).toFixed(1)},${(200 - (sample.online / peak) * 190).toFixed(1)}`)
+    .join(' ')
+  return {
+    points,
+    peak,
+    latest: samples[samples.length - 1]!.online,
+    from: new Date(start).toLocaleString(),
+    to: new Date(times[times.length - 1]!).toLocaleString(),
+  }
+})
 
 function switchTab(tab: Tab) {
   if (tab !== 'log') closeLogs()
@@ -501,6 +544,7 @@ function switchTab(tab: Tab) {
   if (tab === 'keys') fetchApiKeys()
   if (tab === 'review') fetchSuspiciousScores()
   if (tab === 'titles' && !titlesLoaded.value) fetchTitles()
+  if (tab === 'online') fetchOnlineHistory()
   if (tab === 'log') {
     if (apiKeys.value.length === 0) fetchApiKeys()
     historyDate.value = ''
@@ -1098,6 +1142,33 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             </div>
           </form>
         </div>
+      </template>
+
+      <template v-else-if="activeTab === 'online'">
+        <SegControl
+          :model-value="onlineDays"
+          :options="onlineDayOptions"
+          class="self-start"
+          @update:model-value="switchOnlineDays"
+        />
+        <p v-if="onlineError" class="error-text text-sm">{{ onlineError }}</p>
+        <div v-if="onlineChart" class="card flex w-full flex-col gap-2 text-sm">
+          <p>{{ $t('admin.onlineSummary', { latest: onlineChart.latest, peak: onlineChart.peak }) }}</p>
+          <svg viewBox="0 0 1000 200" preserveAspectRatio="none" class="h-48 w-full">
+            <polyline
+              :points="onlineChart.points"
+              fill="none"
+              stroke="var(--color-don)"
+              stroke-width="2"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+          <div class="muted flex justify-between text-xs">
+            <span>{{ onlineChart.from }}</span>
+            <span>{{ onlineChart.to }}</span>
+          </div>
+        </div>
+        <p v-else-if="!onlineError" class="muted text-sm">{{ $t('admin.onlineNoData') }}</p>
       </template>
 
       <template v-else-if="activeTab === 'review'">
