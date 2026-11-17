@@ -25,12 +25,27 @@ const accessCode = ref(qrCode || localStorage.getItem(STORAGE_KEY) || '')
 const rememberMe = ref(accessCode.value !== '')
 const verifyStatus = ref<'idle' | 'checking' | 'valid' | 'invalid' | 'error'>('idle')
 
-function handleInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  accessCode.value = target.value
+const configError = ref(false)
+
+function setCode(value: string) {
+  accessCode.value = value
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, '')
     .slice(0, ACCESS_CODE_LENGTH)
+}
+
+function handleInput(event: Event) {
+  setCode((event.target as HTMLInputElement).value)
+}
+
+async function handleConfigUpload(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  const match = (await file.text()).match(/^\s*access_code_1\s*=\s*["']([^"']*)["']/m)
+  configError.value = !match
+  if (match) setCode(match[1] ?? '')
 }
 
 const isComplete = computed(() => accessCode.value.length === ACCESS_CODE_LENGTH)
@@ -98,6 +113,11 @@ watch(rememberMe, (remember) => {
     >
       {{ accessCode.length }} / {{ ACCESS_CODE_LENGTH }}
     </span>
+    <label class="row-link cursor-pointer text-sm">
+      {{ $t('accessCode.uploadConfig') }}
+      <input type="file" accept=".toml" class="hidden" @change="handleConfigUpload" />
+    </label>
+    <span v-if="configError" class="text-sm text-red-600 dark:text-red-400">{{ $t('accessCode.configInvalid') }}</span>
     <label class="flex cursor-pointer items-center gap-2 text-sm">
       <input type="checkbox" v-model="rememberMe" />
       {{ $t('accessCode.rememberMe') }}

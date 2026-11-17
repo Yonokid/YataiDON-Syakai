@@ -57,6 +57,8 @@ export default {
     error: 'Could not reach server',
     download: 'Download YataiDON',
     setupGuide: 'Setup guide',
+    uploadConfig: 'Upload config.toml',
+    configInvalid: 'No access_code_1 found in file',
   },
   admin: {
     title: 'Admin',
