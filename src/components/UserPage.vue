@@ -359,6 +359,15 @@ const SKIN_LANGUAGES = [
   { code: 'ko', label: '한국어' },
 ]
 
+const SKINS = [
+  'PyTaikoGreen',
+  'YataiDON12Asia',
+  'YataiDON14',
+  'YataiDON8',
+  'YataiDONNijiiro',
+  'YataiDONRed',
+]
+
 const userSkin = ref(props.user.settings?.skin ?? '')
 const userLanguage = ref(props.user.settings?.language ?? '')
 const isSavingAppearance = ref(false)
@@ -814,14 +823,10 @@ fetch(`${API_BASE_URL}/songs`)
           >
             <p>{{ $t('user.appearance') }}</p>
             <form class="flex flex-wrap items-center gap-2" @submit.prevent="saveAppearance">
-              <input
-                v-model="userSkin"
-                type="text"
-                maxlength="64"
-                :placeholder="$t('user.skinPlaceholder')"
-                :disabled="isSavingAppearance"
-                class="field"
-              />
+              <select v-model="userSkin" :disabled="isSavingAppearance" class="field">
+                <option value="">{{ $t('user.cabinetDefault') }}</option>
+                <option v-for="s in SKINS" :key="s" :value="s">{{ s }}</option>
+              </select>
               <select v-model="userLanguage" :disabled="isSavingAppearance" class="field">
                 <option value="">{{ $t('user.cabinetDefault') }}</option>
                 <option v-for="l in SKIN_LANGUAGES" :key="l.code" :value="l.code">{{ l.label }}</option>

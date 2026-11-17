@@ -406,7 +406,6 @@ export default {
     customTitlePlaceholder: 'Custom title',
     titleSaveError: 'Could not save title. That title may already belong to the game.',
     appearance: 'Skin and language',
-    skinPlaceholder: 'Skin name, e.g. PyTaikoGreen',
     cabinetDefault: "Default",
     appearanceHint:
       "Applied when playing on a machine using guest mode",
