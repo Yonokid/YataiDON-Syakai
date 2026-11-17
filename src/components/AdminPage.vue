@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useSongDisplay } from '../composables/useSongDisplay'
 import TabNav from './TabNav.vue'
 import SegControl from './SegControl.vue'
+import Pager from './Pager.vue'
 
 interface AdminUser {
   id: number
@@ -14,7 +15,34 @@ interface AdminUser {
   dan: number | null
   gold: boolean | null
   score_count: number
+  play_count: number
+  last_played: string | null
 }
+
+interface AdminUserDetail extends AdminUser {
+  force_unlock: boolean
+  nameplate_bg: number | null
+  import_requested: boolean | null
+  import_completed: boolean | null
+  first_played: string | null
+  dan_play_count: number
+  don_points: number | null
+  don_medals: number | null
+  title_count: number
+  cosmetic_count: number
+  puchichara_count: number
+  discord_id: string | null
+  ai_wins: number | null
+  enso_stages_cleared: number | null
+  online_battles: number
+  pending_suspicious: number
+  aliases: string[]
+}
+
+type UserSortKey = 'username' | 'dan' | 'score_count' | 'play_count' | 'last_played'
+
+const NAMEPLATE_COLORS = ['red', 'blue', 'wood', 'purple', 'gold']
+const USERS_PAGE_SIZE = 50
 
 interface AdminTitle {
   number: number
@@ -61,10 +89,56 @@ const query = ref('')
 const isLoading = ref(false)
 const loadError = ref('')
 
+const userSortKey = ref<UserSortKey>('username')
+const userSortDesc = ref(false)
+const usersPage = ref(1)
+
+const sortedUsers = computed(() => {
+  const key = userSortKey.value
+  const dir = userSortDesc.value ? -1 : 1
+  return [...users.value].sort((a, b) => {
+    const x = a[key]
+    const y = b[key]
+    if (x == null) return y == null ? 0 : 1
+    if (y == null) return -1
+    return (typeof x === 'string' ? x.localeCompare(y as string) : x - (y as number)) * dir
+  })
+})
+
+const pagedUsers = computed(() =>
+  sortedUsers.value.slice((usersPage.value - 1) * USERS_PAGE_SIZE, usersPage.value * USERS_PAGE_SIZE),
+)
+
+function sortUsersBy(key: UserSortKey) {
+  if (userSortKey.value === key) {
+    userSortDesc.value = !userSortDesc.value
+  } else {
+    userSortKey.value = key
+    userSortDesc.value = key !== 'username'
+  }
+}
+
+function sortArrow(key: UserSortKey) {
+  if (userSortKey.value !== key) return ''
+  return userSortDesc.value ? ' ▼' : ' ▲'
+}
+
+watch([query, userSortKey, userSortDesc], () => (usersPage.value = 1))
+
+function formatDate(iso: string | null) {
+  return iso ? new Date(iso).toLocaleDateString() : t('admin.dash')
+}
+
 const editing = ref<AdminUser | null>(null)
+const detail = ref<AdminUserDetail | null>(null)
+const detailError = ref('')
 const editUsername = ref('')
 const editDan = ref('')
 const editGold = ref(false)
+const editTitle = ref('')
+const editNameplate = ref('')
+const editForceUnlock = ref(false)
+const editMedals = ref('')
 const isSaving = ref(false)
 const saveError = ref('')
 
@@ -671,16 +745,35 @@ const visibleTitles = computed(() => {
   )
 })
 
-function startEdit(user: AdminUser) {
+async function startEdit(user: AdminUser) {
   editing.value = user
+  detail.value = null
+  detailError.value = ''
   editUsername.value = user.username
   editDan.value = user.dan?.toString() ?? ''
   editGold.value = !!user.gold
   saveError.value = ''
+  if (!titlesLoaded.value) fetchTitles()
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/user?admin_key=${encodeURIComponent(adminKey.value)}&access_code=${encodeURIComponent(user.access_code)}`,
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const data: AdminUserDetail = await response.json()
+    if (editing.value?.access_code !== user.access_code) return
+    detail.value = data
+    editTitle.value = data.title ?? ''
+    editNameplate.value = data.nameplate_bg?.toString() ?? ''
+    editForceUnlock.value = data.force_unlock
+    editMedals.value = data.don_medals?.toString() ?? '0'
+  } catch {
+    detailError.value = t('admin.detailLoadError')
+  }
 }
 
 function cancelEdit() {
   editing.value = null
+  detail.value = null
 }
 
 async function saveEdit() {
@@ -696,14 +789,21 @@ async function saveEdit() {
           username: editUsername.value,
           dan: editDan.value,
           gold: editGold.value ? 'true' : 'false',
+          title: editTitle.value,
+          nameplate_bg: editNameplate.value,
+          force_unlock: editForceUnlock.value ? 'true' : 'false',
+          don_medals: editMedals.value,
         }),
       },
     )
-    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
-    editing.value = null
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}))
+      throw new Error(typeof data.detail === 'string' ? data.detail : '')
+    }
+    cancelEdit()
     await fetchUsers()
-  } catch {
-    saveError.value = t('admin.saveError')
+  } catch (e) {
+    saveError.value = (e instanceof Error && e.message) || t('admin.saveError')
   } finally {
     isSaving.value = false
   }
@@ -737,6 +837,7 @@ async function deleteUser(user: AdminUser) {
     )
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
     users.value = users.value.filter((u) => u.access_code !== user.access_code)
+    cancelEdit()
   } catch {
     loadError.value = t('admin.deleteError')
   }
@@ -797,6 +898,7 @@ async function saveChangeAccessCode() {
       throw new Error(data.detail || `Unexpected status ${response.status}`)
     }
     changingAccessCode.value = null
+    cancelEdit()
     await fetchUsers()
   } catch (e: any) {
     changeAccessCodeError.value = e.message || t('admin.changeAccessCodeError')
@@ -1230,35 +1332,37 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
       <p v-if="loadError" class="error-text text-sm">{{ loadError }}</p>
       <p v-if="isLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
 
-      <div v-else class="card w-full overflow-x-auto p-0">
+      <template v-else>
+      <p class="muted text-sm">{{ $t('admin.userCount', users.length) }}</p>
+      <div class="card w-full overflow-x-auto p-0">
         <table class="w-full text-sm">
           <thead>
             <tr>
-              <th class="th-cell">{{ $t('common.username') }}</th>
+              <th v-for="col in (['username', 'dan', 'score_count', 'play_count', 'last_played'] as const)" :key="col" class="th-cell">
+                <button type="button" class="whitespace-nowrap font-semibold" @click="sortUsersBy(col)">
+                  {{ $t(`admin.sort.${col}`) }}{{ sortArrow(col) }}
+                </button>
+              </th>
               <th class="th-cell">{{ $t('admin.thTitle') }}</th>
-              <th class="th-cell">{{ $t('admin.thDan') }}</th>
-              <th class="th-cell">{{ $t('admin.thGold') }}</th>
-              <th class="th-cell">{{ $t('admin.thScores') }}</th>
-              <th class="th-cell"></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.access_code">
-              <td class="td-cell">{{ user.username }}</td>
-              <td class="td-cell">{{ user.title ?? $t('admin.dash') }}</td>
-              <td class="td-cell">{{ user.dan ?? $t('admin.dash') }}</td>
-              <td class="td-cell">{{ user.gold ? $t('admin.yes') : $t('admin.no') }}</td>
-              <td class="td-cell">{{ user.score_count }}</td>
+            <tr
+              v-for="user in pagedUsers"
+              :key="user.access_code"
+              class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
+              @click="startEdit(user)"
+            >
               <td class="td-cell">
-                <div class="flex gap-2">
-                  <button type="button" class="btn" @click="startEdit(user)">{{ $t('admin.edit') }}</button>
-                  <button type="button" class="btn" @click="copyAccessCode(user)">
-                    {{ copied === user.access_code ? $t('admin.copied') : $t('admin.copyCode') }}
-                  </button>
-                  <button type="button" class="btn" @click="startChangeAccessCode(user)">{{ $t('admin.changeAccessCode') }}</button>
-                  <button type="button" class="btn btn-danger" @click="deleteUser(user)">{{ $t('admin.delete') }}</button>
-                </div>
+                <button type="button" class="text-left font-medium hover:underline">{{ user.username }}</button>
               </td>
+              <td class="td-cell whitespace-nowrap">
+                {{ user.dan ?? $t('admin.dash') }}<span v-if="user.gold" class="muted"> ({{ $t('admin.thGold') }})</span>
+              </td>
+              <td class="td-cell tabular-nums">{{ user.score_count }}</td>
+              <td class="td-cell tabular-nums">{{ user.play_count }}</td>
+              <td class="td-cell whitespace-nowrap">{{ formatDate(user.last_played) }}</td>
+              <td class="td-cell muted">{{ user.title ?? $t('admin.dash') }}</td>
             </tr>
             <tr v-if="users.length === 0">
               <td class="td-cell muted" colspan="6">{{ $t('admin.noUsersFound') }}</td>
@@ -1266,6 +1370,8 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           </tbody>
         </table>
       </div>
+      <Pager v-model="usersPage" :total="users.length" :page-size="USERS_PAGE_SIZE" />
+      </template>
 
       <div
         v-if="editing"
@@ -1273,27 +1379,103 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
         @click.self="cancelEdit"
       >
         <form
-          class="card flex w-full max-w-sm flex-col gap-3"
+          class="card flex max-h-full w-full max-w-2xl flex-col gap-4 overflow-y-auto"
           @keydown.esc="cancelEdit"
           @submit.prevent="saveEdit"
         >
-          <h2 class="font-semibold">{{ $t('admin.editUser', { username: editing.username }) }}</h2>
-          <label class="flex flex-col gap-1 text-sm">
-            {{ $t('common.username') }}
-            <input v-model="editUsername" type="text" maxlength="32" class="field" />
-          </label>
-          <label class="flex flex-col gap-1 text-sm">
-            {{ $t('admin.thDan') }}
-            <input v-model="editDan" type="number" class="field" />
-          </label>
-          <label class="flex items-center gap-2 text-sm">
-            <input v-model="editGold" type="checkbox" />
-            {{ $t('admin.goldDan') }}
-          </label>
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 class="text-lg font-semibold">{{ editing.username }}</h2>
+            <router-link :to="`/u/${editing.id}`" class="text-sm hover:underline">{{ $t('admin.viewProfile') }}</router-link>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-sm">
+            <code class="muted break-all">{{ editing.access_code }}</code>
+            <span class="muted">#{{ editing.id }}</span>
+          </div>
+
+          <p v-if="detailError" class="error-text text-sm">{{ detailError }}</p>
+          <p v-else-if="!detail" class="muted text-sm">{{ $t('common.loading') }}</p>
+          <template v-else>
+            <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-3">
+              <div v-for="[label, value] in ([
+                ['firstPlayed', formatDate(detail.first_played)],
+                ['lastPlayed', formatDate(detail.last_played)],
+                ['plays', detail.play_count],
+                ['charts', detail.score_count],
+                ['danPlays', detail.dan_play_count],
+                ['onlineBattles', detail.online_battles],
+                ['donPoints', detail.don_points ?? 0],
+                ['titles', detail.title_count],
+                ['cosmetics', detail.cosmetic_count],
+                ['puchichara', detail.puchichara_count],
+                ['aiWins', detail.ai_wins ?? 0],
+                ['ensoStages', detail.enso_stages_cleared ?? 0],
+                ['discord', detail.discord_id ?? $t('admin.dash')],
+                ['pendingReview', detail.pending_suspicious],
+                ['import', detail.import_completed ? $t('admin.yes') : detail.import_requested ? $t('admin.importPending') : $t('admin.no')],
+              ] as const)" :key="label" class="flex flex-col">
+                <dt class="muted text-xs">{{ $t(`admin.stat.${label}`) }}</dt>
+                <dd class="tabular-nums">{{ value }}</dd>
+              </div>
+            </dl>
+            <p v-if="detail.aliases.length" class="muted text-xs break-all">
+              {{ $t('admin.aliases') }}: {{ detail.aliases.join(', ') }}
+            </p>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="flex flex-col gap-1 text-sm">
+                {{ $t('common.username') }}
+                <input v-model="editUsername" type="text" maxlength="32" class="field" />
+              </label>
+              <label class="flex flex-col gap-1 text-sm">
+                {{ $t('admin.thTitle') }}
+                <input v-model="editTitle" type="text" list="admin-title-names" class="field" />
+                <datalist id="admin-title-names">
+                  <option v-for="x in titles" :key="x.number" :value="x.name" />
+                </datalist>
+              </label>
+              <label class="flex flex-col gap-1 text-sm">
+                {{ $t('admin.thDan') }}
+                <input v-model="editDan" type="number" class="field" />
+              </label>
+              <label class="flex flex-col gap-1 text-sm">
+                {{ $t('admin.nameplateBg') }}
+                <select v-model="editNameplate" class="field">
+                  <option value="">{{ $t('admin.nameplateFromTitle') }}</option>
+                  <option v-for="(color, i) in NAMEPLATE_COLORS" :key="color" :value="String(i)">
+                    {{ $t(`admin.nameplate.${color}`) }}
+                  </option>
+                </select>
+              </label>
+              <label class="flex flex-col gap-1 text-sm">
+                {{ $t('admin.stat.donMedals') }}
+                <input v-model="editMedals" type="number" min="0" class="field" />
+              </label>
+              <div class="flex flex-col justify-end gap-2 text-sm">
+                <label class="flex items-center gap-2">
+                  <input v-model="editGold" type="checkbox" />
+                  {{ $t('admin.goldDan') }}
+                </label>
+                <label class="flex items-center gap-2">
+                  <input v-model="editForceUnlock" type="checkbox" />
+                  {{ $t('admin.forceUnlock') }}
+                </label>
+              </div>
+            </div>
+          </template>
+
           <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
-          <div class="flex justify-end gap-2">
-            <button type="button" class="btn" @click="cancelEdit">{{ $t('common.cancel') }}</button>
-            <button type="submit" class="btn btn-primary" :disabled="isSaving">{{ $t('common.save') }}</button>
+          <div class="flex flex-wrap justify-between gap-2">
+            <div class="flex flex-wrap gap-2">
+              <button type="button" class="btn" @click="copyAccessCode(editing)">
+                {{ copied === editing.access_code ? $t('admin.copied') : $t('admin.copyCode') }}
+              </button>
+              <button type="button" class="btn" @click="startChangeAccessCode(editing)">{{ $t('admin.changeAccessCode') }}</button>
+              <button type="button" class="btn btn-danger" @click="deleteUser(editing)">{{ $t('admin.delete') }}</button>
+            </div>
+            <div class="flex gap-2">
+              <button type="button" class="btn" @click="cancelEdit">{{ $t('common.cancel') }}</button>
+              <button type="submit" class="btn btn-primary" :disabled="isSaving || !detail">{{ $t('common.save') }}</button>
+            </div>
           </div>
         </form>
       </div>
