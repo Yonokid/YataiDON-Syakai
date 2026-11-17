@@ -33,10 +33,21 @@ interface AdminUserDetail extends AdminUser {
   puchichara_count: number
   discord_id: string | null
   ai_wins: number | null
-  enso_stages_cleared: number | null
   online_battles: number
   pending_suspicious: number
   aliases: string[]
+  enso: EnsoProgress
+}
+
+const ENSO_FIELDS = ['bond', 'exp', 'best_power', 'stones', 'moves', 'orbs', 'orb_rewards'] as const
+type EnsoField = (typeof ENSO_FIELDS)[number]
+
+interface EnsoProgress extends Record<EnsoField, number> {
+  exp_next: number | null
+  stage: number
+  cleared: number
+  bosses: Record<string, { hp: number; max: number }>
+  limits: { bond_max: number; move_max: number; orb_rewards_max: number }
 }
 
 type UserSortKey = 'username' | 'dan' | 'score_count' | 'play_count' | 'last_played'
@@ -139,6 +150,9 @@ const editTitle = ref('')
 const editNameplate = ref('')
 const editForceUnlock = ref(false)
 const editMedals = ref('')
+const ensoEdit = ref({} as Record<EnsoField, string>)
+const ensoCleared = ref<string[]>([])
+const ensoBossHp = ref<Record<string, string>>({})
 const isSaving = ref(false)
 const saveError = ref('')
 
@@ -766,6 +780,10 @@ async function startEdit(user: AdminUser) {
     editNameplate.value = data.nameplate_bg?.toString() ?? ''
     editForceUnlock.value = data.force_unlock
     editMedals.value = data.don_medals?.toString() ?? '0'
+    const enso = data.enso
+    ensoEdit.value = Object.fromEntries(ENSO_FIELDS.map((k) => [k, String(enso[k])])) as Record<EnsoField, string>
+    ensoCleared.value = Object.keys(enso.bosses).filter((s) => (enso.cleared >> Number(s)) & 1)
+    ensoBossHp.value = Object.fromEntries(Object.entries(enso.bosses).map(([s, b]) => [s, String(b.hp)]))
   } catch {
     detailError.value = t('admin.detailLoadError')
   }
@@ -780,26 +798,37 @@ async function saveEdit() {
   if (!editing.value) return
   isSaving.value = true
   saveError.value = ''
-  try {
+  const accessCode = editing.value.access_code
+  const post = async (path: string, body: Record<string, string>) => {
     const response = await fetch(
-      `${API_BASE_URL}/admin/update_user?admin_key=${encodeURIComponent(adminKey.value)}&access_code=${encodeURIComponent(editing.value.access_code)}`,
-      {
-        method: 'POST',
-        body: new URLSearchParams({
-          username: editUsername.value,
-          dan: editDan.value,
-          gold: editGold.value ? 'true' : 'false',
-          title: editTitle.value,
-          nameplate_bg: editNameplate.value,
-          force_unlock: editForceUnlock.value ? 'true' : 'false',
-          don_medals: editMedals.value,
-        }),
-      },
+      `${API_BASE_URL}${path}?admin_key=${encodeURIComponent(adminKey.value)}&access_code=${encodeURIComponent(accessCode)}`,
+      { method: 'POST', body: new URLSearchParams(body) },
     )
     if (!response.ok) {
       const data = await response.json().catch(() => ({}))
       throw new Error(typeof data.detail === 'string' ? data.detail : '')
     }
+  }
+  try {
+    await post('/admin/update_user', {
+      username: editUsername.value,
+      dan: editDan.value,
+      gold: editGold.value ? 'true' : 'false',
+      title: editTitle.value,
+      nameplate_bg: editNameplate.value,
+      force_unlock: editForceUnlock.value ? 'true' : 'false',
+      don_medals: editMedals.value,
+    })
+    const bosses = detail.value!.enso.bosses
+    await post('/admin/update_enso', {
+      ...ensoEdit.value,
+      cleared: String(ensoCleared.value.reduce((bits, s) => bits | (1 << Number(s)), 0)),
+      boss_hp: JSON.stringify(
+        Object.fromEntries(
+          Object.entries(ensoBossHp.value).filter(([s, hp]) => !ensoCleared.value.includes(s) && Number(hp) < bosses[s]!.max),
+        ),
+      ),
+    })
     cancelEdit()
     await fetchUsers()
   } catch (e) {
@@ -1408,7 +1437,6 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 ['cosmetics', detail.cosmetic_count],
                 ['puchichara', detail.puchichara_count],
                 ['aiWins', detail.ai_wins ?? 0],
-                ['ensoStages', detail.enso_stages_cleared ?? 0],
                 ['discord', detail.discord_id ?? $t('admin.dash')],
                 ['pendingReview', detail.pending_suspicious],
                 ['import', detail.import_completed ? $t('admin.yes') : detail.import_requested ? $t('admin.importPending') : $t('admin.no')],
@@ -1461,6 +1489,48 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 </label>
               </div>
             </div>
+
+            <fieldset class="flex flex-col gap-3 border-t border-black/10 pt-3 dark:border-white/10">
+              <legend class="font-semibold">
+                {{ $t('admin.enso.title') }}
+                <span class="muted text-sm font-normal">{{ $t('admin.enso.stage', { stage: detail.enso.stage }) }}</span>
+              </legend>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <label v-for="field in ENSO_FIELDS" :key="field" class="flex flex-col gap-1 text-sm">
+                  {{ $t(`admin.enso.${field}`) }}
+                  <input
+                    v-model="ensoEdit[field]"
+                    type="number"
+                    :min="field === 'bond' || field === 'moves' ? 1 : 0"
+                    :max="
+                      field === 'bond' ? detail.enso.limits.bond_max
+                      : field === 'moves' ? detail.enso.limits.move_max
+                      : field === 'orb_rewards' ? detail.enso.limits.orb_rewards_max
+                      : undefined
+                    "
+                    class="field"
+                  />
+                </label>
+              </div>
+              <p class="muted text-xs">{{ $t('admin.enso.hint') }}</p>
+              <div class="grid gap-2 sm:grid-cols-2">
+                <div v-for="(boss, stage) in detail.enso.bosses" :key="stage" class="flex items-center gap-2 text-sm">
+                  <label class="flex w-28 items-center gap-2">
+                    <input v-model="ensoCleared" type="checkbox" :value="String(stage)" />
+                    {{ $t('admin.enso.boss', { stage }) }}
+                  </label>
+                  <input
+                    v-model="ensoBossHp[stage]"
+                    type="number"
+                    min="1"
+                    :max="boss.max"
+                    :disabled="ensoCleared.includes(String(stage))"
+                    class="field w-32"
+                  />
+                  <span class="muted tabular-nums">/ {{ boss.max }}</span>
+                </div>
+              </div>
+            </fieldset>
           </template>
 
           <p v-if="saveError" class="error-text text-sm">{{ saveError }}</p>
