@@ -54,7 +54,11 @@ watch(
     status.value = 'loading'
     try {
       const response = await fetch(`${API_BASE_URL}/chart?hash=${encodeURIComponent(hash)}&branch=${b}`)
-      if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+      if (!response.ok) {
+        const body = await response.json().catch(() => null)
+        judgeStatus.value = body?.detail === 'No replay recorded' ? 'norecord' : 'error'
+        return
+      }
       chart.value = await response.json()
       status.value = 'loaded'
     } catch {
@@ -66,7 +70,7 @@ watch(
 
 const judgments = ref<Map<string, { judgment: number; offset: number | null }>>(new Map())
 const judgeCounts = computed(() => [0, 1, 2].map((j) => [...judgments.value.values()].filter((v) => v.judgment === j).length))
-const judgeStatus = ref<'idle' | 'loading' | 'error'>('idle')
+const judgeStatus = ref<'idle' | 'loading' | 'error' | 'norecord'>('idle')
 const beatKey = (beat: number) => beat.toFixed(3)
 
 watch(
@@ -77,7 +81,11 @@ watch(
     judgeStatus.value = 'loading'
     try {
       const response = await fetch(`${API_BASE_URL}/score_judgments?score_id=${id}`)
-      if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+      if (!response.ok) {
+        const body = await response.json().catch(() => null)
+        judgeStatus.value = body?.detail === 'No replay recorded' ? 'norecord' : 'error'
+        return
+      }
       const data: { judgments: [beat: number, judgment: number, offset: number | null][] } = await response.json()
       judgments.value = new Map(data.judgments.map(([beat, judgment, offset]) => [beatKey(beat), { judgment, offset }]))
       judgeStatus.value = 'idle'
@@ -189,6 +197,7 @@ const layout = computed(() => {
       <SegControl v-if="chart?.branched" v-model="branch" :options="branchOptions" />
     </div>
     <p v-if="scoreId != null && judgeStatus === 'loading'" class="muted text-sm">{{ $t('common.loading') }}</p>
+    <p v-else-if="judgeStatus === 'norecord'" class="muted text-sm">{{ $t('chart.noReplay') }}</p>
     <p v-else-if="judgeStatus === 'error'" class="error-text text-sm">{{ $t('chart.judgmentsUnavailable') }}</p>
     <p v-else-if="judgments.size" class="flex flex-wrap gap-3 text-sm">
       <span v-for="(n, j) in judgeCounts" :key="j" class="inline-flex items-center gap-1">

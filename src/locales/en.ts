@@ -256,6 +256,7 @@ export default {
     title: 'Chart',
     unavailable: 'Chart preview unavailable.',
     judgmentsUnavailable: 'Could not load judgments for this score.',
+    noReplay: 'No replay was recorded for this score.',
     showJudgments: 'Show on Chart',
     hideJudgments: 'Hide from Chart',
     showingPlay: "Showing {name}'s play ({score})",
