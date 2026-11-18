@@ -62,7 +62,14 @@ interface AdminTitle {
   unlock_condition_ja: string | null
   unlock_condition_en: string | null
   default_unlocked: boolean
+  owner_count: number
   has_structured_condition: boolean
+}
+
+interface TitleOwner {
+  access_code: string
+  username: string
+  unlocked_at: string | null
 }
 
 interface SuspiciousScore {
@@ -410,6 +417,16 @@ const editTitleConditionJa = ref('')
 const editTitleDefaultUnlocked = ref(false)
 const isSavingTitle = ref(false)
 const saveTitleError = ref('')
+const creatingTitle = ref(false)
+const newTitleNumber = ref('')
+const titleOwners = ref<TitleOwner[]>([])
+const grantCode = ref('')
+const ownersError = ref('')
+
+function titleUrl(path: string, params: Record<string, string | number> = {}) {
+  const query = new URLSearchParams({ admin_key: adminKey.value, ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])) })
+  return `${API_BASE_URL}/admin/${path}?${query}`
+}
 
 async function fetchTitles() {
   titlesLoading.value = true
@@ -434,31 +451,88 @@ function startEditTitle(title: AdminTitle) {
   editTitleConditionJa.value = title.unlock_condition_ja ?? ''
   editTitleDefaultUnlocked.value = title.default_unlocked
   saveTitleError.value = ''
+  creatingTitle.value = false
+  titleOwners.value = []
+  grantCode.value = ''
+  ownersError.value = ''
+  fetchTitleOwners(title.number)
+}
+
+function startCreateTitle() {
+  editingTitle.value = null
+  creatingTitle.value = true
+  newTitleNumber.value = ''
+  editTitleName.value = ''
+  editTitleColor.value = ''
+  editTitleConditionJa.value = ''
+  editTitleDefaultUnlocked.value = false
+  saveTitleError.value = ''
 }
 
 function cancelEditTitle() {
   editingTitle.value = null
+  creatingTitle.value = false
+}
+
+async function fetchTitleOwners(number: number) {
+  try {
+    const response = await fetch(titleUrl('title_owners', { number }))
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    titleOwners.value = (await response.json()).owners
+  } catch {
+    ownersError.value = t('admin.titleOwnersError')
+  }
+}
+
+async function ownerAction(action: 'grant_title' | 'revoke_title', accessCode: string) {
+  if (!editingTitle.value) return
+  ownersError.value = ''
+  try {
+    const response = await fetch(titleUrl(action, { number: editingTitle.value.number, access_code: accessCode }), {
+      method: 'POST',
+    })
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    grantCode.value = ''
+    await Promise.all([fetchTitleOwners(editingTitle.value.number), fetchTitles()])
+  } catch {
+    ownersError.value = t('admin.titleOwnersError')
+  }
+}
+
+async function deleteTitle() {
+  if (!editingTitle.value) return
+  if (!confirm(t('admin.titleDeleteConfirm', { number: editingTitle.value.number, name: editingTitle.value.name }))) return
+  try {
+    const response = await fetch(titleUrl('delete_title', { number: editingTitle.value.number }), { method: 'POST' })
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    editingTitle.value = null
+    await fetchTitles()
+  } catch {
+    saveTitleError.value = t('admin.titleDeleteError')
+  }
 }
 
 async function saveEditTitle() {
-  if (!editingTitle.value) return
+  if (!editingTitle.value && !creatingTitle.value) return
   isSavingTitle.value = true
   saveTitleError.value = ''
+  const body = new URLSearchParams({
+    name: editTitleName.value,
+    color: editTitleColor.value,
+    unlock_condition: editTitleConditionJa.value,
+    default_unlocked: editTitleDefaultUnlocked.value ? 'true' : 'false',
+  })
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/admin/update_title?admin_key=${encodeURIComponent(adminKey.value)}&number=${editingTitle.value.number}`,
-      {
-        method: 'POST',
-        body: new URLSearchParams({
-          name: editTitleName.value,
-          color: editTitleColor.value,
-          unlock_condition: editTitleConditionJa.value,
-          default_unlocked: editTitleDefaultUnlocked.value ? 'true' : 'false',
-        }),
-      },
-    )
+    let response: Response
+    if (creatingTitle.value) {
+      body.set('number', newTitleNumber.value)
+      response = await fetch(titleUrl('create_title'), { method: 'POST', body })
+    } else {
+      response = await fetch(titleUrl('update_title', { number: editingTitle.value!.number }), { method: 'POST', body })
+    }
     if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
     editingTitle.value = null
+    creatingTitle.value = false
     await fetchTitles()
   } catch {
     saveTitleError.value = t('admin.titleSaveError')
@@ -749,14 +823,37 @@ watch(query, () => {
 })
 
 const titleSearch = ref('')
+const titleColorFilter = ref('')
+const titleDefaultFilter = ref('')
+const titleConditionFilter = ref('')
+type TitleSortKey = 'number' | 'name' | 'owner_count'
+const titleSortKey = ref<TitleSortKey>('number')
+const titleSortAsc = ref(true)
+const titleColors = computed(() => [...new Set(titles.value.map((x) => x.color).filter((c): c is string => !!c))].sort())
+
+function sortTitlesBy(key: TitleSortKey) {
+  if (titleSortKey.value === key) titleSortAsc.value = !titleSortAsc.value
+  else {
+    titleSortKey.value = key
+    titleSortAsc.value = true
+  }
+}
+
 const visibleTitles = computed(() => {
   const term = titleSearch.value.trim().toLowerCase()
-  if (!term) return titles.value
-  return titles.value.filter((x) =>
-    [String(x.number), x.name, x.color, x.unlock_condition_ja, x.unlock_condition_en].some((v) =>
+  const list = titles.value.filter((x) => {
+    if (titleColorFilter.value && (x.color ?? 'none') !== titleColorFilter.value) return false
+    if (titleDefaultFilter.value && x.default_unlocked !== (titleDefaultFilter.value === 'yes')) return false
+    if (titleConditionFilter.value && x.has_structured_condition !== (titleConditionFilter.value === 'structured'))
+      return false
+    if (!term) return true
+    return [String(x.number), x.name, x.color, x.unlock_condition_ja, x.unlock_condition_en].some((v) =>
       v?.toLowerCase().includes(term),
-    ),
-  )
+    )
+  })
+  const key = titleSortKey.value
+  const dir = titleSortAsc.value ? 1 : -1
+  return list.sort((a, b) => (key === 'name' ? a.name.localeCompare(b.name) : a[key] - b[key]) * dir)
 })
 
 async function startEdit(user: AdminUser) {
@@ -1196,7 +1293,25 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
       </template>
 
       <template v-else-if="activeTab === 'titles'">
-        <input v-model="titleSearch" type="search" :placeholder="$t('admin.searchTitles')" class="field w-full max-w-sm" />
+        <div class="flex flex-wrap items-center gap-2">
+          <input v-model="titleSearch" type="search" :placeholder="$t('admin.searchTitles')" class="field w-full max-w-sm" />
+          <select v-model="titleColorFilter" class="field">
+            <option value="">{{ $t('admin.filterAnyColor') }}</option>
+            <option v-for="c in titleColors" :key="c" :value="c">{{ c }}</option>
+          </select>
+          <select v-model="titleDefaultFilter" class="field">
+            <option value="">{{ $t('admin.filterAnyDefault') }}</option>
+            <option value="yes">{{ $t('admin.filterDefaultYes') }}</option>
+            <option value="no">{{ $t('admin.filterDefaultNo') }}</option>
+          </select>
+          <select v-model="titleConditionFilter" class="field">
+            <option value="">{{ $t('admin.filterAnyCondition') }}</option>
+            <option value="structured">{{ $t('admin.filterStructured') }}</option>
+            <option value="unmapped">{{ $t('admin.filterUnmapped') }}</option>
+          </select>
+          <button type="button" class="btn btn-primary" @click="startCreateTitle">{{ $t('admin.newTitle') }}</button>
+          <span class="muted text-sm">{{ $t('admin.titlesShown', { shown: visibleTitles.length, total: titles.length }) }}</span>
+        </div>
         <p v-if="titlesError" class="error-text text-sm">{{ titlesError }}</p>
         <p v-if="titlesLoading" class="muted text-sm">{{ $t('common.loading') }}</p>
 
@@ -1204,10 +1319,17 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
           <table class="w-full text-sm">
             <thead>
               <tr>
-                <th class="th-cell">{{ $t('admin.thNumber') }}</th>
-                <th class="th-cell">{{ $t('admin.thName') }}</th>
+                <th class="th-cell cursor-pointer select-none" @click="sortTitlesBy('number')">
+                  {{ $t('admin.thNumber') }}{{ titleSortKey === 'number' ? (titleSortAsc ? ' ▲' : ' ▼') : '' }}
+                </th>
+                <th class="th-cell cursor-pointer select-none" @click="sortTitlesBy('name')">
+                  {{ $t('admin.thName') }}{{ titleSortKey === 'name' ? (titleSortAsc ? ' ▲' : ' ▼') : '' }}
+                </th>
                 <th class="th-cell">{{ $t('admin.thColor') }}</th>
                 <th class="th-cell">{{ $t('admin.thDefaultUnlocked') }}</th>
+                <th class="th-cell cursor-pointer select-none" @click="sortTitlesBy('owner_count')">
+                  {{ $t('admin.thOwners') }}{{ titleSortKey === 'owner_count' ? (titleSortAsc ? ' ▲' : ' ▼') : '' }}
+                </th>
                 <th class="th-cell">{{ $t('admin.thConditionJa') }}</th>
                 <th class="th-cell">{{ $t('admin.thCondition') }}</th>
                 <th class="th-cell"></th>
@@ -1219,6 +1341,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <td class="td-cell">{{ title.name }}</td>
                 <td class="td-cell">{{ title.color ?? $t('admin.dash') }}</td>
                 <td class="td-cell">{{ title.default_unlocked ? $t('admin.yes') : $t('admin.no') }}</td>
+                <td class="td-cell">{{ title.owner_count }}</td>
                 <td class="td-cell">{{ title.unlock_condition_ja ?? $t('admin.dash') }}</td>
                 <td class="td-cell">{{ title.unlock_condition_en ?? $t('admin.dash') }}</td>
                 <td class="td-cell">
@@ -1226,14 +1349,14 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 </td>
               </tr>
               <tr v-if="visibleTitles.length === 0">
-                <td class="td-cell muted" colspan="7">{{ $t('admin.noTitlesFound') }}</td>
+                <td class="td-cell muted" colspan="8">{{ $t('admin.noTitlesFound') }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div
-          v-if="editingTitle"
+          v-if="editingTitle || creatingTitle"
           class="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
           @click.self="cancelEditTitle"
         >
@@ -1242,7 +1365,13 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
             @keydown.esc="cancelEditTitle"
             @submit.prevent="saveEditTitle"
           >
-            <h2 class="font-semibold">{{ $t('admin.editTitle', { number: editingTitle.number }) }}</h2>
+            <h2 class="font-semibold">
+              {{ editingTitle ? $t('admin.editTitle', { number: editingTitle.number }) : $t('admin.newTitle') }}
+            </h2>
+            <label v-if="creatingTitle" class="flex flex-col gap-1 text-sm">
+              {{ $t('admin.titleNumberLabel') }}
+              <input v-model="newTitleNumber" type="number" min="0" class="field" :placeholder="$t('admin.titleNumberAuto')" />
+            </label>
             <label class="flex flex-col gap-1 text-sm">
               {{ $t('admin.nameLabel') }}
               <input v-model="editTitleName" type="text" class="field" />
@@ -1259,15 +1388,36 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
               <input v-model="editTitleDefaultUnlocked" type="checkbox" />
               {{ $t('admin.thDefaultUnlocked') }}
             </label>
-            <p class="muted text-xs">
+            <p v-if="editingTitle" class="muted text-xs">
               {{
                 editingTitle.has_structured_condition
                   ? $t('admin.structuredConditionNote')
                   : $t('admin.noStructuredConditionNote')
               }}
             </p>
+            <div v-if="editingTitle" class="flex flex-col gap-2 text-sm">
+              <h3 class="font-semibold">{{ $t('admin.titleOwners', { count: titleOwners.length }) }}</h3>
+              <div class="flex gap-2">
+                <input v-model="grantCode" type="text" class="field flex-1" :placeholder="$t('admin.grantPlaceholder')" />
+                <button type="button" class="btn" :disabled="!grantCode.trim()" @click="ownerAction('grant_title', grantCode)">
+                  {{ $t('admin.grant') }}
+                </button>
+              </div>
+              <ul class="flex max-h-40 flex-col gap-1 overflow-y-auto">
+                <li v-for="o in titleOwners" :key="o.access_code" class="flex items-center justify-between gap-2">
+                  <span>{{ o.username }} <span class="muted">{{ o.access_code }}</span></span>
+                  <button type="button" class="btn btn-danger" @click="ownerAction('revoke_title', o.access_code)">
+                    {{ $t('admin.revoke') }}
+                  </button>
+                </li>
+              </ul>
+              <p v-if="ownersError" class="error-text">{{ ownersError }}</p>
+            </div>
             <p v-if="saveTitleError" class="error-text text-sm">{{ saveTitleError }}</p>
             <div class="flex justify-end gap-2">
+              <button v-if="editingTitle && editingTitle.number !== 0" type="button" class="btn btn-danger mr-auto" @click="deleteTitle">
+                {{ $t('admin.delete') }}
+              </button>
               <button type="button" class="btn" @click="cancelEditTitle">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn btn-primary" :disabled="isSavingTitle">{{ $t('common.save') }}</button>
             </div>
