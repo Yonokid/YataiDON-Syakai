@@ -233,6 +233,8 @@ export default {
     titleOwners: 'Owners ({count})',
     grantPlaceholder: 'Access code to grant to',
     grant: 'Grant',
+    grantAll: 'Grant to all',
+    grantAllConfirm: 'Grant title #{number} "{name}" to every user? Revoke is per user only.',
     revoke: 'Revoke',
     titleOwnersError: 'Could not update owners. Check the access code.',
     titleDeleteConfirm: 'Delete title #{number} "{name}"? This removes it from every player and drops its unlock rules.',

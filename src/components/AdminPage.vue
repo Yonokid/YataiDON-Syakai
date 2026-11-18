@@ -499,6 +499,19 @@ async function ownerAction(action: 'grant_title' | 'revoke_title', accessCode: s
   }
 }
 
+async function grantTitleToAll() {
+  if (!editingTitle.value) return
+  if (!confirm(t('admin.grantAllConfirm', { number: editingTitle.value.number, name: editingTitle.value.name }))) return
+  ownersError.value = ''
+  try {
+    const response = await fetch(titleUrl('grant_title_all', { number: editingTitle.value.number }), { method: 'POST' })
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    await Promise.all([fetchTitleOwners(editingTitle.value.number), fetchTitles()])
+  } catch {
+    ownersError.value = t('admin.titleOwnersError')
+  }
+}
+
 async function deleteTitle() {
   if (!editingTitle.value) return
   if (!confirm(t('admin.titleDeleteConfirm', { number: editingTitle.value.number, name: editingTitle.value.name }))) return
@@ -1402,6 +1415,7 @@ function switchSuspiciousTab(tab: 'pending' | 'import_warning') {
                 <button type="button" class="btn" :disabled="!grantCode.trim()" @click="ownerAction('grant_title', grantCode)">
                   {{ $t('admin.grant') }}
                 </button>
+                <button type="button" class="btn" @click="grantTitleToAll">{{ $t('admin.grantAll') }}</button>
               </div>
               <ul class="flex max-h-40 flex-col gap-1 overflow-y-auto">
                 <li v-for="o in titleOwners" :key="o.access_code" class="flex items-center justify-between gap-2">
