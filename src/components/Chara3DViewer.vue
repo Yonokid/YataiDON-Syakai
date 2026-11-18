@@ -149,8 +149,6 @@ interface Part {
   skeleton: THREE.Skeleton | null
   recolors: Recolor[]
   faceMaterials: THREE.MeshBasicMaterial[]
-  faceMeshes: THREE.Mesh[]
-  faceScale: number
 }
 interface Rig {
   mixer: THREE.AnimationMixer
@@ -269,24 +267,16 @@ function makeRecolor(map: THREE.Texture): Recolor {
   return { source: ctx.getImageData(0, 0, image.width, image.height), ctx, texture }
 }
 
-// normalize_face_mesh_size(): scales the face plane about its centre
-function normalizeFacePlane(mesh: THREE.Mesh, always: boolean) {
+// Chara3D::load_part(): face sheets draw the bare face at 3/4 of the plate, so the plane is 4/3 of it,
+// except the mini don's (body 30), whose own art already is
+function normalizeFacePlane(mesh: THREE.Mesh, always: boolean, mini: boolean) {
   const geometry = mesh.geometry
   geometry.computeBoundingBox()
   const { min, max } = geometry.boundingBox!
   const size = Math.max(max.x - min.x, max.y - min.y)
-  if (size <= 0.0001 || (!always && size <= FACE_PLANE_SIZE * 1.02)) return
-  scaleFacePlane(mesh, FACE_PLANE_SIZE / size)
-}
-
-// Paint sheets draw the bare face at 3/4 size (Chara3D::set_paint), so a painted plane is 4/3 larger
-const PAINT_PLANE_SCALE = 4 / 3
-
-function applyPaintScale(part: Part) {
-  const target = props.paint ? PAINT_PLANE_SCALE : 1
-  if (part.faceScale === target) return
-  part.faceMeshes.forEach((mesh) => scaleFacePlane(mesh, target / part.faceScale))
-  part.faceScale = target
+  if (size <= 0.0001) return
+  const plate = always || size > FACE_PLANE_SIZE * 1.02 ? FACE_PLANE_SIZE : size
+  scaleFacePlane(mesh, (mini ? plate : (plate * 4) / 3) / size)
 }
 
 function scaleFacePlane(mesh: THREE.Mesh, factor: number) {
@@ -309,7 +299,7 @@ function scaleFacePlane(mesh: THREE.Mesh, factor: number) {
 
 async function loadPart(url: string, isHead: boolean): Promise<Part> {
   const { scene: root } = await loader.loadAsync(url)
-  const part: Part = { root, skeleton: null, recolors: [], faceMaterials: [], faceMeshes: [], faceScale: 1 }
+  const part: Part = { root, skeleton: null, recolors: [], faceMaterials: [] }
 
   const meshes: THREE.Mesh[] = []
   root.traverse((o) => {
@@ -323,7 +313,9 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
     const src = mesh.material as THREE.MeshStandardMaterial
     const name = src.name.toLowerCase()
     const shaderType = src.userData.shaderType
-    const isFace = shaderType === 'taikoEffectFace'
+    // chibi don's face plane mirrors the player's face
+    const miniFace = name.startsWith('body_027000_02_')
+    const isFace = shaderType === 'taikoEffectFace' || miniFace
     const isCutout = name.includes('_color_s_cus_') && !name.includes('_a_ab')
     const isBlend = !isFace && (name.includes('_a_ab') || (src.transparent && !isCutout))
     let map = src.map
@@ -332,7 +324,7 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
       pointSampled(map)
     }
 
-    if (shaderType === 'taikoEffectChangeColors' && map) {
+    if (shaderType === 'taikoEffectChangeColors' && !isFace && map) {
       const recolor = makeRecolor(map)
       applyRecolor(recolor)
       part.recolors.push(recolor)
@@ -350,9 +342,8 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
       opacity: src.opacity,
     })
     if (isFace) {
-      normalizeFacePlane(mesh, isHead)
+      normalizeFacePlane(mesh, isHead, miniFace)
       part.faceMaterials.push(material)
-      part.faceMeshes.push(mesh)
     }
     mesh.material = material
     mesh.frustumCulled = false
@@ -367,7 +358,6 @@ async function loadPart(url: string, isHead: boolean): Promise<Part> {
     }
   })
 
-  applyPaintScale(part)
   return part
 }
 
@@ -525,7 +515,6 @@ watch(() => [props.isCostume, props.head, props.body, props.cos], loadCharacter)
 watch(
   () => props.paint,
   () => {
-    parts.forEach(applyPaintScale)
     loadFaceTextures().catch(() => (failed.value = true))
   },
 )
