@@ -443,7 +443,7 @@ export default {
     importError: 'Could not request import. Please try again.',
     t14Import: 'Import a Taiko 14 password',
     t14ImportHint:
-      'Paste the password or the full dojo.taiko-m.com URL from the gameover screen. Each password can be imported once.',
+      'Paste the password from the gameover screen. A password can be imported once.',
     t14ImportPlaceholder: 'Password or https://dojo.taiko-m.com/...',
     t14ImportButton: 'Import password',
     t14Importing: 'Importing…',
