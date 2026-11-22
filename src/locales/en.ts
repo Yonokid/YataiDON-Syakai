@@ -445,7 +445,6 @@ export default {
     t14ImportHint:
       'Paste the password or the full dojo.taiko-m.com URL from the gameover screen. Each password can be imported once.',
     t14ImportPlaceholder: 'Password or https://dojo.taiko-m.com/...',
-    t14ImportYear: 'Played year',
     t14ImportButton: 'Import password',
     t14Importing: 'Importing…',
     t14ImportOk: 'Imported {count} score(s).',

@@ -330,7 +330,6 @@ async function requestScoreImport() {
 }
 
 const t14Password = ref('')
-const t14Year = ref(2010)
 const isImportingT14 = ref(false)
 const t14ImportError = ref('')
 const t14ImportMessage = ref('')
@@ -361,7 +360,6 @@ async function importT14Password() {
   try {
     const body = new FormData()
     body.set('password', password)
-    body.set('year', String(t14Year.value))
     const response = await fetch(
       `${API_BASE_URL}/import_t14_password?access_code=${encodeURIComponent(props.accessCode)}`,
       { method: 'POST', body },
@@ -1030,17 +1028,6 @@ fetch(`${API_BASE_URL}/songs`)
                 :disabled="isImportingT14"
                 class="field min-w-0 flex-1"
               />
-              <label class="flex items-center gap-1 text-sm">
-                {{ $t('user.t14ImportYear') }}
-                <input
-                  v-model.number="t14Year"
-                  type="number"
-                  min="2000"
-                  max="2100"
-                  :disabled="isImportingT14"
-                  class="field w-20"
-                />
-              </label>
               <button
                 type="submit"
                 class="btn btn-primary"
