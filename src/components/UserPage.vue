@@ -329,6 +329,66 @@ async function requestScoreImport() {
   }
 }
 
+const t14Password = ref('')
+const t14Year = ref(2010)
+const isImportingT14 = ref(false)
+const t14ImportError = ref('')
+const t14ImportMessage = ref('')
+
+function passwordFromInput(raw: string) {
+  const text = raw.trim()
+  try {
+    const url = new URL(text)
+    if (url.hostname === 'dojo.taiko-m.com' || url.hostname.endsWith('.dojo.taiko-m.com')) {
+      return url.pathname.replace(/^\/+|\/+$/g, '')
+    }
+  } catch {
+    // Not a URL; treat it as a bare password.
+  }
+  const marker = 'dojo.taiko-m.com/'
+  const index = text.indexOf(marker)
+  if (index >= 0) return text.slice(index + marker.length).replace(/^\/+|\/+$/g, '')
+  return text
+}
+
+async function importT14Password() {
+  const password = passwordFromInput(t14Password.value)
+  if (!password) return
+
+  isImportingT14.value = true
+  t14ImportError.value = ''
+  t14ImportMessage.value = ''
+  try {
+    const body = new FormData()
+    body.set('password', password)
+    body.set('year', String(t14Year.value))
+    const response = await fetch(
+      `${API_BASE_URL}/import_t14_password?access_code=${encodeURIComponent(props.accessCode)}`,
+      { method: 'POST', body },
+    )
+    const data = await response.json().catch(() => ({}))
+    if (!response.ok) {
+      if (response.status === 409) throw new Error('duplicate')
+      if (typeof data.detail === 'string' && data.detail.startsWith('unmapped T14 songs')) {
+        throw new Error('unmapped')
+      }
+      throw new Error('generic')
+    }
+    t14ImportMessage.value = t('user.t14ImportOk', { count: data.imported })
+    t14Password.value = ''
+  } catch (error) {
+    const kind = error instanceof Error ? error.message : 'generic'
+    t14ImportError.value =
+      kind === 'duplicate'
+        ? t('user.t14ImportDuplicate')
+        : kind === 'unmapped'
+          ? t('user.t14ImportUnmapped')
+          : t('user.t14ImportError')
+  } finally {
+    isImportingT14.value = false
+  }
+}
+
 async function saveUsername() {
   const username = newUsername.value.trim()
   if (!username) return
@@ -956,6 +1016,41 @@ fetch(`${API_BASE_URL}/songs`)
               {{ $t('user.importButton') }}
             </button>
             <p v-if="importError" class="error-text text-sm">{{ importError }}</p>
+          </div>
+          <div class="card flex flex-col gap-2">
+            <span class="muted text-sm">{{ $t('user.t14Import') }}</span>
+            <p class="muted text-xs">{{ $t('user.t14ImportHint') }}</p>
+            <form class="flex flex-wrap items-end gap-2" @submit.prevent="importT14Password">
+              <input
+                v-model="t14Password"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                :placeholder="$t('user.t14ImportPlaceholder')"
+                :disabled="isImportingT14"
+                class="field min-w-0 flex-1"
+              />
+              <label class="flex items-center gap-1 text-sm">
+                {{ $t('user.t14ImportYear') }}
+                <input
+                  v-model.number="t14Year"
+                  type="number"
+                  min="2000"
+                  max="2100"
+                  :disabled="isImportingT14"
+                  class="field w-20"
+                />
+              </label>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="isImportingT14 || !t14Password.trim()"
+              >
+                {{ isImportingT14 ? $t('user.t14Importing') : $t('user.t14ImportButton') }}
+              </button>
+            </form>
+            <p v-if="t14ImportMessage" class="muted text-sm">{{ t14ImportMessage }}</p>
+            <p v-if="t14ImportError" class="error-text text-sm">{{ t14ImportError }}</p>
           </div>
           <button type="button" class="btn self-start" @click="$emit('logout')">{{ $t('user.logout') }}</button>
         </div>
