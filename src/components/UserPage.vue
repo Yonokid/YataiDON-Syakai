@@ -310,6 +310,35 @@ async function saveNameplateBg(bg: number) {
   }
 }
 
+const PLAYER_BOARDS = [
+  { value: 0, key: 'user.playerBoardKantan' },
+  { value: 1, key: 'user.playerBoardFutsuu' },
+  { value: 2, key: 'user.playerBoardMuzukashii' },
+  { value: 3, key: 'user.playerBoardOni' },
+  { value: 4, key: 'user.playerBoardUra' },
+]
+const isSavingPlayerBoard = ref(false)
+const playerBoardError = ref('')
+
+async function savePlayerBoard(board: number) {
+  isSavingPlayerBoard.value = true
+  playerBoardError.value = ''
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/update_player_board?access_code=${encodeURIComponent(props.accessCode)}`,
+      { method: 'POST', body: new URLSearchParams({ player_board: String(board) }) },
+    )
+    if (!response.ok) throw new Error(`Unexpected status ${response.status}`)
+    const fresh = await fetch(`${API_BASE_URL}/user?access_code=${encodeURIComponent(props.accessCode)}`)
+    if (!fresh.ok) throw new Error(`Unexpected status ${fresh.status}`)
+    emit('force-unlock-updated', await fresh.json())
+  } catch {
+    playerBoardError.value = t('user.playerBoardError')
+  } finally {
+    isSavingPlayerBoard.value = false
+  }
+}
+
 async function requestScoreImport() {
   if (!confirm(t('user.importConfirm'))) return
 
@@ -736,6 +765,24 @@ fetch(`${API_BASE_URL}/songs`)
               </button>
             </div>
             <p v-if="nameplateBgError" class="error-text text-sm">{{ nameplateBgError }}</p>
+          </div>
+          <div class="card flex flex-col gap-1">
+            <span class="text-sm">{{ $t('user.playerBoard') }}:</span>
+            <p class="muted text-xs">{{ $t('user.playerBoardHint') }}</p>
+            <div class="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <button
+                v-for="b in PLAYER_BOARDS"
+                :key="b.value"
+                type="button"
+                class="btn"
+                :class="{ 'font-bold underline': (user.player_board ?? 3) === b.value }"
+                :disabled="isSavingPlayerBoard"
+                @click="savePlayerBoard(b.value)"
+              >
+                {{ $t(b.key) }}
+              </button>
+            </div>
+            <p v-if="playerBoardError" class="error-text text-sm">{{ playerBoardError }}</p>
           </div>
         </div>
 

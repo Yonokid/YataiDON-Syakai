@@ -32,6 +32,7 @@ export interface UserData {
   gold: boolean
   force_unlock: boolean
   nameplate_bg: number | null
+  player_board: number | null
   owned_cosmetics: { costume: number[]; head: number[]; body: number[] }
   unlocked_titles: UnlockedTitle[]
   import_requested: boolean
