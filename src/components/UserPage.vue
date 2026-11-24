@@ -316,6 +316,7 @@ const PLAYER_BOARDS = [
   { value: 2, key: 'user.playerBoardMuzukashii' },
   { value: 3, key: 'user.playerBoardOni' },
   { value: 4, key: 'user.playerBoardUra' },
+  { value: 5, key: 'user.playerBoardOniUra' },
 ]
 const isSavingPlayerBoard = ref(false)
 const playerBoardError = ref('')

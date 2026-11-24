@@ -491,6 +491,7 @@ export default {
     playerBoardMuzukashii: 'Hard',
     playerBoardOni: 'Oni',
     playerBoardUra: 'Ura',
+    playerBoardOniUra: 'Oni + Ura',
     setTitle: 'Change title',
     titlePreset: 'Unlocked',
     titleCustom: 'Custom',
